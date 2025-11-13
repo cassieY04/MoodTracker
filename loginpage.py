@@ -7,7 +7,7 @@ app.secret_key = "secret123"
 
 users = {}
 
-def password_requirement(password):
+def password_requirement(password): #KX display the short requirements
     if len(password) < 8 or len(password) > 12:
         return "Password must be between 8 and 12 characters long."
     if not any(c.isupper() for c in password):
@@ -28,7 +28,7 @@ def validate_phone(phone):
 
 @app.route("/")
 def homepage():
-    return render_template("index.html")
+    return render_template("index.html") #KeXin will handle 
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -68,7 +68,7 @@ def register():
         flash("Registration successful!")
         return redirect(url_for("homepage"))
 
-    return render_template("register.html")
+    return render_template("register.html")#KeXin will handle 
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -89,7 +89,7 @@ def login():
         flash(f"You're in!Let's get started, {username}!")
         return redirect(url_for("profile", username=username))
 
-    return render_template("login.html")
+    return render_template("login.html")#KeXin will handle 
 
 #Profile Update
 @app.route("/profile/<username>", methods=["GET", "POST"])
@@ -141,7 +141,7 @@ def profile(username):
 
         flash("Profile updated successfully!")
         return redirect(url_for("profile", username=username))
-
+    #KeXin will handle -html
     return render_template("profile.html", username=username, user=user)
 
 @app.route("/logout")
