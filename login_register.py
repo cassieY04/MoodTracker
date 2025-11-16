@@ -31,7 +31,6 @@ def register():
         error = password_requirement(password)
         if error:
             flash(error)
-
             return redirect(url_for("auth.register"))
 
         UserManager.add_user(username, {
