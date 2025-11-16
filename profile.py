@@ -37,13 +37,13 @@ def profile(username):
         
         if new_phone:
             if not validate_phone(new_phone):
-                flash("Phone number must contain only digits and be 8-12 characters long.")
+                flash("Phone number must contain only digits and have 8-12 characters.")
                 return redirect(url_for("profile.profile", username=username))
             update_data["phone"] = new_phone
             
         if new_email:
             if not validate_email(new_email):
-                flash("Email must be a @gmail.com address.")
+                flash("Email must end with @gmail.com address.")
                 return redirect(url_for("profile.profile", username=username))
             update_data["email"] = new_email
             

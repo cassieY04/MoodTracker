@@ -1,6 +1,6 @@
 def password_requirement(password):
     if len(password) < 8 or len(password) > 12:
-        return "Password must be between 8 and 12 characters long."
+        return "Password must be between 8 to 12 characters long."
     if not any(c.isupper() for c in password):
         return "Password must contain at least one uppercase letter."
     if not any(c.islower() for c in password):

@@ -13,7 +13,7 @@ def register():
         password = request.form["password"].strip()
 
         if not username or not phone or not email or not password:
-            flash("All fields are required.")
+            flash("All fields are required to fill.")
             return redirect(url_for("auth.register"))
 
         if UserManager.user_exists(username):
@@ -21,11 +21,11 @@ def register():
             return redirect(url_for("auth.register"))
         
         if not validate_email(email):
-            flash("Email must be a @gmail.com address.")
+            flash("Email must end with @gmail.com address.")
             return redirect(url_for("auth.register"))
 
         if not validate_phone(phone):
-            flash("Phone number must contain only digits and be 8-12 characters long.")
+            flash("Phone number must contain only digits and have 8-12 characters.")
             return redirect(url_for("auth.register"))
 
         error = password_requirement(password)
