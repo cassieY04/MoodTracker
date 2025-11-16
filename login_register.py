@@ -31,8 +31,10 @@ def register():
         error = password_requirement(password)
         if error:
             flash(error)
+            print(f"DEBUG: Password error: {error}")
             return redirect(url_for("auth.register"))
-
+        
+        print("DEBUG: All validations passed!")
         UserManager.add_user(username, {
             "phone": phone,
             "email": email,
