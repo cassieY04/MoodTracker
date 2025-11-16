@@ -62,7 +62,7 @@ def login():
 
         session['username'] = username
         flash(f"You're in! Let's get started, {username}!")
-        return redirect(url_for("profile.profile", username=username))
+        return redirect(url_for("home.dashboard"))
 
     return render_template("login.html")
 
