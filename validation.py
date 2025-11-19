@@ -7,8 +7,8 @@ def password_requirement(password):
         return "Password must contain at least one lowercase letter."
     if not any(c.isdigit() for c in password):
         return "Password must contain at least one digit."
-    if not any(c in "@_-*#" for c in password):
-        return "Password must contain at least one special character (@, _, - ,* or #)."
+    if not any(c in "@_-*#!%$&" for c in password):
+        return "Password must contain at least one special character (@, _, -, *, #, !, %, $, or &)."
     return None  
 
 def validate_email(email):
