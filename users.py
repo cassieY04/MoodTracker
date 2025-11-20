@@ -42,10 +42,27 @@ class UserManager:
     
     @staticmethod
     def update_user(username, user_data):
-        if username in users:
-            users[username].update(user_data)
+        db = get_db()
+        #update phone, email or password
+        update_fields = ', '.join([f'{key} = ?' for key in user_data.keys()])
+        update_values = list(user_data.values()) + [username]
+
+        try:
+            cursor = db.execute(
+                F'update USERS set {update_fields} WHERE username =?',
+                update_values
+            )
+            db.commit()
+            return cursor.rowcount > 0
+        finally:
+            db.close()
     
     @staticmethod
     def delete_user(username):
-        if username in users:
-            del users[username]
+        db = get_db()
+        try:
+            cursor = db.execute('DELETE FROM users WHERE username = ?', (username,))
+            db.commit()
+            return cursor.rowcount > 0
+        finally:
+            db.close()
