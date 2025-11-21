@@ -4,7 +4,7 @@ from validation import password_requirement, validate_email, validate_phone
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route("/register", methods=["GET", "POST"])
+@auth_bp.route("/register", methods=["GET", "POST"])#register
 def register():
     if request.method == "POST":
         username = request.form["username"].strip()
@@ -21,7 +21,7 @@ def register():
             return redirect(url_for("auth.register"))
         
         if not validate_email(email):
-            flash("Email must end with @gmail.com address.")
+            flash("Email must end with @gmail.com address.")#email as primary key
             return redirect(url_for("auth.register"))
 
         if not validate_phone(phone):
@@ -45,7 +45,7 @@ def register():
 
     return render_template("register.html")
 
-@auth_bp.route("/login", methods=["GET", "POST"])
+@auth_bp.route("/login", methods=["GET", "POST"])#login
 def login():
     if request.method == "POST":
         username = request.form["username"]
