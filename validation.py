@@ -1,3 +1,4 @@
+#add on security question and email verification
 def password_requirement(password):
     if len(password) < 8 or len(password) > 12:
         return "Password must be between 8 to 12 characters long."

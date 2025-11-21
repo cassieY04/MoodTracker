@@ -4,7 +4,7 @@ from validation import password_requirement, validate_email, validate_phone
 
 profile_bp = Blueprint('profile', __name__)
 
-@profile_bp.route("/profile/<username>", methods=["GET", "POST"])
+@profile_bp.route("/profile/<username>", methods=["GET", "POST"]) #add bunch of things
 def profile(username):
     if not UserManager.user_exists(username):
         flash("User not found.")
@@ -43,7 +43,7 @@ def profile(username):
             
         if new_email:
             if not validate_email(new_email):
-                flash("Email must end with @gmail.com address.")
+                flash("Email must end with @gmail.com address.")#remove
                 return redirect(url_for("profile.profile", username=username))
             update_data["email"] = new_email
             
