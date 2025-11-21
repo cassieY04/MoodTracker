@@ -1,0 +1,16 @@
+from flask import Blueprint, render_template, session, redirect, url_for, flash
+
+home_bp = Blueprint('home', __name__)
+
+@home_bp.route("/")
+def homepage():
+    return render_template("index.html")
+
+@home_bp.route("/dashboard")
+def dashboard():
+    if 'username' not in session:
+        flash("Please login first.")
+        return redirect(url_for("auth.login"))
+    
+    username = session['username']
+    return rendeSr_template("dashboard.html", username=username)
