@@ -13,4 +13,4 @@ def dashboard():
         return redirect(url_for("auth.login"))
     
     username = session['username']
-    return rendeSr_template("dashboard.html", username=username)
+    return render_template("dashboard.html", username=username)
