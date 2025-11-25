@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - MoodTracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="auth-body">
+
+    <div class="auth-card">
+        <h2>Create Your Account</h2>
+
+        <form>
+            <label>Name</label>
+            <input type="text" placeholder="Enter your name" required>
+
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email" required>
+
+            <label>Password</label>
+            <input type="password" placeholder="Enter your password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" placeholder="Confirm your password" required>
+
+            <button class="main-btn">Create Account</button>
+        </form>
+
+        <p class="switch-auth">
+            Already have an account?
+            <a href="/login">Log In</a>
+        </p>
+    </div>
+
+</body>
+</html>

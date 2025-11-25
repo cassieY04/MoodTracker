@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log In - MoodTracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="auth-body">
+
+    <div class="auth-card">
+        <h2>Welcome Back</h2>
+
+        <form>
+            <label>Email</label>
+            <input type="email" placeholder="Enter your email" required>
+
+            <label>Password</label>
+            <input type="password" placeholder="Enter your password" required>
+
+            <button class="main-btn">Log In</button>
+        </form>
+
+        <p class="switch-auth">
+            New here?
+            <a href="/register">Create an account</a>
+        </p>
+    </div>
+
+</body>
+</html>
