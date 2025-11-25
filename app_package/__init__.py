@@ -7,9 +7,9 @@ def create_app():
 
     app.config['DATABASE_FILE'] = 'user.db'
     
-    from homepage import home_bp
+    from .homepage import home_bp
     from .login_register import auth_bp
-    from profile import profile_bp
+    from .profile import profile_bp
 
     with app.app_context():
         init_db()

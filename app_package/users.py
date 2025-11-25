@@ -31,7 +31,7 @@ class UserManager:
     def get_user(username):
         db = get_db()
         try:
-            cursor = db.execute('SELECT username, password FROM users WHERE username = ?', (username,))
+            cursor = db.execute('SELECT username, phone, email,  password FROM users WHERE username = ?', (username,))
             user_row = cursor.fetchone()
             if user_row:
                 return dict(user_row)
