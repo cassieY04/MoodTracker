@@ -1,0 +1,27 @@
+#dummy by san
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+    <h1>Profile Page for {{ username }}</h1>
+    
+    <h2>Update Profile</h2>
+    <form method="POST">
+        <p>New Phone: <input type="text" name="phone" value="{{ user.phone }}"></p>
+        <p>New Email: <input type="text" name="email" value="{{ user.email }}"></p>
+        <p>New Password: <input type="password" name="password"></p>
+        <p>Type "yes" to confirm: <input type="text" name="confirm"></p>
+        <button type="submit">Update Profile</button>
+    </form>
+
+    <h2>Delete Account</h2>
+    <form method="POST">
+        <p>Type "yes" to delete: <input type="text" name="confirm_delete"></p>
+        <button type="submit" name="delete">Delete My Account</button>
+    </form>
+
+    <a href="/logout">Logout</a><br>
+    <a href="{{ url_for('home.dashboard') }}">Go Home</a>
+</body>
+</html>

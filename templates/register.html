@@ -11,20 +11,23 @@
     <div class="auth-card">
         <h2>Create Your Account</h2>
 
-        <form>
-            <label>Name</label>
-            <input type="text" placeholder="Enter your name" required>
+        <form method="POST">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter your username" required>
 
             <label>Email</label>
-            <input type="email" placeholder="Enter your email" required>
+            <input type="text" name="email" placeholder="Enter your email" required>
+
+            <label>Phone Number</label>
+            <input type="text" name="phone" placeholder="Enter your phone number" required>
 
             <label>Password</label>
-            <input type="password" placeholder="Enter your password" required>
+            <input type="password" name="password" placeholder="Enter your password" required>
 
             <label>Confirm Password</label>
-            <input type="password" placeholder="Confirm your password" required>
+            <input type="password" name="password" placeholder="Confirm your password" required>
 
-            <button class="main-btn">Create Account</button>
+            <button class="main-btn" type="submit">Create Account</button>
         </form>
 
         <p class="switch-auth">
@@ -35,3 +38,4 @@
 
 </body>
 </html>
+
