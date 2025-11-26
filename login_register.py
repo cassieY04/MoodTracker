@@ -11,8 +11,11 @@ def register():
         phone = request.form["phone"].strip()
         email = request.form["email"].strip()
         password = request.form["password"].strip()
+        confirm = request.form["confirm_password"].strip()
+        question = request.form["security_question"]
+        answer = request.form["security_answer"].strip()
 
-        if not username or not phone or not email or not password:
+        if not username or not phone or not email or not password or not confirm:
             flash("All fields are required to fill.")
             return redirect(url_for("auth.register"))
 
@@ -27,6 +30,14 @@ def register():
         if not validate_phone(phone):
             flash("Phone number must contain only digits and have 8-12 characters.")
             return redirect(url_for("auth.register"))
+        
+        if password != confirm:
+            flash("Password and Confirm Password do not match.")
+            return redirect(url_for("auth.register"))
+        
+        if not question or not answer:
+            flash("Security question and answer must be filled.")
+            return redirect(url_for("auth.register"))
 
         error = password_requirement(password)
         if error:
@@ -35,13 +46,17 @@ def register():
             return redirect(url_for("auth.register"))
         
         print("DEBUG: All validations passed!")
-        UserManager.add_user(username, {
-            "phone": phone,
-            "email": email,
-            "password": password
-        })
-        flash("Registration successful!")
-        return redirect(url_for("home.homepage"))
+        try:
+            UserManager.add_user(username, {
+                "phone": phone,
+                "email": email,
+                "password": password
+            })
+        except ValueError as e:
+            flash(str(e))
+            return redirect(url_for("auth.register"))
+        flash("Registration successful! Please log in.")
+        return redirect(url_for("auth.login"))
 
     return render_template("register.html")
 
@@ -68,16 +83,49 @@ def login():
 
 @auth_bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
+    if request.method == "POST":
+        username = request.form["username"]
+
+        if not UserManager.user_exists(username):
+            flash("Username not found.")
+            return redirect(url_for("auth.forgot"))
+
+        session["reset_user"] = username
+        return redirect(url_for("auth.verify_security"))
     return render_template('forgot.html')
 
 @auth_bp.route('/verify', methods=['GET', 'POST'])
 def verify_security():
-    # placeholder question , refer at register.html
+    if "reset_user" not in session:
+        return redirect(url_for("auth.forgot"))
+
     question = "What is your mother's maiden name?"
+
+    if request.method == "POST":
+        answer = request.form["answer"]
+
+        if answer != "test":   # your groupmate will later replace this with DB check
+            flash("Incorrect security answer.")
+            return redirect(url_for("auth.verify_security"))
+
+        return redirect(url_for("auth.reset_password"))
+
     return render_template('verify_security.html', question=question)
 
 @auth_bp.route('/reset', methods=['GET', 'POST'])
 def reset_password():
+    if request.method == "POST":
+        new_password = request.form["password"]
+        confirm = request.form["confirm"]
+
+        if new_password != confirm:
+            flash("Passwords do not match.")
+            return redirect(url_for("auth.reset_password"))
+
+        session.pop("reset_user", None)
+        flash("Password reset successful. Please login.")
+        return redirect(url_for("auth.login"))
+
     return render_template('reset.html')
 
 @auth_bp.route("/logout")

@@ -17,6 +17,14 @@
             <input type="text" name="identifier" placeholder="Enter username/email" required>
 
             <button class="main-btn" type="submit">Next</button>
+             {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="form-message">
+                    {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
         </form>
 
         <p class="switch-auth">
