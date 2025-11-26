@@ -5,6 +5,13 @@ from datetime import datetime
 
 profile_bp = Blueprint('profile', __name__)
 
+SECURITY_QUESTIONS = [
+    "What is your favourite food?",
+    "What was your dream car?",
+    "What is your first phone brand?"
+]
+
+
 @profile_bp.route("/profile/<username>", methods=["GET", "POST"]) 
 def profile(username):
     if not UserManager.user_exists(username):
@@ -30,6 +37,8 @@ def profile(username):
         new_birthday = request.form.get("birthday", "").strip()
         new_gender = request.form.get("gender", "").strip()
         new_profile_picture = request.form.get("profile_picture", "").strip()
+        new_question = request.form.get("security_question", "").strip()
+        new_answer = request.form.get("security_answer", "").strip().lower()
 
         if new_username and new_username != user["username"]:
             if UserManager.get_user_by_username(new_username):
@@ -81,11 +90,25 @@ def profile(username):
                 flash("Invalid birthday format. Use DD-MM-YYYY.")
                 return redirect(url_for("profile.profile", username=username))
         if new_profile_picture:
-            update_data["profile_picture"] = new_profile_picture    
+            update_data["profile_picture"] = new_profile_picture
+
+        if new_question or new_answer:
+            if new_question not in SECURITY_QUESTIONS:
+                flash("Invalid security question selection.")
+                return redirect(url_for("profile.profile", username=username))
+            if not new_answer:
+                flash("Please provide an answer for the security question.")
+                return redirect(url_for("profile.profile", username=username))
+            update_data["security_question"] = new_question
+            update_data["security_answer"] = new_answer    
 
         if update_data:
             UserManager.update_user(username, update_data)
             flash("Profile updated successfully!")
+        
+        if "username" in update_data:
+            session['username'] = update_data['username']
+            username = update_data['username'] 
             
         return redirect(url_for("profile.profile", username=username))
 
