@@ -4,6 +4,13 @@ from validation import password_requirement, validate_email, validate_phone
 
 auth_bp = Blueprint('auth', __name__)
 
+SECURITY_QUESTIONS = [
+    "What is your favourite food?",
+    "What was your dream car?",
+    "What is your first phone brand?"
+]
+
+
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -21,12 +28,19 @@ def register():
             flash("All fields are required to fill.")
             return redirect(url_for("auth.register"))
 
-        if UserManager.user_exists(username):
+        if UserManager.get_user_by_username(username):
             flash("Username already exists.")
+            return redirect(url_for("auth.register"))
+        if UserManager.get_user_by_email(email):
+            flash("Email is already used by another account.")
+            return redirect(url_for("auth.register"))
+        
+        if question not in SECURITY_QUESTIONS:
+            flash("Invalid security question selection.")
             return redirect(url_for("auth.register"))
         
         if not validate_email(email):
-            flash("Email must end with @gmail.com address.")#email as primary key
+            flash("Email must end with @gmail.com address.")
             return redirect(url_for("auth.register"))
 
         if not validate_phone(phone):
@@ -37,7 +51,6 @@ def register():
             flash("Password and Confirm Password do not match.")
             return redirect(url_for("auth.register"))
         
-    
         error = password_requirement(password)
         if error:
             flash(error)
@@ -61,7 +74,7 @@ def register():
         flash("Registration successful! Please log in.")
         return redirect(url_for("auth.login"))
 
-    return render_template("register.html")
+    return render_template("register.html", security_questions=SECURITY_QUESTIONS)
 
 @auth_bp.route("/login", methods=["GET", "POST"])#login
 def login():
