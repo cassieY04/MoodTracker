@@ -1,39 +1,8 @@
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from users import UserManager
-
-from flask import Flask, render_template, request, redirect, url_for, flash, session
-from validation import password_requirement, validate_email, validate_phone
-
-
-app = Flask(__name__)
-app.secret_key = "secret123"  
-
-users = {}
-
-def password_requirement(password): #KX display the short requirements
-    if len(password) < 8 or len(password) > 12:
-        return "Password must be between 8 and 12 characters long."
-    if not any(c.isupper() for c in password):
-        return "Password must contain at least one uppercase letter."
-    if not any(c.islower() for c in password):
-        return "Password must contain at least one lowercase letter."
-    if not any(c.isdigit() for c in password):
-        return "Password must contain at least one digit."
-    if not any(c in "@_-*#!%$&" for c in password):
-        return "Password must contain at least one special character (@, _, -, *, #, !, %, $, or &)."
-    return None  
-
-def validate_email(email):
-    return email.endswith('@gmail.com')
-
-def validate_phone(phone):
-    return phone.isdigit() and 8 <= len(phone) <= 12
+from validation import password_requirement, validate_email, validate_phone  
 
 auth_bp = Blueprint('auth', __name__)
-
-@app.route("/")
-def homepage():
-    return render_template("index.html") 
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -68,10 +37,7 @@ def register():
             flash("Password and Confirm Password do not match.")
             return redirect(url_for("auth.register"))
         
-        if not question or not answer:
-            flash("Security question and answer must be filled.")
-            return redirect(url_for("auth.register"))
-
+    
         error = password_requirement(password)
         if error:
             flash(error)
@@ -188,8 +154,8 @@ def reset_password():
         return redirect(url_for("auth.login"))
 
     if request.method == "POST":
-        new_password = request.form["password"]
-        confirm = request.form["confirm"]
+        new_password = request.form["new_password"]
+        confirm = request.form["confirm_password"]
 
         if new_password != confirm:
             flash("Passwords do not match.")
@@ -204,11 +170,9 @@ def reset_password():
 
     return render_template("reset.html")
 
-@auth_bp.route("/logout")
+@auth_bp.route("/logout", methods=["GET"])
 def logout():
     session.pop('username', None)
     flash("You have been logged out.")
     return redirect(url_for("home.homepage"))
 
-if __name__ == "__main__":
-    app.run(debug=True)
