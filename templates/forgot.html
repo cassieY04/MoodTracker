@@ -2,28 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Log In - MoodTracker</title>
+    <title>Forgot Password</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="auth-body">
 
     <div class="auth-card">
-        <h2>Welcome Back</h2>
+        <h2>Forgot Password</h2>
+        <p>Enter your username or email to continue.</p>
 
         <form method="POST">
-            <label>Username</label>
-            <input type="text" name="username" placeholder="Enter your username" required>
+            <label>Username or Email</label>
+            <input type="text" name="identity" placeholder="Enter username/email" required>
 
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Enter your password" required>
-
-            <button class="main-btn" type="submit">Log In</button>
-
-            <p class="switch-auth">
-                <a href="/forgot">Forgot your password?</a>
-            </p>
-
+            <button class="main-btn" type="submit">Next</button>
              {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <div class="form-message">
@@ -35,11 +28,9 @@
         </form>
 
         <p class="switch-auth">
-            New here?
-            <a href="/register">Create an account</a>
+            <a href="/login">Back to login</a>
         </p>
     </div>
 
 </body>
 </html>
-

@@ -16,28 +16,42 @@ class UserManager:
         db = get_db()
         try:
             db.execute(
-                'INSERT INTO users (username, phone, email, password) VALUES (?, ?, ?, ?)',
-                (username, user_data['phone'], user_data['email'], user_data['password'])
+                '''INSERT INTO users 
+                (username, surname, lastname, phone, email, password, security_question, security_answer)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                (
+                    username,
+                    user_data['surname'],
+                    user_data['lastname'],
+                    user_data['phone'],
+                    user_data['email'],
+                    user_data['password'],
+                    user_data['security_question'],
+                    user_data['security_answer']
+                )
             )
             db.commit()
         except sqlite3.IntegrityError:
             db.rollback()
-            raise ValueError('Username or Email already exist.')
+            raise ValueError("Username, phone, or email already exists.")
         finally:
             db.close()
-        
     
     @staticmethod
     def get_user(username):
         db = get_db()
         try:
-            cursor = db.execute('SELECT username, phone, email,  password FROM users WHERE username = ?', (username,))
+            cursor = db.execute(
+                'SELECT username, password, security_question, security_answer FROM users WHERE username = ?',
+                (username,)
+            )
             user_row = cursor.fetchone()
             if user_row:
                 return dict(user_row)
             return None
         finally:
             db.close()
+
 
     
     @staticmethod
@@ -64,5 +78,18 @@ class UserManager:
             cursor = db.execute('DELETE FROM users WHERE username = ?', (username,))
             db.commit()
             return cursor.rowcount > 0
+        finally:
+            db.close()
+            
+    @staticmethod
+    def get_user_by_username_or_email(identity):
+        db = get_db()
+        try:
+            cursor = db.execute(
+                "SELECT username, email FROM users WHERE username = ? OR email = ?",
+                (identity, identity)
+            )
+            row = cursor.fetchone()
+            return dict(row) if row else None
         finally:
             db.close()

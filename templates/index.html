@@ -1,12 +1,184 @@
-#dummy by san
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Home</title>
+    <meta charset="UTF-8">
+    <title>MoodTracker - Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h1>Welcome to MoodTracker!</h1>
-    <p>This is the home page.</p>
-    <a href="/login">Go to Login</a><br>
-    <a href="/register">Go to Register</a>
+
+<body class="body">
+
+    <!-- HEADER -->
+    <header class="top-header">
+        <div class="logo-container">
+            <div class="logo-bar"></div>
+            <span class="logo-text">MoodTracker</span>
+        </div>
+        <div class="header-buttons">
+        <a href="/login" class="login-btn">Log In</a>
+        <a href="/register" class="header-btn">Start Tracking</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>The Easiest Way to Track<br>Your Moods Online or Offline</h1>
+
+            <h3 class="subtitle">
+                Recommended by Students, Counsellors and Mental Health Educators
+            </h3>
+
+            <p class="description">
+                MoodTracker is a simple and user-friendly mood tracking web app 
+                designed to help users record emotions, identify trends, and improve 
+                emotional wellbeing through meaningful insights.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/register" class="start-btn">Start Tracking</a>
+                <a href="#features" class="explore-btn">Explore Features</a>
+            </div>
+
+        </div>
+
+        <div class="hero-image">
+            <div class="mockup-box">
+                <div class="mockup-header"></div>
+                <div class="mockup-content">
+                    <div class="mockup-card"></div>
+                    <div class="mockup-chart"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="section-line"></div>
+
+    <!-- 1-point -->
+    <section class="section-block">
+        <div class="section-container">
+
+            <div class="section-icon">✨</div>
+
+            <div class="section-text-box">
+                <h2 class="section-title">Improve Your Life</h2>
+                <p class="section-text">
+                    MoodTracker lets you easily log your daily emotions, personal notes,
+                    and patterns. Gain insights into your wellbeing and explore
+                    meaningful trends over time.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 2-point -->
+    <section class="section-block">
+        <div class="section-container">
+
+            <div class="section-icon">✔</div>
+
+            <div class="section-text-box">
+                <h2 class="section-title">Intuitive mood tracking for everyone</h2>
+                <p class="section-text">
+                    Log your mood, add notes, and monitor emotional patterns with ease.
+                    Perfect for students, young adults, and anyone who wants better 
+                    self-awareness.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3-point -->
+    <section class="section-block">
+        <div class="section-container">
+
+            <div class="section-icon">📈</div>
+
+            <div class="section-text-box">
+                <h2 class="section-title">Identify triggers and patterns to help prevent relapses</h2>
+                <p class="section-text">
+                    Understand mood changes early with clear trends. Helps you recognize
+                    triggers and manage emotional wellbeing more confidently.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="section-line"></div>
+
+    <!-- FEATURES SECTION -->
+    <section class="features-section" id="features">
+        <h2 class="features-title">What You Can Do With MoodTracker</h2>
+
+        <div class="feature-grid">
+
+            <!-- Daily Emotion Log -->
+            <div class="feature-card">
+                <h3>Daily Emotion Log</h3>
+                <p>• Select your current emotion<br>
+                • Add optional notes<br>
+                • Save and view instant AI mini-feedback<br>
+                • All logs stored securely in database</p>
+            </div>  
+
+            <!-- Emotion Notes History -->
+            <div class="feature-card">
+                <h3>Emotion Notes History</h3>
+                <p>• View all past emotions, notes & dates<br>
+                • Edit or delete any record<br>
+                • Automatically retrieves saved history</p>
+            </div>
+
+            <!-- Mood Calendar -->
+            <div class="feature-card">
+                <h3>Mood Calendar</h3>
+                <p>• Monthly calendar display<br>
+                • Emoji / color for each day's mood<br>
+                • Click a date to view full mood entry<br>
+                • Shortcut to Mood Statistics Summary</p>
+            </div>
+
+            <!-- AI Feedback Page -->
+            <div class="feature-card">
+                <h3>AI Feedback</h3>
+                <p>• Weekly trend analysis<br>
+                • Simple motivational feedback<br>
+                • Rule-based AI suggestions<br>
+                • Helps users understand emotional patterns</p>
+            </div>
+
+            <!-- Mood Statistics -->
+            <div class="feature-card">
+                <h3>Mood Statistics</h3>
+                <p>• Summaries for week/month<br>
+                • Colored bar charts<br>
+                • Emotion counts & percentages<br>
+                • Quick link to AI Feedback</p>
+            </div>
+
+            <!-- Profile Settings -->
+            <div class="feature-card">
+                <h3>Profile Settings</h3>
+                <p>• Update profile information<br>
+                • Delete account option<br>
+                • Light/Dark mode toggle<br>
+                • Log out securely</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FINAL CTA SECTION -->
+    <section class="final-cta">
+        <h2>Ready to Start Tracking Your Mood?</h2>
+        <a href="/register" class="start-btn down">Create Your Account</a>
+    </section>
+
 </body>
 </html>
