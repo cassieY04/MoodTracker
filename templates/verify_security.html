@@ -19,6 +19,13 @@
             <input type="text" name="security_answer" placeholder="Enter your answer" required>
 
             <button class="main-btn" type="submit">Verify</button>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="form-message">
+                    {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
         </form>
 
     </div>

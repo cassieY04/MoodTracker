@@ -38,6 +38,8 @@ def homepage():
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        surname = request.form["surname"].strip()
+        lastname = request.form["lastname"].strip()
         username = request.form["username"].strip()
         phone = request.form["phone"].strip()
         email = request.form["email"].strip()
@@ -46,7 +48,7 @@ def register():
         question = request.form["security_question"]
         answer = request.form["security_answer"].strip().lower()
 
-        if not username or not phone or not email or not password or not confirm:
+        if not username or not phone or not email or not password or not confirm or not question or not answer:
             flash("All fields are required to fill.")
             return redirect(url_for("auth.register"))
 
@@ -79,9 +81,13 @@ def register():
         print("DEBUG: All validations passed!")
         try:
             UserManager.add_user(username, {
+                "surname": surname,
+                "lastname": lastname,
                 "phone": phone,
                 "email": email,
-                "password": password
+                "password": password,
+                "security_question": question,
+                "security_answer": answer
             })
         except ValueError as e:
             flash(str(e))
@@ -178,6 +184,9 @@ def verify_security():
 
 @auth_bp.route('/reset', methods=['GET', 'POST'])
 def reset_password():
+    if "reset_user" not in session:
+        return redirect(url_for("auth.login"))
+
     if request.method == "POST":
         new_password = request.form["password"]
         confirm = request.form["confirm"]
@@ -186,11 +195,14 @@ def reset_password():
             flash("Passwords do not match.")
             return redirect(url_for("auth.reset_password"))
 
+        username = session["reset_user"]
+        UserManager.update_user(username, {"password": new_password})
+
         session.pop("reset_user", None)
-        flash("Password reset successful. Please login.")
+        flash("Password reset successful. Please log in.")
         return redirect(url_for("auth.login"))
 
-    return render_template('reset.html')
+    return render_template("reset.html")
 
 @auth_bp.route("/logout")
 def logout():

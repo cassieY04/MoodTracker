@@ -16,16 +16,26 @@ class UserManager:
         db = get_db()
         try:
             db.execute(
-                'INSERT INTO users (username, phone, email, password, security_question, security_answer) VALUES (?, ?, ?, ?, ?, ?)',
-                (username, user_data['phone'], user_data['email'], user_data['password'], user_data['security_question'], user_data['security_answer'])
+                '''INSERT INTO users 
+                (username, surname, lastname, phone, email, password, security_question, security_answer)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                (
+                    username,
+                    user_data['surname'],
+                    user_data['lastname'],
+                    user_data['phone'],
+                    user_data['email'],
+                    user_data['password'],
+                    user_data['security_question'],
+                    user_data['security_answer']
+                )
             )
             db.commit()
         except sqlite3.IntegrityError:
             db.rollback()
-            raise ValueError('Username, Phone, or Email already exist.')
+            raise ValueError("Username, phone, or email already exists.")
         finally:
             db.close()
-        
     
     @staticmethod
     def get_user(username):
