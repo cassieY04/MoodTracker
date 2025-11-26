@@ -6,26 +6,43 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body class="auth-body">
+<body class="auth-body-register">
 
     <div class="auth-card">
         <h2>Create Your Account</h2>
 
         <form method="POST">
+            <label>Surname</label>
+            <input type="text" name="surname" placeholder="Enter your surname" required>
+
+            <label>Last Name</label>
+            <input type="text" name="lastname" placeholder="Enter your last name" required>
+
             <label>Username</label>
             <input type="text" name="username" placeholder="Enter your username" required>
 
             <label>Email</label>
-            <input type="text" name="email" placeholder="Enter your email" required>
+            <input type="text" name="email" placeholder="Enter your email (e.g. @gmail.com)" required>
 
             <label>Phone Number</label>
-            <input type="text" name="phone" placeholder="Enter your phone number" required>
+            <input type="text" name="phone" placeholder="e.g. 0123456789" required>
 
             <label>Password</label>
             <input type="password" name="password" placeholder="Enter your password" required>
 
             <label>Confirm Password</label>
             <input type="password" name="password" placeholder="Confirm your password" required>
+
+            <label>Security Question </label>
+            <select name="security_question" required>
+                <option value="disabled selected">Select a security question</option>
+                <option value="mother_maiden">What is your mother's maiden name?</option>
+                <option value="first_pet">What was the name of your first pet?</option>
+                <option value="birth_city">In which city were you born?</option>
+            </select>
+
+            <label>Answer</label>
+            <input type="text" name="security_answer" placeholder="Enter your answer" required>
 
             <button class="main-btn" type="submit">Create Account</button>
         </form>

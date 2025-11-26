@@ -290,6 +290,15 @@ body.body {
     font-family: "Noto Sans", sans-serif;
 }
 
+.auth-body-register {
+    background: #f5efff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    font-family: "Noto Sans", sans-serif;
+}
+
 .auth-card {
     background: white;
     padding: 40px;

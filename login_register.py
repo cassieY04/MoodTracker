@@ -66,6 +66,20 @@ def login():
 
     return render_template("login.html")
 
+@auth_bp.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    return render_template('forgot.html')
+
+@auth_bp.route('/verify', methods=['GET', 'POST'])
+def verify_security():
+    # placeholder question , refer at register.html
+    question = "What is your mother's maiden name?"
+    return render_template('verify_security.html', question=question)
+
+@auth_bp.route('/reset', methods=['GET', 'POST'])
+def reset_password():
+    return render_template('reset.html')
+
 @auth_bp.route("/logout")
 def logout():
     session.pop('username', None)
