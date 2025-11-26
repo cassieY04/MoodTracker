@@ -365,12 +365,167 @@ body.body {
     font-weight: 600;
 }
 
-.form-message {
-  background: #ffeaea;
-  color: #b30000;
-  padding: 12px;
+.popup-msg {
+  background: #7c5bda;
+  color: white;
+  padding: 14px 20px;
   border-radius: 8px;
-  margin-bottom: 15px;
   text-align: center;
-  font-size: 14px;
+  margin: 20px auto;
+  width: fit-content;
+  font-weight: 600;
+  animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
+
+/* ========================
+HOME PAGE LAYOUT
+======================== */
+
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ✅ SIDEBAR */
+.sidebar {
+    width: 240px;
+    background: #6f4bd8;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar nav a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+/* ✅ MAIN SECTION */
+.main-section {
+    flex: 1;
+    background: #f4effb;
+    padding: 25px;
+}
+
+/* ✅ TOP BAR */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-btn {
+    text-decoration: none;
+}
+
+.profile-pic {
+    width: 42px;
+    height: 42px;
+    background: #6f4bd8;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+}
+
+/* ✅ DASHBOARD CARDS */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+}
+
+.dashboard-card h3 {
+    margin-bottom: 8px;
+}
+
+.dashboard-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+.small-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: #6f4bd8;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+/* ========================
+WELCOME POPUP
+======================== */
+
+.popup-overlay {
+    position: fixed;
+    background: rgba(0,0,0,0.6);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-card {
+    background: white;
+    width: 420px;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.popup-card h2 {
+    margin-bottom: 16px;
+}
+
+.popup-list {
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.popup-list li {
+    margin-bottom: 8px;
+}
+
+.main-btn {
+    background: #6f4bd8;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+}
+.main-btn:hover {
+    background: #5a39b8;
 }

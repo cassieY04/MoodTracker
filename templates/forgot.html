@@ -17,13 +17,14 @@
             <input type="text" name="identity" placeholder="Enter username/email" required>
 
             <button class="main-btn" type="submit">Next</button>
-             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="form-message">
-                    {{ messages[0] }}
-                    </div>
-                {% endif %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="popup-msg">
+                {{ messages[0] }}
+                </div>
+            {% endif %}
             {% endwith %}
+
             
         </form>
 

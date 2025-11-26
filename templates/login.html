@@ -24,14 +24,14 @@
                 <a href="/forgot">Forgot your password?</a>
             </p>
 
-             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="form-message">
-                    {{ messages[0] }}
-                    </div>
-                {% endif %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="popup-msg">
+                {{ messages[0] }}
+                </div>
+            {% endif %}
             {% endwith %}
-            
+
         </form>
 
         <p class="switch-auth">

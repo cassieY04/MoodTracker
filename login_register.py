@@ -1,34 +1,11 @@
-from flask import Blueprint, request, redirect, url_for, flash, session, render_template
+from flask import Flask,Blueprint, request, redirect, url_for, flash, session, render_template
 from users import UserManager
-
-from flask import Flask, render_template, request, redirect, url_for, flash, session
 from validation import password_requirement, validate_email, validate_phone
-
 
 app = Flask(__name__)
 app.secret_key = "secret123"  
 
 users = {}
-
-def password_requirement(password): #KX display the short requirements
-    if len(password) < 8 or len(password) > 12:
-        return "Password must be between 8 and 12 characters long."
-    if not any(c.isupper() for c in password):
-        return "Password must contain at least one uppercase letter."
-    if not any(c.islower() for c in password):
-        return "Password must contain at least one lowercase letter."
-    if not any(c.isdigit() for c in password):
-        return "Password must contain at least one digit."
-    if not any(c in "@_-*#!%$&" for c in password):
-        return "Password must contain at least one special character (@, _, -, *, #, !, %, $, or &)."
-    return None  
-
-def validate_email(email):
-    return email.endswith('@gmail.com')
-
-def validate_phone(phone):
-    return phone.isdigit() and 8 <= len(phone) <= 12
-
 auth_bp = Blueprint('auth', __name__)
 
 @app.route("/")

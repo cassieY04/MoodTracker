@@ -20,13 +20,14 @@
 
             <button class="main-btn" type="submit">Update Password</button>
 
-             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="form-message">
-                    {{ messages[0] }}
-                    </div>
-                {% endif %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="popup-msg">
+                {{ messages[0] }}
+                </div>
+            {% endif %}
             {% endwith %}
+
             
         </form>
     </div>

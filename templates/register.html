@@ -45,12 +45,13 @@
             <input type="text" name="security_answer" placeholder="Enter your answer" required>
 
             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="form-message">
-                    {{ messages[0] }}
-                    </div>
-                {% endif %}
+            {% if messages %}
+                <div class="popup-msg">
+                {{ messages[0] }}
+                </div>
+            {% endif %}
             {% endwith %}
+
 
             <button class="main-btn" type="submit">Create Account</button>
         </form>

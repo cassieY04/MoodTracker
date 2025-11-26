@@ -17,12 +17,12 @@ class UserManager:
         try:
             db.execute(
                 '''INSERT INTO users 
-                (username, surname, lastname, phone, email, password, security_question, security_answer)
+                (surname, lastname, username, phone, email, password, security_question, security_answer)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
                 (
-                    username,
                     user_data['surname'],
                     user_data['lastname'],
+                    username,
                     user_data['phone'],
                     user_data['email'],
                     user_data['password'],

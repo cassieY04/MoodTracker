@@ -20,12 +20,13 @@
 
             <button class="main-btn" type="submit">Verify</button>
             {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="form-message">
-                    {{ messages[0] }}
-                    </div>
-                {% endif %}
+            {% if messages %}
+                <div class="popup-msg">
+                {{ messages[0] }}
+                </div>
+            {% endif %}
             {% endwith %}
+
         </form>
 
     </div>
