@@ -1,5 +1,6 @@
 from Databases.userdb import get_db
 import sqlite3
+from datetime import datetime
 
 class UserManager:
     @staticmethod
@@ -17,17 +18,24 @@ class UserManager:
         try:
             db.execute(
                 '''INSERT INTO users 
-                (username, surname, lastname, phone, email, password, security_question, security_answer)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                (username, surname, lastname, phone, email, password, security_question, security_answer, 
+                bio, profile_picture, address, birthday, age, gender)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                 (
                     username,
-                    user_data['surname'],
-                    user_data['lastname'],
-                    user_data['phone'],
-                    user_data['email'],
-                    user_data['password'],
-                    user_data['security_question'],
-                    user_data['security_answer']
+                    user_data.get('surname', ''),
+                    user_data.get('lastname', ''),
+                    user_data.get('phone', ''),
+                    user_data.get('email', ''),
+                    user_data.get('password', ''),
+                    user_data.get('security_question', ''),
+                    user_data.get('security_answer', ''),
+                    user_data.get('bio', ''),
+                    user_data.get('profile_picture', ''),
+                    user_data.get('address', ''),
+                    user_data.get('birthday', None),
+                    user_data.get('age', None),
+                    user_data.get('gender', '')
                 )
             )
             db.commit()
@@ -42,7 +50,10 @@ class UserManager:
         db = get_db()
         try:
             cursor = db.execute(
-                'SELECT username, password, security_question, security_answer FROM users WHERE username = ?',
+                '''SELECT username, surname, lastname, phone, email, password,
+                          security_question, security_answer, bio, profile_picture,
+                          address, birthday, age, gender
+                   FROM users WHERE username = ?''',
                 (username,)
             )
             user_row = cursor.fetchone()
@@ -56,16 +67,15 @@ class UserManager:
     
     @staticmethod
     def update_user(username, user_data):
+        if not user_data:
+            return False
+        
         db = get_db()
-        #update phone, email or password
         update_fields = ', '.join([f'{key} = ?' for key in user_data.keys()])
         update_values = list(user_data.values()) + [username]
 
         try:
-            cursor = db.execute(
-                F'update USERS set {update_fields} WHERE username =?',
-                update_values
-            )
+            cursor = db.execute(F'update USERS set {update_fields} WHERE username =?',update_values)
             db.commit()
             return cursor.rowcount > 0
         finally:
@@ -89,6 +99,26 @@ class UserManager:
                 "SELECT username, email FROM users WHERE username = ? OR email = ?",
                 (identity, identity)
             )
+            row = cursor.fetchone()
+            return dict(row) if row else None
+        finally:
+            db.close()
+
+    @staticmethod
+    def get_user_by_username(username):
+        db = get_db()
+        try:
+            cursor = db.execute('SELECT * FROM users WHERE username = ?', (username,))
+            row = cursor.fetchone()
+            return dict(row) if row else None
+        finally:
+            db.close()
+    
+    @staticmethod
+    def get_user_by_email(email):
+        db = get_db()
+        try:
+            cursor = db.execute('SELECT * FROM users WHERE email = ?', (email,))
             row = cursor.fetchone()
             return dict(row) if row else None
         finally:
