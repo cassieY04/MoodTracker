@@ -18,10 +18,6 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
     
-    @app.route('/')
-    def welcome():
-        return render_template('index.html')
-
     return app
 
 app = create_app()

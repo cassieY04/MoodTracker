@@ -1,8 +1,39 @@
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from users import UserManager
+
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from validation import password_requirement, validate_email, validate_phone
 
+
+app = Flask(__name__)
+app.secret_key = "secret123"  
+
+users = {}
+
+def password_requirement(password): #KX display the short requirements
+    if len(password) < 8 or len(password) > 12:
+        return "Password must be between 8 and 12 characters long."
+    if not any(c.isupper() for c in password):
+        return "Password must contain at least one uppercase letter."
+    if not any(c.islower() for c in password):
+        return "Password must contain at least one lowercase letter."
+    if not any(c.isdigit() for c in password):
+        return "Password must contain at least one digit."
+    if not any(c in "@_-*#!%$&" for c in password):
+        return "Password must contain at least one special character (@, _, -, *, #, !, %, $, or &)."
+    return None  
+
+def validate_email(email):
+    return email.endswith('@gmail.com')
+
+def validate_phone(phone):
+    return phone.isdigit() and 8 <= len(phone) <= 12
+
 auth_bp = Blueprint('auth', __name__)
+
+@app.route("/")
+def homepage():
+    return render_template("index.html") 
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -13,7 +44,7 @@ def register():
         password = request.form["password"].strip()
         confirm = request.form["confirm_password"].strip()
         question = request.form["security_question"]
-        answer = request.form["security_answer"].strip()
+        answer = request.form["security_answer"].strip().lower()
 
         if not username or not phone or not email or not password or not confirm:
             flash("All fields are required to fill.")
@@ -83,34 +114,67 @@ def login():
 
 @auth_bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
-    if request.method == "POST":
-        username = request.form["username"]
+    if request.method == 'POST':
+        identity = request.form.get("identity")  # username or email
 
-        if not UserManager.user_exists(username):
-            flash("Username not found.")
+        if not identity:
+            flash("Please enter your username or email.")
             return redirect(url_for("auth.forgot"))
 
-        session["reset_user"] = username
+        user = UserManager.get_user_by_username_or_email(identity)
+
+        if not user:
+            flash("Username or email not found.")
+            return redirect(url_for("auth.forgot"))
+
+        # ✅ store user temporarily for verification/reset
+        session["reset_user"] = user["username"]
+
+        flash("User verified. Please answer your security question.")
         return redirect(url_for("auth.verify_security"))
-    return render_template('forgot.html')
+
+    return render_template("forgot.html")
 
 @auth_bp.route('/verify', methods=['GET', 'POST'])
 def verify_security():
+
+    # ✅ User must come from forgot page
     if "reset_user" not in session:
+        flash("Session expired. Please try again.")
         return redirect(url_for("auth.forgot"))
 
-    question = "What is your mother's maiden name?"
+    username = session["reset_user"]
 
+    # ✅ Get stored question & answer from DB
+    user = UserManager.get_user(username)
+
+    if not user:
+        flash("User not found.")
+        return redirect(url_for("auth.forgot"))
+
+    real_question = user["security_question"]
+    real_answer = user["security_answer"]   # already stored as lowercase
+
+    # ✅ USER CLICKED VERIFY BUTTON
     if request.method == "POST":
-        answer = request.form["answer"]
+        user_answer = request.form.get("security_answer")
 
-        if answer != "test":   # your groupmate will later replace this with DB check
+        if not user_answer:
+            flash("Please enter your answer.")
+            return redirect(url_for("auth.verify_security"))
+
+        # ✅ CASE-INSENSITIVE COMPARISON
+        if user_answer.strip().lower() != real_answer.strip().lower():
             flash("Incorrect security answer.")
             return redirect(url_for("auth.verify_security"))
 
+        # ✅ CORRECT ANSWER → MOVE TO RESET PAGE
+        flash("Verification successful. Please reset your password.")
         return redirect(url_for("auth.reset_password"))
 
-    return render_template('verify_security.html', question=question)
+    # ✅ FIRST TIME LOADING VERIFY PAGE
+    return render_template("verify_security.html", question=real_question)
+
 
 @auth_bp.route('/reset', methods=['GET', 'POST'])
 def reset_password():
@@ -133,3 +197,6 @@ def logout():
     session.pop('username', None)
     flash("You have been logged out.")
     return redirect(url_for("home.homepage"))
+
+if __name__ == "__main__":
+    app.run(debug=True)
