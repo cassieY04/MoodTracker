@@ -32,8 +32,7 @@ def profile(username):
         new_profile_picture = request.form.get("profile_picture", "").strip()
 
         if new_username and new_username != user["username"]:
-            existing_user = UserManager.get_user_by_username_or_email(new_username)
-            if existing_user:
+            if UserManager.get_user_by_username(new_username):
                 flash("Username is already taken.") 
                 return redirect(url_for("profile.profile", username=username))
             update_data["username"] = new_username
@@ -49,7 +48,7 @@ def profile(username):
                 flash("Email must end with @gmail.com address.")
                 return redirect(url_for("profile.profile", username=username))
             
-            existing_user = UserManager.get_user_by_username_or_email(new_email)
+            existing_user = UserManager.get_user_by_email(new_email)
             if existing_user and existing_user["username"] != username:
                 flash("Email is already used by another account.")
                 return redirect(url_for("profile.profile", username=username))
