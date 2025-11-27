@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from users import UserManager
-from validation import password_requirement, validate_email, validate_phone  
+from validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -35,8 +35,14 @@ def register():
             flash("Email is already used by another account.")
             return redirect(url_for("auth.register"))
         
-        if question not in SECURITY_QUESTIONS:
-            flash("Invalid security question selection.")
+        question_error = validate_security_question(question, SECURITY_QUESTIONS)
+        if question_error:
+            flash(question_error)
+            return redirect(url_for("auth.register"))
+
+        answer_error = validate_security_answer(answer)
+        if answer_error:
+            flash(answer_error)
             return redirect(url_for("auth.register"))
         
         if not validate_email(email):
@@ -157,7 +163,6 @@ def verify_security():
         flash("Verification successful. Please reset your password.")
         return redirect(url_for("auth.reset_password"))
 
-    #  FIRST TIME LOADING VERIFY PAGE
     return render_template("verify_security.html", question=real_question)
 
 
