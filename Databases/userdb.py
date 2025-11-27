@@ -23,7 +23,12 @@ def init_db():
                email TEXT NOT NULL UNIQUE,
                password TEXT NOT NULL,
                security_question TEXT NOT NULL,
-               security_answer TEXT NOT NULL
+               security_answer TEXT NOT NULL,
+                bio TEXT,
+                profile_picture TEXT,
+                address TEXT,
+                birthday DATE,
+                age INTEGER,
             )''')
 
     db.commit()

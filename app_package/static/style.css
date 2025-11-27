@@ -366,15 +366,15 @@ body.body {
 }
 
 .popup-msg {
-  background: #7c5bda;
-  color: white;
+  background: #76c9fc;
+  color: rgb(22, 21, 21);
   padding: 14px 20px;
   border-radius: 8px;
   text-align: center;
   margin: 20px auto;
   width: fit-content;
   font-weight: 600;
-  animation: fadeOut 3s forwards;
+  animation: fadeOut 10s forwards;
 }
 
 @keyframes fadeOut {

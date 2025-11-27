@@ -20,7 +20,13 @@ def init_db():
             email TEXT UNIQUE,
             password TEXT,
             security_question TEXT,
-            security_answer TEXT
+            security_answer TEXT,
+            bio TEXT,
+            profile_picture TEXT,
+            address TEXT,
+            birthday DATE,
+            age INTEGER,
+            gender TEXT
         )
         """)
 
