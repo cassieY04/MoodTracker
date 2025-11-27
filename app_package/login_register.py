@@ -112,7 +112,7 @@ def forgot():
             flash("Username or email not found.")
             return redirect(url_for("auth.forgot"))
 
-        # ✅ store user temporarily for verification/reset
+        #  store user temporarily for verification/reset
         session["reset_user"] = user["username"]
 
         flash("User verified. Please answer your security question.")
@@ -123,14 +123,14 @@ def forgot():
 @auth_bp.route('/verify', methods=['GET', 'POST'])
 def verify_security():
 
-    # ✅ User must come from forgot page
+    #  User must come from forgot page
     if "reset_user" not in session:
         flash("Session expired. Please try again.")
         return redirect(url_for("auth.forgot"))
 
     username = session["reset_user"]
 
-    # ✅ Get stored question & answer from DB
+    #  Get stored question & answer from DB
     user = UserManager.get_user(username)
 
     if not user:
@@ -140,7 +140,7 @@ def verify_security():
     real_question = user["security_question"]
     real_answer = user["security_answer"]   # already stored as lowercase
 
-    # ✅ USER CLICKED VERIFY BUTTON
+    # USER CLICKED VERIFY BUTTON
     if request.method == "POST":
         user_answer = request.form.get("security_answer")
 
@@ -148,16 +148,16 @@ def verify_security():
             flash("Please enter your answer.")
             return redirect(url_for("auth.verify_security"))
 
-        # ✅ CASE-INSENSITIVE COMPARISON
+        # CASE-INSENSITIVE COMPARISON
         if user_answer.strip().lower() != real_answer.strip().lower():
             flash("Incorrect security answer.")
             return redirect(url_for("auth.verify_security"))
 
-        # ✅ CORRECT ANSWER → MOVE TO RESET PAGE
+        # CORRECT ANSWER → MOVE TO RESET PAGE
         flash("Verification successful. Please reset your password.")
         return redirect(url_for("auth.reset_password"))
 
-    # ✅ FIRST TIME LOADING VERIFY PAGE
+    #  FIRST TIME LOADING VERIFY PAGE
     return render_template("verify_security.html", question=real_question)
 
 
