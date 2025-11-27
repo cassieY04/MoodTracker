@@ -18,19 +18,6 @@ class UserManager:
         try:
             db.execute(
                 '''INSERT INTO users 
-<<<<<<< HEAD:users.py
-                (surname, lastname, username, phone, email, password, security_question, security_answer)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                (
-                    user_data['surname'],
-                    user_data['lastname'],
-                    username,
-                    user_data['phone'],
-                    user_data['email'],
-                    user_data['password'],
-                    user_data['security_question'],
-                    user_data['security_answer']
-=======
                 (username, surname, lastname, phone, email, password, security_question, security_answer, 
                 bio, profile_picture, address, birthday, age, gender)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
@@ -49,7 +36,6 @@ class UserManager:
                     user_data.get('birthday', None),
                     user_data.get('age', None),
                     user_data.get('gender', '')
->>>>>>> 660978313d938443277411a4dd517a5f4eb89904:app_package/users.py
                 )
             )
             db.commit()

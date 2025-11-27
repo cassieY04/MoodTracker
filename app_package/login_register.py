@@ -1,18 +1,7 @@
-<<<<<<< HEAD:login_register.py
-from flask import Flask,Blueprint, request, redirect, url_for, flash, session, render_template
-from users import UserManager
-from validation import password_requirement, validate_email, validate_phone
-
-app = Flask(__name__)
-app.secret_key = "secret123"  
-
-users = {}
-=======
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from .users import UserManager
 from .validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
 
->>>>>>> 660978313d938443277411a4dd517a5f4eb89904:app_package/login_register.py
 auth_bp = Blueprint('auth', __name__)
 
 SECURITY_QUESTIONS = [
