@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from .users import UserManager
-from validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
+from .validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
 
 auth_bp = Blueprint('auth', __name__)
 
