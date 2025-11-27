@@ -4,8 +4,7 @@ from .validation import password_requirement, validate_email, validate_phone
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
-import time
-
+import uuid
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -115,6 +114,7 @@ def profile(username):
                 flash("Invalid birthday format. Use DD-MM-YYYY.")
                 return redirect(url_for("profile.profile", username=username))
         
+        #Profile picture upload
         file = request.files.get("profile_picture")
         if file and file.filename:
             if not allowed_file(file.filename):
@@ -123,15 +123,14 @@ def profile(username):
             if not file_size_allowed(file):
                 flash(f"File is too large. Maximum size is {MAX_FILE_SIZE_MB} MB.")
                 return redirect(url_for("profile.profile", username=username))
-            
-            filename = secure_filename(file.filename)
-            ext = filename.rsplit('.', 1)[1].lower()
-            filename = f"{username}_{int(time.time())}.{ext}"
+            #Appends the username + timestamp in seconds to avoid overwriting.
+            ext = secure_filename(file.filename).rsplit('.', 1)[1].lower()
+            filename = f"{username}_{uuid.uuid4().hex}.{ext}"
             os.makedirs(UPLOAD_FOLDER, exist_ok=True)
             filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(filepath)
             # store relative path for HTML
-            update_data["profile_picture"] = f"/{filepath.replace(os.sep, '/')}"  
+            update_data["profile_picture"] = url_for('static', filename=f'uploads/profile_pics/{filename}') 
 
         if new_question or new_answer:
             if not new_question:
