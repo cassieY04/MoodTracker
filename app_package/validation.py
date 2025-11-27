@@ -25,8 +25,14 @@ def validate_email(email: str) -> bool:
 def validate_phone(phone: str) -> bool:
     return phone.isdigit() and 8 <= len(phone) <= 12
 
-def validate_security_question(question: str) -> bool:
-    return question in SECURITY_QUESTIONS
+def validate_security_question(question: str,allowed_questions) -> str | None:
+    if not question:
+        return "Please select a security question."
+    if question not in allowed_questions:
+        return "Invalid security question selection."
+    return None
 
-def validate_security_answer(answer: str) -> bool:
-    return bool(answer and answer.strip())
+def validate_security_answer(answer: str)-> str | None:
+    if not answer or not answer.strip():
+        return "Please provide an answer for the security question."
+    return None
