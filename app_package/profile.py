@@ -2,6 +2,10 @@ from flask import Blueprint, request, redirect, url_for, flash, session, render_
 from .users import UserManager
 from .validation import password_requirement, validate_email, validate_phone
 from datetime import datetime
+from werkzeug.utils import secure_filename
+import os
+import time
+
 
 profile_bp = Blueprint('profile', __name__)
 
@@ -11,6 +15,18 @@ SECURITY_QUESTIONS = [
     "What is your first phone brand?"
 ]
 
+UPLOAD_FOLDER = 'static/uploads/profile_pics'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+MAX_FILE_SIZE_MB = 5  
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def file_size_allowed(file):
+    file.seek(0, os.SEEK_END)
+    size = file.tell()
+    file.seek(0)
+    return size <= MAX_FILE_SIZE_MB * 1024 * 1024
 
 @profile_bp.route("/profile/<username>", methods=["GET", "POST"]) 
 def profile(username):
@@ -36,7 +52,6 @@ def profile(username):
         new_address = request.form.get("address", "").strip()
         new_birthday = request.form.get("birthday", "").strip()
         new_gender = request.form.get("gender", "").strip()
-        new_profile_picture = request.form.get("profile_picture", "").strip()
         new_question = request.form.get("security_question", "").strip()
         new_answer = request.form.get("security_answer", "").strip().lower()
 
@@ -52,17 +67,18 @@ def profile(username):
                 return redirect(url_for("profile.profile", username=username))
             update_data["phone"] = new_phone
             
+        
         if new_email and new_email != user["email"]:
             if not validate_email(new_email):
                 flash("Email must end with @gmail.com address.")
                 return redirect(url_for("profile.profile", username=username))
-            
             existing_user = UserManager.get_user_by_email(new_email)
             if existing_user and existing_user["username"] != username:
                 flash("Email is already used by another account.")
                 return redirect(url_for("profile.profile", username=username))
             update_data["email"] = new_email
             
+        
         if new_password:
             error = password_requirement(new_password)
             if error:
@@ -70,29 +86,57 @@ def profile(username):
                 return redirect(url_for("profile.profile", username=username))
             update_data["password"] = new_password
 
+        
         if new_bio:
             update_data["bio"] = new_bio
+        
         if new_address:
             update_data["address"] = new_address
+        
         if new_gender:
             if new_gender not in ["Male", "Female", "Others/Prefer not to say"]:
                 flash("Invalid gender selection.")
                 return redirect(url_for("profile.profile", username=username))
             update_data["gender"] = new_gender
+        
         if new_birthday:
             try:
                 birthday_date = datetime.strptime(new_birthday, "%d-%m-%Y").date()
                 today = datetime.today().date()
                 age = today.year - birthday_date.year - ((today.month, today.day) < (birthday_date.month, birthday_date.day))
+                
+                if age <= 6 or age > 100:
+                    flash("Age must be between 7 and 100 years.")
+                    return redirect(url_for("profile.profile", username=username))
+                
                 update_data["birthday"] = new_birthday
                 update_data["age"] = age
             except ValueError:
                 flash("Invalid birthday format. Use DD-MM-YYYY.")
                 return redirect(url_for("profile.profile", username=username))
-        if new_profile_picture:
-            update_data["profile_picture"] = new_profile_picture
+        
+        file = request.files.get("profile_picture")
+        if file and file.filename:
+            if not allowed_file(file.filename):
+                flash("Invalid file type for profile picture. Allowed: png, jpg, jpeg, gif.")
+                return redirect(url_for("profile.profile", username=username))
+            if not file_size_allowed(file):
+                flash(f"File is too large. Maximum size is {MAX_FILE_SIZE_MB} MB.")
+                return redirect(url_for("profile.profile", username=username))
+            
+            filename = secure_filename(file.filename)
+            ext = filename.rsplit('.', 1)[1].lower()
+            filename = f"{username}_{int(time.time())}.{ext}"
+            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(filepath)
+            # store relative path for HTML
+            update_data["profile_picture"] = f"/{filepath.replace(os.sep, '/')}"  
 
         if new_question or new_answer:
+            if not new_question:
+                flash("Please select a security question.")
+                return redirect(url_for("profile.profile", username=username))
             if new_question not in SECURITY_QUESTIONS:
                 flash("Invalid security question selection.")
                 return redirect(url_for("profile.profile", username=username))
@@ -112,4 +156,9 @@ def profile(username):
             
         return redirect(url_for("profile.profile", username=username))
 
-    return render_template("profile.html", username=username, user=user)
+    return render_template(
+        "profile.html", 
+        username=username, 
+        user=user,
+        security_questions=SECURITY_QUESTIONS
+    )
