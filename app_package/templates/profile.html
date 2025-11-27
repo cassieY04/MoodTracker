@@ -1,27 +1,138 @@
-#dummy by san
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Profile</title>
+    <meta charset="UTF-8">
+    <title>My Profile - MoodTracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h1>Profile Page for {{ username }}</h1>
-    
-    <h2>Update Profile</h2>
-    <form method="POST">
-        <p>New Phone: <input type="text" name="phone" value="{{ user.phone }}"></p>
-        <p>New Email: <input type="text" name="email" value="{{ user.email }}"></p>
-        <p>New Password: <input type="password" name="password"></p>
-        <p>Type "yes" to confirm: <input type="text" name="confirm"></p> #remove
-        <button type="submit">Update Profile</button>
-    </form>
 
-    <h2>Delete Account</h2>
-    <form method="POST">
-        <p>Type "yes" to delete: <input type="text" name="confirm_delete"></p>
-        <button type="submit" name="delete">Delete My Account</button> #change to button
-    </form>
+<body class="profile-body">
 
-    <a href="/logout">Logout</a><br>
-    <a href="{{ url_for('home.dashboard') }}">Go Home</a>
+<div class="profile-container">
+
+    <!-- LEFT: PROFILE PICTURE -->
+    <div class="profile-sidebar">
+        <div class="profile-pic-box">
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture }}" class="profile-pic">
+            {% else %}
+                <div class="default-pic">👤</div>
+            {% endif %}
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="profile_picture" accept="image/*" required>
+            <button type="submit" class="small-btn" >Upload</button>
+        </form>
+
+        <form method="POST">
+            <button name="delete_profile_picture" class="danger-btn">Delete Picture</button>
+        </form>
+    </div>
+
+
+    <!-- RIGHT: PROFILE FORM -->
+    <div class="profile-card">
+
+        <h2>My Profile</h2>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-box">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+
+            <div class="form-grid">
+                <div>
+                    <label>Username</label>
+                    <input type="text" name="username" value="{{ user.username }}" required></input>
+                </div>
+
+                <div>
+                    <label>Email</label>
+                    <input type="text" name="email" value="{{ user.email }}"></input>
+                </div>
+
+                <div>
+                    <label>Phone Number</label>
+                    <input type="text" name="phone" value="{{ user.phone }}"></input>
+                </div>
+
+                <div>
+                    <label>New Password</label>
+                    <input type="password" name="password"></input>
+                </div>
+
+                <div>
+                    <label>Bio</label>
+                    <textarea type="text" name="bio">{{ user.bio }}</textarea>
+                </div>
+
+                <div>
+                    <label>Address</label>
+                    <input type="text" name="address" value="{{ user.address }}"></input>
+                </div>
+
+                <div>
+                    <label>Birthday</label>
+                    <input type="text" name="birthday" placeholder="DD-MM-YYYY" value="{{ user.birthday }}"></input>
+                </div>
+
+                <div>
+                    <label>Age</label>
+                    <input type="text" value="{{ user.age }}" ></input>
+                </div>
+
+                <div>
+                    <label>Security Question</label>
+                    <select name="security_question" required>
+                        <option value="">Select a question</option>
+                        {% for q in security_questions %}
+                            <option value="{{ q }}" {% if user.security_question == q %}selected{% endif %}>
+                                {{ q }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label>Gender</label>
+                    <select name="gender">
+                        <option value="">Select</option>
+                        <option value="Male" {% if user.gender=="Male" %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if user.gender=="Female" %}selected{% endif %}>Female</option>
+                        <option value="Others/Prefer not to say" {% if user.gender=="Others/Prefer not to say" %}selected{% endif %}>
+                            Others / Prefer not to say
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Security Answer</label>
+                    <input type="text" name="security_answer"></input>
+                </div>
+            </div>
+
+            <button type="submit" class="main-btn">Update Profile</button>
+        </form>
+
+        <form method="POST">
+            <button type="submit"name="delete" class="danger-btn">Delete My Account</button>
+        </form>
+
+        <div class="profile-links">
+            <a href="{{ url_for('home.dashboard') }}">← Back to Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+
+    </div>
+</div>
+
 </body>
 </html>
