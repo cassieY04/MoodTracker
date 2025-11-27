@@ -12,5 +12,5 @@ def dashboard():
         flash("Please login first.")
         return redirect(url_for("auth.login"))
     
-    username = session['username']
+    username = session.get('username')
     return render_template("dashboard.html", username=username)

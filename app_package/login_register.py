@@ -1,3 +1,4 @@
+<<<<<<< HEAD:login_register.py
 from flask import Flask,Blueprint, request, redirect, url_for, flash, session, render_template
 from users import UserManager
 from validation import password_requirement, validate_email, validate_phone
@@ -6,11 +7,20 @@ app = Flask(__name__)
 app.secret_key = "secret123"  
 
 users = {}
+=======
+from flask import Blueprint, request, redirect, url_for, flash, session, render_template
+from .users import UserManager
+from .validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
+
+>>>>>>> 660978313d938443277411a4dd517a5f4eb89904:app_package/login_register.py
 auth_bp = Blueprint('auth', __name__)
 
-@app.route("/")
-def homepage():
-    return render_template("index.html") 
+SECURITY_QUESTIONS = [
+    "What is your favourite food?",
+    "What was your dream car?",
+    "What is your first phone brand?"
+]
+
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -29,8 +39,21 @@ def register():
             flash("All fields are required to fill.")
             return redirect(url_for("auth.register"))
 
-        if UserManager.user_exists(username):
+        if UserManager.get_user_by_username(username):
             flash("Username already exists.")
+            return redirect(url_for("auth.register"))
+        if UserManager.get_user_by_email(email):
+            flash("Email is already used by another account.")
+            return redirect(url_for("auth.register"))
+        
+        question_error = validate_security_question(question, SECURITY_QUESTIONS)
+        if question_error:
+            flash(question_error)
+            return redirect(url_for("auth.register"))
+
+        answer_error = validate_security_answer(answer)
+        if answer_error:
+            flash(answer_error)
             return redirect(url_for("auth.register"))
         
         if not validate_email(email):
@@ -45,10 +68,6 @@ def register():
             flash("Password and Confirm Password do not match.")
             return redirect(url_for("auth.register"))
         
-        if not question or not answer:
-            flash("Security question and answer must be filled.")
-            return redirect(url_for("auth.register"))
-
         error = password_requirement(password)
         if error:
             flash(error)
@@ -72,9 +91,9 @@ def register():
         flash("Registration successful! Please log in.")
         return redirect(url_for("auth.login"))
 
-    return render_template("register.html")
+    return render_template("register.html", security_questions=SECURITY_QUESTIONS)
 
-@auth_bp.route("/login", methods=["GET", "POST"])
+@auth_bp.route("/login", methods=["GET", "POST"])#login
 def login():
     if request.method == "POST":
         username = request.form["username"]
@@ -110,7 +129,7 @@ def forgot():
             flash("Username or email not found.")
             return redirect(url_for("auth.forgot"))
 
-        # ✅ store user temporarily for verification/reset
+        #  store user temporarily for verification/reset
         session["reset_user"] = user["username"]
 
         flash("User verified. Please answer your security question.")
@@ -121,14 +140,14 @@ def forgot():
 @auth_bp.route('/verify', methods=['GET', 'POST'])
 def verify_security():
 
-    # ✅ User must come from forgot page
+    #  User must come from forgot page
     if "reset_user" not in session:
         flash("Session expired. Please try again.")
         return redirect(url_for("auth.forgot"))
 
     username = session["reset_user"]
 
-    # ✅ Get stored question & answer from DB
+    #  Get stored question & answer from DB
     user = UserManager.get_user(username)
 
     if not user:
@@ -138,7 +157,7 @@ def verify_security():
     real_question = user["security_question"]
     real_answer = user["security_answer"]   # already stored as lowercase
 
-    # ✅ USER CLICKED VERIFY BUTTON
+    # USER CLICKED VERIFY BUTTON
     if request.method == "POST":
         user_answer = request.form.get("security_answer")
 
@@ -146,16 +165,15 @@ def verify_security():
             flash("Please enter your answer.")
             return redirect(url_for("auth.verify_security"))
 
-        # ✅ CASE-INSENSITIVE COMPARISON
+        # CASE-INSENSITIVE COMPARISON
         if user_answer.strip().lower() != real_answer.strip().lower():
             flash("Incorrect security answer.")
             return redirect(url_for("auth.verify_security"))
 
-        # ✅ CORRECT ANSWER → MOVE TO RESET PAGE
+        # CORRECT ANSWER → MOVE TO RESET PAGE
         flash("Verification successful. Please reset your password.")
         return redirect(url_for("auth.reset_password"))
 
-    # ✅ FIRST TIME LOADING VERIFY PAGE
     return render_template("verify_security.html", question=real_question)
 
 
@@ -165,8 +183,8 @@ def reset_password():
         return redirect(url_for("auth.login"))
 
     if request.method == "POST":
-        new_password = request.form["password"]
-        confirm = request.form["confirm"]
+        new_password = request.form["new_password"]
+        confirm = request.form["confirm_password"]
 
         if new_password != confirm:
             flash("Passwords do not match.")
@@ -181,11 +199,9 @@ def reset_password():
 
     return render_template("reset.html")
 
-@auth_bp.route("/logout")
+@auth_bp.route("/logout", methods=["GET"])
 def logout():
     session.pop('username', None)
     flash("You have been logged out.")
     return redirect(url_for("home.homepage"))
 
-if __name__ == "__main__":
-    app.run(debug=True)
