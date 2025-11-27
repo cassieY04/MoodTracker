@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from .users import UserManager
-from .validation import password_requirement, validate_email, validate_phone
+from .validation import password_requirement, validate_email,validate_phone, validate_security_question, validate_security_answer 
 from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
@@ -145,18 +145,18 @@ def profile(username):
             update_data["profile_picture"] = url_for('static', filename=f'uploads/profile_pics/{filename}') 
 
 
-        if new_question or new_answer:
-            if not new_question:
-                flash("Please select a security question.")
-                return redirect(url_for("profile.profile", username=username))
-            if new_question not in SECURITY_QUESTIONS:
-                flash("Invalid security question selection.")
-                return redirect(url_for("profile.profile", username=username))
-            if not new_answer:
-                flash("Please provide an answer for the security question.")
-                return redirect(url_for("profile.profile", username=username))
-            update_data["security_question"] = new_question
-            update_data["security_answer"] = new_answer    
+        question_error = validate_security_question(new_question, SECURITY_QUESTIONS)
+        if question_error:
+            flash(question_error)
+            return redirect(url_for("profile.profile", username=username))
+
+        answer_error = validate_security_answer(new_answer)
+        if answer_error:
+            flash(answer_error)
+            return redirect(url_for("profile.profile", username=username))
+       
+        update_data["security_question"] = new_question
+        update_data["security_answer"] = new_answer
 
         if update_data:
             UserManager.update_user(username, update_data)
