@@ -34,15 +34,27 @@ def profile(username):
         return redirect(url_for("home.homepage"))
 
     user = UserManager.get_user(username)
+    update_data = {}
 
     if request.method == "POST":
+       
         if 'delete' in request.form:
             UserManager.delete_user(username)
             session.pop('username', None)
             flash("Your account has been successfully deleted.")
             return redirect(url_for("home.homepage"))
+            
+        if 'delete_profile_picture' in request.form: #delete profile pic
+            if user.get("profile_picture"):
+                filepath = user["profile_picture"].replace("/static/", "static/")
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+
+            UserManager.update_user(username, {"profile_picture": None})
+            flash("Profile picture deleted successfully.")
+            return redirect(url_for("profile.profile", username=username))
+            
         
-        update_data = {}
         new_username = request.form.get("username", "").strip()
         new_phone = request.form.get("phone", "").strip()
         new_email = request.form.get("email", "").strip()
@@ -86,10 +98,10 @@ def profile(username):
             update_data["password"] = new_password
 
         
-        if new_bio:
+        if new_bio is not None:
             update_data["bio"] = new_bio
         
-        if new_address:
+        if new_address is not None:
             update_data["address"] = new_address
         
         if new_gender:
@@ -104,7 +116,7 @@ def profile(username):
                 today = datetime.today().date()
                 age = today.year - birthday_date.year - ((today.month, today.day) < (birthday_date.month, birthday_date.day))
                 
-                if age <= 6 or age > 100:
+                if not (7 <= age <= 100):
                     flash("Age must be between 7 and 100 years.")
                     return redirect(url_for("profile.profile", username=username))
                 
@@ -132,6 +144,7 @@ def profile(username):
             # store relative path for HTML
             update_data["profile_picture"] = url_for('static', filename=f'uploads/profile_pics/{filename}') 
 
+
         if new_question or new_answer:
             if not new_question:
                 flash("Please select a security question.")
@@ -154,6 +167,8 @@ def profile(username):
             username = update_data['username'] 
             
         return redirect(url_for("profile.profile", username=username))
+
+    user = UserManager.get_user(username)
 
     return render_template(
         "profile.html", 
