@@ -1,5 +1,4 @@
 import sqlite3
-from flask import current_app
 
 DATABASE = 'user.db'
 
@@ -18,9 +17,13 @@ def init_db():
     db.execute('''CREATE TABLE IF NOT EXISTS users (
                id INTEGER PRIMARY KEY AUTOINCREMENT,
                username TEXT NOT NULL UNIQUE,
+               surname TEXT NOT NULL,
+               lastname TEXT NOT NULL,
                phone TEXT NOT NULL,
                email TEXT NOT NULL UNIQUE,
-               password TEXT NOT NULL
+               password TEXT NOT NULL,
+               security_question TEXT NOT NULL,
+               security_answer TEXT NOT NULL
             )''')
 
     db.commit()
