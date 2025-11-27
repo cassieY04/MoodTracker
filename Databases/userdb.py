@@ -29,6 +29,7 @@ def init_db():
                 address TEXT,
                 birthday DATE,
                 age INTEGER,
+                gender TEXT
             )''')
 
     db.commit()

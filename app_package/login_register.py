@@ -77,6 +77,7 @@ def register():
         except ValueError as e:
             flash(str(e))
             return redirect(url_for("auth.register"))
+        session["first_login_popup"] = True
         flash("Registration successful! Please log in.")
         return redirect(url_for("auth.login"))
 
@@ -98,7 +99,9 @@ def login():
             return redirect(url_for("auth.login"))
 
         session['username'] = username
-        flash(f"You're in! Let's get started, {username}!")
+        if session.pop("first_login_popup", None):
+            flash("🎉 Welcome! Thanks for registering MoodTracker!")
+
         return redirect(url_for("home.dashboard"))
 
     return render_template("login.html")
