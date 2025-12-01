@@ -14,8 +14,7 @@ SECURITY_QUESTIONS = [
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        surname = request.form["surname"].strip()
-        lastname = request.form["lastname"].strip()
+        fullname = request.form["fullname"].strip()
         username = request.form["username"].strip()
         phone = request.form["phone"].strip()
         email = request.form["email"].strip()
@@ -66,8 +65,7 @@ def register():
         print("DEBUG: All validations passed!")
         try:
             UserManager.add_user(username, {
-                "surname": surname,
-                "lastname": lastname,
+                "fullname": fullname,
                 "phone": phone,
                 "email": email,
                 "password": password,

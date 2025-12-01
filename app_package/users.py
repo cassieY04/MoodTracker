@@ -18,13 +18,12 @@ class UserManager:
         try:
             db.execute(
                 '''INSERT INTO users 
-                (username, surname, lastname, phone, email, password, security_question, security_answer, 
+                (username, fullname, phone, email, password, security_question, security_answer, 
                 bio, profile_picture, address, birthday, age, gender)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                 (
                     username,
-                    user_data.get('surname', ''),
-                    user_data.get('lastname', ''),
+                    user_data.get('fullname', ''),
                     user_data.get('phone', ''),
                     user_data.get('email', ''),
                     user_data.get('password', ''),
@@ -50,7 +49,7 @@ class UserManager:
         db = get_db()
         try:
             cursor = db.execute(
-                '''SELECT username, surname, lastname, phone, email, password,
+                '''SELECT username, fullname, phone, email, password,
                           security_question, security_answer, bio, profile_picture,
                           address, birthday, age, gender
                    FROM users WHERE username = ?''',
