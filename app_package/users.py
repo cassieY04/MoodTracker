@@ -20,7 +20,7 @@ class UserManager:
                 '''INSERT INTO users 
                 (username, fullname, phone, email, password, security_question, security_answer, 
                 bio, profile_picture, address, birthday, age, gender)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                 (
                     username,
                     user_data.get('fullname', ''),
