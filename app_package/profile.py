@@ -3,6 +3,7 @@ from .users import UserManager
 from .validation import password_requirement, validate_email,validate_phone, validate_security_question, validate_security_answer 
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 import os
 import uuid
 
@@ -95,7 +96,8 @@ def profile(username):
             if error:
                 flash(error)
                 return redirect(url_for("profile.profile", username=username))
-            update_data["password"] = new_password
+            hashed_pw = generate_password_hash(new_password)
+            update_data["password"] = hashed_pw
 
         
         if new_bio is not None:

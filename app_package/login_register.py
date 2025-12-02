@@ -1,6 +1,8 @@
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from .users import UserManager
 from .validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -68,7 +70,7 @@ def register():
                 "fullname": fullname,
                 "phone": phone,
                 "email": email,
-                "password": password,
+                "password": generate_password_hash(password),
                 "security_question": question,
                 "security_answer": answer
             })
@@ -92,7 +94,7 @@ def login():
             return redirect(url_for("auth.login"))
 
         user = UserManager.get_user(username)
-        if user["password"] != password:
+        if not check_password_hash(user["password"], password):
             flash("Incorrect password.")
             return redirect(url_for("auth.login"))
 
@@ -181,7 +183,9 @@ def reset_password():
             return redirect(url_for("auth.reset_password"))
 
         username = session["reset_user"]
-        UserManager.update_user(username, {"password": new_password})
+        UserManager.update_user(username, {
+            "password": generate_password_hash(new_password)
+        })
 
         session.pop("reset_user", None)
         flash("Password reset successful. Please log in.")
