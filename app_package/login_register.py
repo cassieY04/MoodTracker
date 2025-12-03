@@ -83,6 +83,9 @@ def register():
 
     return render_template("register.html", security_questions=SECURITY_QUESTIONS)
 
+MAX_ATTEMPTS = 3
+LOCK_SECONDS = 10
+
 @auth_bp.route("/login", methods=["GET", "POST"])#login
 def login():
     if request.method == "POST":
@@ -92,12 +95,27 @@ def login():
         if not UserManager.user_exists(username):
             flash("Username not found.")
             return redirect(url_for("auth.login"))
+        
+        if UserManager.is_locked(username):
+            flash("Account temporarily locked. Please try again later.")
+            return redirect(url_for("auth.login"))
 
         user = UserManager.get_user(username)
         if not check_password_hash(user["password"], password):
-            flash("Incorrect password.")
-            return redirect(url_for("auth.login"))
+            UserManager.increment_failed_attempts(username)
+            attempts = UserManager.get_failed_attempts(username)
 
+            if attempts >= MAX_ATTEMPTS:
+                UserManager.set_lock(username, LOCK_SECONDS)
+                UserManager.reset_failed_attempts(username)
+                flash(f"Too many failed attempts. Account locked for {LOCK_SECONDS} seconds.")
+            else:
+                remaining = MAX_ATTEMPTS - attempts
+                flash(f"Incorrect password. {remaining} attempts remaining.")
+
+            return redirect(url_for("auth.login"))
+        
+        UserManager.reset_failed_attempts(username)
         session['username'] = username
         if session.pop("first_login_popup", None):
             flash("🎉 Welcome! Thanks for registering MoodTracker!")
