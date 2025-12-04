@@ -31,11 +31,12 @@
         <h2 class="logo">MoodTracker</h2>
 
         <nav>
-            <a href="#">Dashboard</a>
-            <a href="#">Log Emotion</a>
-            <a href="#">Mood Calendar</a>
-            <a href="#">Statistics</a>
-            <a href="#">AI Feedback</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logemotion">Log Emotion</a>
+            <a href="/moodcalendar">Mood Calendar</a>
+            <a href="/moodstatistics">Mood Statistics</a>
+            <a href="/aifeedback">AI Feedback</a>
+            <a href="/emotionhistory">Emotion History</a>
             <a href="/profile/{{ username }}" class="profile-btn">Profile</a>
             <a href="/logout">Logout</a>
         </nav>
@@ -59,25 +60,31 @@
             <div class="dashboard-card">
                 <h3>Log Emotion</h3>
                 <p>Record today’s mood</p>
-                <a href="#" class="small-btn-Open">Open</a>
+                <a href="/logemotion" class="small-btn-Open">Open</a>
             </div>
 
             <div class="dashboard-card">
                 <h3>Mood Calendar</h3>
                 <p>View monthly mood history</p>
-                <a href="#" class="small-btn-Open">Open</a>
+                <a href="/moodcalendar" class="small-btn-Open">Open</a>
             </div>
 
             <div class="dashboard-card">
-                <h3>Statistics</h3>
+                <h3>Mood Statistics</h3>
                 <p>See emotional trends</p>
-                <a href="#" class="small-btn-Open">Open</a>
+                <a href="/moodstatistics" class="small-btn-Open">Open</a>
             </div>
 
             <div class="dashboard-card">
                 <h3>AI Feedback</h3>
                 <p>Get motivational advice</p>
-                <a href="#" class="small-btn-Open">Open</a>
+                <a href="/aifeedback" class="small-btn-Open">Open</a>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Emotion History</h3>
+                <p>Check past emotion </p>
+                <a href="/emotionhistory" class="small-btn-Open">Open</a>
             </div>
 
         </section>

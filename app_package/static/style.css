@@ -122,6 +122,7 @@ body.body {
     border-radius: 8px;
     font-size: 18px;
     transition: 0.5s ease;
+    text-decoration: none;
 }
 
 .start-btn:hover {
@@ -138,6 +139,7 @@ body.body {
     border-radius: 8px;
     font-size: 18px;
     transition: 0.3s ease;
+    text-decoration: none; /* edit out the underline */
 }
 
 .explore-btn:hover {
@@ -284,7 +286,7 @@ body.body {
     padding: 10px 30px;
 }
 
-/* Register/LogIn Background */
+/* ======================== Register/LogIn Layout ======================== */
 .auth-body {
     background: #f5efff;
     display: flex;
@@ -425,16 +427,14 @@ body.body {
   100% { opacity: 0; display: none; }
 }
 
-/* ========================
-HOME PAGE LAYOUT
-======================== */
+/* ======================== HOME PAGE LAYOUT ======================== */
 
 .layout {
     display: flex;
     height: 100vh;
 }
 
-/* ✅ SIDEBAR */
+/* SIDEBAR */
 .sidebar {
     width: 240px;
     background: #c84ffc;
@@ -462,7 +462,7 @@ HOME PAGE LAYOUT
     font-size: 16px;
 }
 
-/* ✅ MAIN SECTION */
+/*MAIN SECTION */
 .main-section {
     flex: 1;
     background: #dccbf3;
@@ -471,7 +471,7 @@ HOME PAGE LAYOUT
     padding: 25px;
 }
 
-/* ✅ TOP BAR */
+/*TOP BAR */
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -495,7 +495,7 @@ HOME PAGE LAYOUT
     font-size: 18px;
 }
 
-/* ✅ DASHBOARD CARDS */
+/*DASHBOARD CARDS */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -529,9 +529,7 @@ HOME PAGE LAYOUT
     font-size: 13px;
 }
 
-/* ========================
-WELCOME POPUP
-======================== */
+/* ======================== Welcome Pop Up ======================== */
 
 .popup-overlay {
     position: fixed;
