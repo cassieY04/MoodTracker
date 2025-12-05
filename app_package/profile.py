@@ -8,7 +8,6 @@ import os
 import uuid
 
 profile_bp = Blueprint('profile', __name__)
-
 SECURITY_QUESTIONS = [
     "What is your favourite food?",
     "What was your dream car?",
@@ -73,14 +72,14 @@ def profile(username):
                 return redirect(url_for("profile.profile", username=username))
             update_data["username"] = new_username
 
-        if new_phone:
+        if new_phone.strip():
             if not validate_phone(new_phone):
                 flash("Phone number must contain only digits and have 8-12 characters.")
                 return redirect(url_for("profile.profile", username=username))
             update_data["phone"] = new_phone
             
         
-        if new_email and new_email != user["email"]:
+        if new_email.strip() and new_email != user["email"]:
             if not validate_email(new_email):
                 flash("Email must end with @gmail.com address.")
                 return redirect(url_for("profile.profile", username=username))
@@ -91,7 +90,7 @@ def profile(username):
             update_data["email"] = new_email
             
         
-        if new_password:
+        if new_password.strip():
             error = password_requirement(new_password)
             if error:
                 flash(error)
