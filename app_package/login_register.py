@@ -83,14 +83,16 @@ def register():
 
     return render_template("register.html", security_questions=SECURITY_QUESTIONS)
 
-MAX_ATTEMPTS = 3
-LOCK_SECONDS = 10
+from flask import current_app
 
 @auth_bp.route("/login", methods=["GET", "POST"])#login
 def login():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].strip()
         password = request.form["password"]
+
+        MAX_ATTEMPTS = current_app.config.get('MAX_LOGIN_ATTEMPTS', 3)
+        LOCK_SECONDS = current_app.config.get('LOCK_SECONDS', 10)
 
         if not UserManager.user_exists(username):
             flash("Username not found.")
