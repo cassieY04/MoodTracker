@@ -4,8 +4,10 @@ from Databases.userdb import init_db
 def create_app():
     app = Flask(__name__)
     app.secret_key = "secret123"
-
     app.config['DATABASE_FILE'] = 'user.db'
+
+    app.config['MAX_LOGIN_ATTEMPTS'] = 3
+    app.config['LOCK_SECONDS'] = 10
     
     from app_package.homepage import home_bp
     from app_package.login_register import auth_bp
