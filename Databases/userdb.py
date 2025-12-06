@@ -29,6 +29,8 @@ def init_db():
                     birthday DATE,
                     age INTEGER,
                     gender TEXT
+                    failed attempts INTEGER DEFAULT 0,
+                    locked_until INTEGER DEFAULT 0
                 )''')
         db.commit()
 
