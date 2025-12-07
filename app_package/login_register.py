@@ -207,7 +207,7 @@ def reset_password():
 
         username = session["reset_user"]
         UserManager.update_user(username, {
-            "password": generate_password_hash(new_password)
+            "password": new_password
         })
 
         session.pop("reset_user", None)
