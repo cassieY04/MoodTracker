@@ -70,7 +70,7 @@ def register():
                 "fullname": fullname,
                 "phone": phone,
                 "email": email,
-                "password": generate_password_hash(password),
+                "password": password,
                 "security_question": question,
                 "security_answer": answer
             })
