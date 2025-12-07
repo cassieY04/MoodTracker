@@ -3,11 +3,11 @@ from .users import UserManager
 from .validation import password_requirement, validate_email,validate_phone, validate_security_question, validate_security_answer 
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 import os
 import uuid
 
 profile_bp = Blueprint('profile', __name__)
-
 SECURITY_QUESTIONS = [
     "What is your favourite food?",
     "What was your dream car?",
@@ -72,14 +72,14 @@ def profile(username):
                 return redirect(url_for("profile.profile", username=username))
             update_data["username"] = new_username
 
-        if new_phone:
+        if new_phone.strip():
             if not validate_phone(new_phone):
                 flash("Phone number must contain only digits and have 8-12 characters.")
                 return redirect(url_for("profile.profile", username=username))
             update_data["phone"] = new_phone
             
         
-        if new_email and new_email != user["email"]:
+        if new_email.strip() and new_email != user["email"]:
             if not validate_email(new_email):
                 flash("Email must end with @gmail.com address.")
                 return redirect(url_for("profile.profile", username=username))
@@ -90,29 +90,30 @@ def profile(username):
             update_data["email"] = new_email
             
         
-        if new_password:
+        if new_password.strip():
             error = password_requirement(new_password)
             if error:
                 flash(error)
                 return redirect(url_for("profile.profile", username=username))
             update_data["password"] = new_password
+        
 
         
-        if new_bio is not None:
+        if new_bio.strip():
             update_data["bio"] = new_bio
         
         if new_address is not None:
             update_data["address"] = new_address
         
-        if new_gender:
+        if new_gender.strip():
             if new_gender not in ["Male", "Female", "Others/Prefer not to say"]:
                 flash("Invalid gender selection.")
                 return redirect(url_for("profile.profile", username=username))
             update_data["gender"] = new_gender
         
-        if new_birthday:
+        if new_birthday.strip():
             try:
-                birthday_date = datetime.strptime(new_birthday, "%d-%m-%Y").date()
+                birthday_date = datetime.strptime(new_birthday, "%Y-%m-%d").date()
                 today = datetime.today().date()
                 age = today.year - birthday_date.year - ((today.month, today.day) < (birthday_date.month, birthday_date.day))
                 
@@ -123,7 +124,7 @@ def profile(username):
                 update_data["birthday"] = new_birthday
                 update_data["age"] = age
             except ValueError:
-                flash("Invalid birthday format. Use DD-MM-YYYY.")
+                flash("Invalid birthday format. Use YYYY-MM-DD.")
                 return redirect(url_for("profile.profile", username=username))
         
         #Profile picture upload
@@ -141,22 +142,21 @@ def profile(username):
             os.makedirs(UPLOAD_FOLDER, exist_ok=True)
             filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(filepath)
-            # store relative path for HTML
             update_data["profile_picture"] = url_for('static', filename=f'uploads/profile_pics/{filename}') 
 
-
-        question_error = validate_security_question(new_question, SECURITY_QUESTIONS)
-        if question_error:
-            flash(question_error)
-            return redirect(url_for("profile.profile", username=username))
-
-        answer_error = validate_security_answer(new_answer)
-        if answer_error:
-            flash(answer_error)
-            return redirect(url_for("profile.profile", username=username))
-       
+        if new_question.strip():
+            question_error = validate_security_question(new_question, SECURITY_QUESTIONS)
+            if question_error:
+                flash(question_error)
+                return redirect(url_for("profile.profile", username=username))
         update_data["security_question"] = new_question
-        update_data["security_answer"] = new_answer
+
+        if new_answer.strip():
+            answer_error = validate_security_answer(new_answer)
+            if answer_error:
+                flash(answer_error)
+                return redirect(url_for("profile.profile", username=username))
+            update_data["security_answer"] = new_answer
 
         if update_data:
             UserManager.update_user(username, update_data)

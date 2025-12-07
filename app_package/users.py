@@ -1,6 +1,8 @@
 from Databases.userdb import get_db
 import sqlite3
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+import time
 
 class UserManager:
     @staticmethod
@@ -16,17 +18,19 @@ class UserManager:
     def add_user(username, user_data):
         db = get_db()
         try:
+            hashed_password = generate_password_hash(user_data.get('password', ''))
+            
             db.execute(
                 '''INSERT INTO users 
                 (username, fullname, phone, email, password, security_question, security_answer, 
-                bio, profile_picture, address, birthday, age, gender)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                bio, profile_picture, address, birthday, age, gender, failed_attempts, locked_until)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)''',
                 (
                     username,
                     user_data.get('fullname', ''),
                     user_data.get('phone', ''),
                     user_data.get('email', ''),
-                    user_data.get('password', ''),
+                    hashed_password,
                     user_data.get('security_question', ''),
                     user_data.get('security_answer', ''),
                     user_data.get('bio', ''),
@@ -51,25 +55,26 @@ class UserManager:
             cursor = db.execute(
                 '''SELECT username, fullname, phone, email, password,
                           security_question, security_answer, bio, profile_picture,
-                          address, birthday, age, gender
+                          address, birthday, age, gender, failed_attempts, locked_until
                    FROM users WHERE username = ?''',
                 (username,)
             )
             user_row = cursor.fetchone()
-            if user_row:
-                return dict(user_row)
-            return None
+            return dict(user_row)if user_row else None 
         finally:
             db.close()
 
 
-    
     @staticmethod
     def update_user(username, user_data):
         if not user_data:
             return False
         
         db = get_db()
+        
+        if "password" in user_data:
+            user_data["password"] = generate_password_hash(user_data["password"])
+
         update_fields = ', '.join([f'{key} = ?' for key in user_data.keys()])
         update_values = list(user_data.values()) + [username]
 
@@ -120,5 +125,53 @@ class UserManager:
             cursor = db.execute('SELECT * FROM users WHERE email = ?', (email,))
             row = cursor.fetchone()
             return dict(row) if row else None
+        finally:
+            db.close()
+
+    @staticmethod
+    def get_failed_attempts(username):
+        db = get_db()
+        try:
+            row = db.execute("SELECT failed_attempts FROM users WHERE username=?", (username,)).fetchone()
+            return row["failed_attempts"] if row else 0
+        finally:
+            db.close()
+    
+    @staticmethod
+    def increment_failed_attempts(username):
+        db = get_db()
+        try:
+            db.execute("UPDATE users SET failed_attempts = failed_attempts + 1 WHERE username=?", (username,))
+            db.commit()
+        finally:
+            db.close()
+    
+    @staticmethod
+    def reset_failed_attempts(username):
+        db = get_db()
+        try:
+            db.execute("UPDATE users SET failed_attempts = 0 WHERE username=?", (username,))
+            db.commit()
+        finally:
+            db.close()
+    
+    @staticmethod
+    def set_lock(username, seconds=10):
+        locked_until = int(time.time()) + seconds
+        db = get_db()
+        try:
+            db.execute("UPDATE users SET locked_until=? WHERE username=?", (locked_until, username))
+            db.commit()
+        finally:
+            db.close()
+    
+    @staticmethod
+    def is_locked(username):
+        db = get_db()
+        try:
+            row = db.execute("SELECT locked_until FROM users WHERE username=?", (username,)).fetchone()
+            if not row:
+                return False
+            return int(time.time()) < row["locked_until"]
         finally:
             db.close()

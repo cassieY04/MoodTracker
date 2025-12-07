@@ -28,7 +28,9 @@ def init_db():
                     address TEXT,
                     birthday DATE,
                     age INTEGER,
-                    gender TEXT
+                    gender TEXT,
+                    failed_attempts INTEGER DEFAULT 0,
+                    locked_until INTEGER DEFAULT 0
                 )''')
         db.commit()
 

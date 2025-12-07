@@ -1,6 +1,8 @@
 from flask import Blueprint, request, redirect, url_for, flash, session, render_template
 from .users import UserManager
 from .validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -81,28 +83,51 @@ def register():
 
     return render_template("register.html", security_questions=SECURITY_QUESTIONS)
 
+from flask import current_app
+
 @auth_bp.route("/login", methods=["GET", "POST"])#login
 def login():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].strip()
         password = request.form["password"]
+
+        MAX_ATTEMPTS = current_app.config.get('MAX_LOGIN_ATTEMPTS', 3)
+        LOCK_SECONDS = current_app.config.get('LOCK_SECONDS', 10)
 
         if not UserManager.user_exists(username):
             flash("Username not found.")
             return redirect(url_for("auth.login"))
-
-        user = UserManager.get_user(username)
-        if user["password"] != password:
-            flash("Incorrect password.")
+        
+        if UserManager.is_locked(username):
+            flash("Account temporarily locked. Please try again later.")
             return redirect(url_for("auth.login"))
 
+        user = UserManager.get_user(username)
+        if not check_password_hash(user["password"], password):
+            UserManager.increment_failed_attempts(username)
+            attempts = UserManager.get_failed_attempts(username)
+
+            if attempts >= MAX_ATTEMPTS:
+                UserManager.set_lock(username, LOCK_SECONDS)
+                UserManager.reset_failed_attempts(username)
+                flash(f"Too many failed attempts. Account locked for {LOCK_SECONDS} seconds.")
+            else:
+                remaining = MAX_ATTEMPTS - attempts
+                flash(f"Incorrect password. {remaining} attempts remaining.")
+
+            return redirect(url_for("auth.login"))
+        
+        UserManager.reset_failed_attempts(username)
         session['username'] = username
         if session.pop("first_login_popup", None):
             flash("🎉 Welcome! Thanks for registering MoodTracker!")
 
         return redirect(url_for("home.dashboard"))
 
-    return render_template("login.html")
+    return render_template(
+        "login.html",
+        lock_seconds=current_app.config.get('LOCK_SECONDS', 10)
+    )
 
 @auth_bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
@@ -181,7 +206,9 @@ def reset_password():
             return redirect(url_for("auth.reset_password"))
 
         username = session["reset_user"]
-        UserManager.update_user(username, {"password": new_password})
+        UserManager.update_user(username, {
+            "password": new_password
+        })
 
         session.pop("reset_user", None)
         flash("Password reset successful. Please log in.")
