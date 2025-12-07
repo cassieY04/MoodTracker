@@ -124,7 +124,10 @@ def login():
 
         return redirect(url_for("home.dashboard"))
 
-    return render_template("login.html", lock_seconds=current_app.config.get('LOCK_SECONDS', 10)))
+    return render_template(
+        "login.html",
+        lock_seconds=current_app.config.get('LOCK_SECONDS', 10)
+    )
 
 @auth_bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
