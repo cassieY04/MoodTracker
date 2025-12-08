@@ -20,13 +20,21 @@
             {% endif %}
         </div>
 
+        <div class="profile-fullname">
+            {% if user.surname or user.last_name %}
+                {{ user.surname }} {{ user.last_name }}
+            {% else %}
+                {{ user.username }}
+            {% endif %}
+        </div>
+
         <form method="POST" enctype="multipart/form-data">
             <input type="file" name="profile_picture" accept="image/*" required>
-            <button type="submit" class="small-btn" >Upload</button>
+            <button type="submit" class="small-btn" >Upload Picture</button>
         </form>
 
         <form method="POST">
-            <button name="delete_profile_picture" class="danger-btn">Delete Picture</button>
+            <button name="delete_profile_picture" class="danger-btn-deletepropic">Delete Picture</button>
         </form>
     </div>
 
@@ -122,8 +130,15 @@
             <button type="submit" class="main-btn">Update Profile</button>
         </form>
 
-        <form method="POST">
-            <button type="submit"name="delete" class="danger-btn">Delete My Account</button>
+        <form method="POST" id="delete-form">
+            <input type="hidden" name="delete" value="1">
+            <button 
+                type="button"
+                name="delete" 
+                class="danger-btn-profile" 
+                id="delete-btn">
+                Delete My Account
+            </button>
         </form>
 
         <div class="profile-links">
@@ -133,6 +148,40 @@
 
     </div>
 </div>
+<!--Delete Account Confirmation Modal-->
+    <div class="popup-overlay" id="delete-modal" style="display: none;">
+        <div class="popup-box small-popup">
+            <h2>Confirm Account Deletion</h2>
+            <p>Are you sure you want to delete your account?</p>
+            <div class="popup-actions">
+                <button type="button" class="secondary-btn" id="cancel-delete">Cancel</button>
+                <button type="button" class="danger-btn" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('delete-modal');
+        const openBtn = document.getElementById('delete-btn');
+        const cancel = document.getElementById('cancel-delete');
+        const confirm = document.getElementById('confirm-delete');
+        const form = document.getElementById('delete-form');
+        
+        if(!modal || !openBtn) return;
+
+        openBtn.addEventListener("click", function(){
+            modal.style.display = "flex";
+        });
+
+        cancel.addEventListener("click", function(){
+            modal.style.display = "none";
+        });
+
+        confirm.addEventListener("click", function(){
+            form.submit();
+        });
+    });
+</script>
 </body>
 </html>
