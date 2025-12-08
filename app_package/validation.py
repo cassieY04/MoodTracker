@@ -1,4 +1,5 @@
 from typing import Optional
+from werkzeug.security import generate_password_hash, check_password_hash
 
 SECURITY_QUESTIONS = [
     "What is your favourite food?",
@@ -18,6 +19,14 @@ def password_requirement(password: str) -> Optional[str]:
     if not any(c in "@_-*#!%$&" for c in password):
         return "Password must contain at least one special character (@, _, -, *, #, !, %, $, or &)."
     return None
+
+def hash_password(password: str) -> str:
+    """Return a hashed version of the password."""
+    return generate_password_hash(password)
+
+def verify_password(hashed_password: str, plain_password: str) -> bool:
+    """Check if a plaintext password matches the hashed password."""
+    return check_password_hash(hashed_password, plain_password) 
 
 def validate_email(email: str) -> bool:
     return isinstance(email,str) and email.endswith('@gmail.com')

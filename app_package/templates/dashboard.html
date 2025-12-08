@@ -8,6 +8,7 @@
 <body>
 
 <!-- ✅ POPUP (SHOW ONLY FIRST TIME - BACKEND LATER) -->
+{% if show_popup %}
 <div class="popup-overlay" id="welcomePopup">
     <div class="popup-card">
         <h2>Welcome to MoodTracker  {{ username }}! 💜</h2>
@@ -22,6 +23,7 @@
         <button class="main-btn" onclick="closePopup()">Got It!</button>
     </div>
 </div>
+{% endif %}
 
 <!-- ✅ MAIN LAYOUT -->
 <div class="layout">

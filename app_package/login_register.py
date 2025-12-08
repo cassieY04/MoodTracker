@@ -77,7 +77,7 @@ def register():
         except ValueError as e:
             flash(str(e))
             return redirect(url_for("auth.register"))
-        session["first_login_popup"] = True
+        session["show_welcome_popup"] = True
         flash("Registration successful! Please log in.")
         return redirect(url_for("auth.login"))
 
@@ -85,7 +85,7 @@ def register():
 
 from flask import current_app
 
-@auth_bp.route("/login", methods=["GET", "POST"])#login
+@auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         username = request.form["username"].strip()
@@ -114,25 +114,23 @@ def login():
             else:
                 remaining = MAX_ATTEMPTS - attempts
                 flash(f"Incorrect password. {remaining} attempts remaining.")
-
             return redirect(url_for("auth.login"))
         
         UserManager.reset_failed_attempts(username)
         session['username'] = username
-        if session.pop("first_login_popup", None):
-            flash("🎉 Welcome! Thanks for registering MoodTracker!")
-
+    
+        session["show_welcome_popup"] = True
         return redirect(url_for("home.dashboard"))
-
     return render_template(
         "login.html",
         lock_seconds=current_app.config.get('LOCK_SECONDS', 10)
-    )
+    )         
+    
 
 @auth_bp.route('/forgot', methods=['GET', 'POST'])
 def forgot():
     if request.method == 'POST':
-        identity = request.form.get("identity")  # username or email
+        identity = request.form.get("identity")
 
         if not identity:
             flash("Please enter your username or email.")
