@@ -314,6 +314,15 @@ body.body {
     text-align: center;
 }
 
+.full-width-select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #c9a9ff;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
 .auth-card h2 {
     margin-bottom: 25px;
     color: #5c2ea6;
@@ -409,6 +418,16 @@ body.body {
     font-weight: 600;
 }
 
+.switch-auth-login-new {
+    margin-top: auto;
+    font-size: 14px;
+    display: flex;
+}
+.switch-auth-login-new a {
+    color: #7a3bc6;
+    font-weight: 600;
+}
+
 .popup-msg {
   background: #76c9fc;
   color: rgb(22, 21, 21);
@@ -425,6 +444,22 @@ body.body {
   0% { opacity: 1; }
   80% { opacity: 1; }
   100% { opacity: 0; display: none; }
+}
+
+.Nav-to-welcome {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Nav-to-welcome a {
+    color: #18161d;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.Nav-to-welcome a:hover {
+    text-decoration: underline;
 }
 
 /* ======================== HOME PAGE LAYOUT ======================== */

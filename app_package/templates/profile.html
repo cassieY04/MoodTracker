@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
+<script>
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
 <body class="profile-body">
 
 <div class="profile-container">
@@ -74,7 +81,8 @@
 
                 <div>
                     <label>New Password</label>
-                    <input type="password" name="password"></input>
+                    <input type="password" id="new_password" name="password"></input>
+                    <span class="toggle-eye" onclick="togglePassword('new_password')">👁</span>
                 </div>
 
                 <div>
