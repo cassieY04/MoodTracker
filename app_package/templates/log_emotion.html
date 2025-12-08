@@ -2,12 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Log Emotion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Emotion Log</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="body">
 
+    <div class="log-card">
+        <h2>How are you feeling right now, {{ session.username }}?</h2>
+        
+        <form method="POST">
+            
+            <label for="emotion">Select Current Emotion:</label>
+            <select name="emotion" id="emotion" required>
+                <option value="" disabled selected>-- Select an Emotion --</option>
+                {% for emo in emotions %}
+                <option value="{{ emo }}">{{ emo }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="note">Optional Note (Reason):</label>
+            <textarea name="note" id="note" rows="3" placeholder="Describe what caused this emotion (e.g., 'Finished a big project' or 'Worrying about an exam')."></textarea>
+
+            <button type="submit" class="main-btn">Save Log</button>
+        </form>
+
+        ---
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="feedback-box {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+    </div>
 
 </body>
 </html>

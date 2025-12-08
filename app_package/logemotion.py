@@ -9,7 +9,7 @@ def save_emolog(username, emotion, note):
     try:
         db.execute('''INSERT INTO emolog 
                    (username, emotion, note)
-                   VALUES (?, ?, ?)'''
+                   VALUES (?, ?, ?)''',
                    (username, emotion, note)
         )
         db.commit()
