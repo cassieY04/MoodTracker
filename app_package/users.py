@@ -1,7 +1,6 @@
 from Databases.userdb import get_db
 import sqlite3
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 import time
 
 class UserManager:
@@ -18,8 +17,6 @@ class UserManager:
     def add_user(username, user_data):
         db = get_db()
         try:
-            hashed_password = generate_password_hash(user_data.get('password', ''))
-            
             db.execute(
                 '''INSERT INTO users 
                 (username, fullname, phone, email, password, security_question, security_answer, 
@@ -30,7 +27,7 @@ class UserManager:
                     user_data.get('fullname', ''),
                     user_data.get('phone', ''),
                     user_data.get('email', ''),
-                    hashed_password,
+                    user_data.get('password', ''),
                     user_data.get('security_question', ''),
                     user_data.get('security_answer', ''),
                     user_data.get('bio', ''),
@@ -71,9 +68,6 @@ class UserManager:
             return False
         
         db = get_db()
-        
-        if "password" in user_data:
-            user_data["password"] = generate_password_hash(user_data["password"])
 
         update_fields = ', '.join([f'{key} = ?' for key in user_data.keys()])
         update_values = list(user_data.values()) + [username]

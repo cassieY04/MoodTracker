@@ -1,5 +1,6 @@
 from flask import Flask
 from Databases.userdb import init_db
+from Databases.emologdb import init_emologdb
 
 def create_app():
     app = Flask(__name__)
@@ -20,6 +21,7 @@ def create_app():
 
     with app.app_context():
         init_db()
+        init_emologdb()
     
     app.register_blueprint(home_bp)
     app.register_blueprint(auth_bp)
