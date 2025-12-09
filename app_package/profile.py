@@ -97,8 +97,6 @@ def profile(username):
                 return redirect(url_for("profile.profile", username=username))
             update_data["password"] = new_password
         
-
-        
         if new_bio.strip():
             update_data["bio"] = new_bio
         
@@ -142,6 +140,7 @@ def profile(username):
             os.makedirs(UPLOAD_FOLDER, exist_ok=True)
             filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(filepath)
+            # store relative path for HTML
             update_data["profile_picture"] = url_for('static', filename=f'uploads/profile_pics/{filename}') 
 
         if new_question.strip():
