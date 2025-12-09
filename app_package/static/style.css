@@ -528,19 +528,40 @@ body.body {
 }
 
 .profile-btn-dashboard {
+    display: flex;
+    align-items: center;
+    gap: 10px;               /* space between name and picture */
     text-decoration: none;
+    color: #2c136b;          /* same purple as rest of UI, adjust if needed */
+    font-family: Arial, sans-serif;
+}
+
+.profile-username-dashboard {
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .profile-pic-dashboard {
-    width: 65px;
-    height: 65px;
-    background: #6f43f3;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #7b3cff, #b38cff);
     color: white;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 18px;
+    overflow: hidden;
+}
+
+/* When using <img> for real photo */
+.profile-pic-dashboard img,
+.profile-pic-dashboard {
+    object-fit: cover;
+}
+/* Optional: special style for the default icon div */
+.default-icon {
+    font-size: 20px;
 }
 
 /*DASHBOARD CARDS */
@@ -577,7 +598,7 @@ body.body {
     font-size: 13px;
 }
 
-/* ======================== Welcome Pop Up ======================== */
+/*  Welcome Pop Up  */
 
 .popup-overlay {
     position: fixed;

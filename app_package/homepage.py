@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash
+from .users import UserManager
 
 home_bp = Blueprint('home', __name__)
 
@@ -13,5 +14,6 @@ def dashboard():
         return redirect(url_for("auth.login"))
     
     username = session.get('username')
+    users = UserManager.get_user(username)
     show_popup = session.pop("show_welcome_popup", False)
-    return render_template("dashboard.html", username=username, show_popup=show_popup)
+    return render_template("dashboard.html", username=username, show_popup=show_popup, user=users)

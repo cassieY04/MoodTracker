@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<!-- ✅ POPUP (SHOW ONLY FIRST TIME - BACKEND LATER) -->
+<!-- POPUP -->
 {% if show_popup %}
 <div class="popup-overlay" id="welcomePopup">
     <div class="popup-card">
@@ -25,10 +25,9 @@
 </div>
 {% endif %}
 
-<!-- ✅ MAIN LAYOUT -->
 <div class="layout">
 
-    <!-- ✅ SIDEBAR -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <h2 class="logo">MoodTracker</h2>
 
@@ -43,19 +42,26 @@
         </nav>
     </aside>
 
-    <!-- ✅ MAIN CONTENT -->
     <div class="main-section">
 
-        <!-- ✅ TOP HEADER -->
         <header class="topbar">
             <h1>Dashboard</h1>
 
             <a href="/profile/{{ username }}" class="profile-btn-dashboard">
-                <div class="profile-pic-dashboard">👤</div>
+                <!-- Username text -->
+                <span class="profile-username-dashboard">{{ user.username }}</span>
+
+                <!-- Profile picture (same as profile page) -->
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture}}" 
+                        alt="Profile picture" 
+                        class="profile-pic-dashboard">
+                {% else %}
+                    <div class="profile-pic-dashboard default-icon">👤</div>
+                {% endif %}
             </a>
         </header>
 
-        <!-- ✅ DASHBOARD CARDS -->
         <section class="dashboard-grid">
 
             <div class="dashboard-card">
