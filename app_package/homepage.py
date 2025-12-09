@@ -13,4 +13,5 @@ def dashboard():
         return redirect(url_for("auth.login"))
     
     username = session.get('username')
-    return render_template("dashboard.html", username=username)
+    show_popup = session.pop("show_welcome_popup", False)
+    return render_template("dashboard.html", username=username, show_popup=show_popup)

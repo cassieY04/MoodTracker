@@ -18,7 +18,7 @@ def password_requirement(password: str) -> Optional[str]:
         return "Password must contain at least one digit."
     if not any(c in "@_-*#!%$&" for c in password):
         return "Password must contain at least one special character (@, _, -, *, #, !, %, $, or &)."
-    return None 
+    return None
 
 def hash_password(password: str) -> str:
     """Return a hashed version of the password."""

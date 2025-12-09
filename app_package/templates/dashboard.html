@@ -8,6 +8,7 @@
 <body>
 
 <!-- ✅ POPUP (SHOW ONLY FIRST TIME - BACKEND LATER) -->
+{% if show_popup %}
 <div class="popup-overlay" id="welcomePopup">
     <div class="popup-card">
         <h2>Welcome to MoodTracker  {{ username }}! 💜</h2>
@@ -22,6 +23,7 @@
         <button class="main-btn" onclick="closePopup()">Got It!</button>
     </div>
 </div>
+{% endif %}
 
 <!-- ✅ MAIN LAYOUT -->
 <div class="layout">
@@ -37,7 +39,6 @@
             <a href="/mood_statistics">Mood Statistics</a>
             <a href="/ai_feedback">AI Feedback</a>
             <a href="/emotionhistory">Emotion History</a>
-            <a href="/profile/{{ username }}" class="profile-btn">Profile</a>
             <a href="/logout">Logout</a>
         </nav>
     </aside>

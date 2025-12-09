@@ -28,8 +28,8 @@ function togglePassword(id) {
         </div>
 
         <div class="profile-fullname">
-            {% if user.surname or user.last_name %}
-                {{ user.surname }} {{ user.last_name }}
+            {% if user.fullname %}
+                {{ user.fullname }}
             {% else %}
                 {{ user.username }}
             {% endif %}

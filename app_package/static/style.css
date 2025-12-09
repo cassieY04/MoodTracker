@@ -23,6 +23,10 @@ body.body {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .logo-container {
@@ -84,7 +88,7 @@ body.body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 80px 40px;   
+    padding: 120px 40px;   
     box-sizing: border-box;
     max-width: 1200px;    
     margin: 0 auto;       
@@ -293,7 +297,8 @@ body.body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    font-family: "Noto Sans", sans-serif;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
 }
 
 .auth-body-register {
@@ -302,7 +307,8 @@ body.body {
     justify-content: center;
     align-items: flex-start;
     height: 100vh;
-    font-family: "Noto Sans", sans-serif;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
 }
 
 .auth-card {
@@ -330,15 +336,21 @@ body.body {
     font-weight: 700;
 }
 
+.auth-card h3 {
+    margin-bottom: 25px;
+    color: #5c2ea6;
+    font-size: 22px;
+    font-weight: 700;
+}
 .auth-card form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 13px;
     text-align: left;
 }
 
 .auth-card label {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: #4a2d7e;
 }
@@ -384,7 +396,7 @@ body.body {
 
 .password-requirements {
     margin-top: 6px;
-    font-size: 12px;
+    font-size: 14px;
     color: #7a3bc6;
     padding-left: 16px;
 }
@@ -466,7 +478,8 @@ body.body {
 
 .layout {
     display: flex;
-    height: 100vh;
+    height: 200vh;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 /* SIDEBAR */
@@ -519,8 +532,8 @@ body.body {
 }
 
 .profile-pic-dashboard {
-    width: 42px;
-    height: 42px;
+    width: 65px;
+    height: 65px;
     background: #6f43f3;
     color: white;
     border-radius: 50%;
@@ -583,6 +596,7 @@ body.body {
     padding: 30px;
     border-radius: 16px;
     text-align: center;
+    font-family: Arial,sans-serif;
 }
 
 .popup-card h2 {
