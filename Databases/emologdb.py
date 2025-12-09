@@ -23,7 +23,7 @@ def init_emologdb():
     
     except Exception as e:
         print(f'Error creating emolog table: {e}')
-        db.rollback
+        db.rollback()
     
     finally:
-        db.close
+        db.close()
