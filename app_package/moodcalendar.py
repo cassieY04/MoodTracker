@@ -1,18 +1,74 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash
+from datetime import datetime
+import calendar
+from .logemotion import get_monthly_mood_data, get_emotion_styling
 
 mood_calendar_bp = Blueprint('mood_calendar', __name__)
 
-@mood_calendar_bp.route("/mood_calendar")
-def mood_calendar():
-    now = datetime.now()
-    year = now.year
-    month = now.month
-    month_name = now.strftime("%B")
+def calculate_mood_summary(mood_data):
+    if not mood_data:
+        return {"total_entries": 0, "most_frequent": "N/A", "emotion_breakdown": {}}
+        
+    emotion_counts = {}
+    for day in mood_data:
+        emotion = mood_data[day]['emotion']
+        # Count the frequency of each emotion
+        emotion_counts[emotion] = emotion_counts.get(emotion, 0) + 1
+    
+    total_days = len(mood_data)
+
+    most_frequent = max(emotion_counts, key=emotion_counts.get) if emotion_counts else "N/A"
+    
+    summary = {
+        'total_entries': total_days,
+        'emotion_breakdown': emotion_counts,
+        'most_frequent': most_frequent,
+    }
+    return summary
+        
+    
+
+@mood_calendar_bp.route("/mood_calendar", methods=['GET'])
+
+@mood_calendar_bp.route("/mood_calendar/<int:year>/<int:month>", methods=['GET'])
+def mood_calendar(year=None, month=None):
+    if 'username' not in session:
+        flash("Please log in to view the mood calendar.", 'warning')
+        return redirect(url_for('auth.login'))
+    
+    username = session['username']
+
+    if year is None or month is None:
+        now = datetime.now()
+        year = now.year
+        month = now.month
+    
+    if not 1 <= month <= 12:
+        flash("Invalid month specified.", 'error')
+        return redirect(url_for('mood_calendar.mood_calendar'))
+    
+    monthly_mood_data = get_monthly_mood_data(username, year, month)
+
+    processed_mood_data = {}
+    for day, log in monthly_mood_data.items():
+        styling = get_emotion_styling(log['emotion'])
+        processed_mood_data[day] = {
+            'emotion': log['emotion'],
+            'note': log['note'],
+            'timestamp': log['timestamp'],
+            'color': styling['color'],
+            'emoji': styling['emoji']
+        }
+
+    month_name = datetime(year, month, 1).strftime("%B")    
     
     cal_data = calendar.monthcalendar(year, month)
+    mood_summary = calculate_mood_summary(processed_mood_data)
+
     return render_template("mood_calendar.html",
                             year=year,
                             month_name=month_name,
                             calendar=cal_data,
-                            mood_data=mock_mood_data
+                            mood_data=processed_mood_data,
+                            mood_summary=mood_summary,
     )
