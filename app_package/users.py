@@ -100,7 +100,7 @@ class UserManager:
         db = get_db()
         try:
             cursor = db.execute(
-                "SELECT username, email FROM users WHERE username = ? OR email = ?",
+                "SELECT username, email , phone, password, bio, address, birthday, age, gender, security_question, security_answer, profile_picture FROM users WHERE username = ? OR email = ?",
                 (identity, identity)
             )
             row = cursor.fetchone()
