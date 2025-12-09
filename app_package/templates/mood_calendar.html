@@ -2,12 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mood Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Calendar - {{ month_name }} {{ year }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Minimal structure to show the grid */
+        .mood-calendar-table { width: 80%; border-collapse: collapse; margin: 20px auto; }
+        .mood-calendar-table th, .mood-calendar-table td { border: 1px solid #ccc; padding: 10px; text-align: center; height: 50px; }
+        .empty-day { background-color: #f8f8f8; }
+        .day-emoji { font-size: 1.5em; }
+    </style>
 </head>
+<body>
+    
+    <div style="text-align: center; padding: 20px;">
 
-<body class="body">
+        <h1>Mood Calendar for {{ month_name }} {{ year }}</h1>
+        <p>Styling and interactive features (like clicking) are disabled to remove syntax errors.</p>
 
+        <table class="mood-calendar-table">
+            <thead>
+                <tr>
+                    <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in calendar %}
+                <tr>
+                    {% for day in week %}
+                        {% if day != 0 %}
+                            {% set log = mood_data.get(day) %}
+                            
+                            <td class="{{ 'logged-day' if log else '' }}" 
+                                title="Mood: {{ log.emotion if log else 'None' }}. Note: {{ log.note if log else 'N/A' }}"
+                                
+                                >
+                                
+                                <div>{{ day }}</div>
+                                <div class="day-emoji">{{ log.emoji if log }}</div>
+                                </td>
+                        {% else %}
+                            <td class="empty-day"></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
+        <div style="margin-top: 30px; border: 1px solid #ddd; padding: 15px; width: 80%; margin-left: auto; margin-right: auto; text-align: left;">
+            <h2>📊 Mood Summary</h2>
+            <p><strong>Total Days Logged:</strong> {{ mood_summary.total_entries }}</p>
+            <p><strong>Most Frequent Mood:</strong> {{ mood_summary.most_frequent }}</p>
+        </div>
+
+    </div>
+    
 </body>
 </html>
