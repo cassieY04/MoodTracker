@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body class="body">
+<body>
     <div class="layout">
 
         <!-- SIDEBAR -->
@@ -31,8 +31,8 @@
                 <h1>Log Emotion</h1>
             </header>
             
-            <h2>How are you feeling right now, {{ session.username }}?</h2>
-            <form method="POST">
+            <h3>How are you feeling right now, {{ session.username }}?</h3>
+            <form method="POST" class="emotion-log-form">
                         
                 <label for="emotion">Select Current Emotion:</label>
                 <select name="emotion" id="emotion" required>
@@ -49,19 +49,15 @@
             </form>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
-                    {% for category, message in messages %}
                     <div class="feedback-box {{ category }}">
-                        {{ message }}
+                        {% for category, message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 {% endif %}
                 {% endwith %}
         </div>
     </div>
-
-
-
-    
 
 </body>
 </html>

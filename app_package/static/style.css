@@ -929,3 +929,129 @@ textarea {
 .danger-btn:hover {
     background: #cf3f31;
 }
+
+/* Log Emotion Page */
+.emotion-log-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+.emotion-log-form select,
+.emotion-log-form textarea {
+    font-size: 16px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #c9a9ff;
+    outline: none;
+}
+.emotion-log-form select:focus,
+.emotion-log-form textarea:focus {
+    border-color: #9c6bff;
+}
+.emotion-log-form button {
+    width: 150px;
+    padding: 12px;
+    background: #883df8;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.emotion-log-form button:hover {
+    background: #9860ff;
+}
+
+.feedback-box {
+    padding: 1px 15px;
+    background: #ccfefe;
+    color: #0d3f29;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    margin: auto;
+    width: fit-content;
+    font-family: Arial, sans-serif;
+    animation: fadeOut 5s forwards;
+}
+
+.feedback-box p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+/* Mood Calendar Page */
+.mood-calendar-table { 
+    width: 80%; 
+    border-collapse: collapse; 
+    margin: 20px auto; 
+    border: 3px solid #2487ffff; 
+    border-radius: 10px; 
+    font-family: Arial, sans-serif;
+}
+
+.mood-calendar-table th, .mood-calendar-table td { 
+    border: 1px solid #2487ffff; 
+    padding: 10px; 
+    text-align: center; 
+    height: 50px; 
+}
+
+.empty-day { 
+    background-color: #f7e4f9ef; 
+}
+
+.day-emoji { 
+    font-size: 1.5em; 
+    border-radius: 50%; 
+    width: 30px; 
+    height: 30px; 
+    line-height: 30px; 
+    margin: 5px auto 0 auto; 
+}
+
+.logged-day { 
+    background-color: #c1ebffff; 
+}
+
+.week-row:hover { 
+    background-color: #e0ecf7ff; 
+}
+
+.calendar-header { 
+    background-color: #85bafaff; 
+    color: #ffffffff; 
+    font-size: 20px; 
+}
+
+.calendar-body { 
+    background-color: #ffeeeeff;
+    font-size: 14px
+}
+
+.mood-sum { 
+    background-color: #f9f9f9ff; 
+    border-radius: 10px; 
+    margin-top: 30px; 
+    border: 1px solid #ddd; 
+    padding: 15px; width: 80%; 
+    margin-left: auto; 
+    margin-right: auto; 
+    text-align: left; 
+    font-family: Arial, sans-serif;
+}
+
+.mood-sum h2 { 
+    color: #4b2e83ff; 
+    margin-bottom: 15px;
+    margin-top: 12px;
+}
+
+.mood-sum p { 
+    font-size: 17px; 
+    margin: 10px 10px; 
+    gap: 8px;
+}
