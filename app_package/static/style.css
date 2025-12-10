@@ -421,8 +421,9 @@ body.body {
 }
 
 .switch-auth {
-    margin-top: 20px;
+    margin-top: 12px;
     font-size: 14px;
+    gap: 5px;
 }
 
 .switch-auth a {
@@ -431,9 +432,10 @@ body.body {
 }
 
 .switch-auth-login-new {
-    margin-top: auto;
+    margin-top: 12px;
     font-size: 14px;
-    display: flex;
+    gap: 5px;
+    display: flexbox;
 }
 .switch-auth-login-new a {
     color: #7a3bc6;
@@ -441,14 +443,16 @@ body.body {
 }
 
 .popup-msg {
-  background: #76c9fc;
+  background: #88f3fa;
   color: rgb(22, 21, 21);
-  padding: 14px 20px;
+  padding: 12px 18px;
   border-radius: 8px;
   text-align: center;
-  margin: 20px auto;
+  margin: auto;
   width: fit-content;
   font-weight: 600;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
   animation: fadeOut 10s forwards;
 }
 
