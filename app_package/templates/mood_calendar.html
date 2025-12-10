@@ -30,6 +30,11 @@
             <header class="topbar">
                 <h1>Mood calendar</h1>
             </header>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <a href="#">&larr; Prev Month</a> 
+            <h1>{{ month_name }} {{ year }}</h1>
+            <a href="#">Next Month &rarr;</a>
+            </div>
             <h2>Mood Calendar for {{ month_name }} {{ year }}</h2>
             <p>Styling and interactive features (like clicking) are disabled to remove syntax errors.</p>
             <table class="mood-calendar-table">
@@ -47,10 +52,11 @@
                                 
                                 <td class="{{ 'logged-day' if log else '' }}" 
                                     title="Mood: {{ log.emotion if log else 'None' }}. Note: {{ log.note if log else 'N/A' }}"
-                                    
-                                    >
-                                    
-                                    <div>{{ day }}</div>
+                                    {% if log %}
+                                        onclick="showDayDetails('{{ day }}', '{{ log.emotion }}', '{{ log.note | tojson | safe }}', '{{ log.timestamp }}', '{{ log.emoji }}', '{{ log.color }}')"
+                                    {% endif %}>
+                                    <div class="day-number">{{ day }}</div>
+                                        
                                     <div class="day-emoji">{{ log.emoji if log }}</div>
                                 </td>
                             {% else %}
@@ -68,12 +74,74 @@
             <p><strong>Most Frequent Mood:</strong> {{ mood_summary.most_frequent }}</p>
             </div>
 
+            <hr>
+            
+            <h3>Emotion Breakdown:</h3>
+            <ul class="breakdown-list">
+                {% for emotion, count in mood_summary.emotion_breakdown.items() %}
+                    <li><strong>{{ emotion }}</strong>: {{ count }} days</li>
+                {% endfor %}
+            </ul>
+            
+            
+            <div id="mood-modal" class="mood-modal">
+                <div id="modal-content" class="modal-content">
+                    <span onclick="document.getElementById('mood-modal').style.display='none'" class="close">&times;</span>
+                    <h2>Details for Day <span id="modal-day"></span></h2>
+                    <p><strong>Emotion:</strong> <span id="modal-emotion"></span> <span id="modal-emoji"></span></p>
+                    <p><strong>Time:</strong> <span id="modal-timestamp"></span></p>
+                    <p><strong>Note:</strong> <span id="modal-note"></span></p>
+                </div>
+            </div>
+
         </div>
     </div>
 
 
 
     </div>
+    
+    <script>
+        function showDayDetails(day, emotion, noteJson, timestamp, emoji, color) {
+            
+            // 1. Safely retrieve the Note string
+            // Strip the outer single quotes ('...') added by the Jinja template
+            const safeNoteString = noteJson.substring(1, noteJson.length - 1);
+            let note;
+            try {
+                // Parse the JSON string (this handles internal quotes/newlines in the note)
+                note = JSON.parse(safeNoteString);
+            } catch (e) {
+                // Fallback, though this should rarely happen with |tojson|safe
+                note = "Note could not be loaded due to formatting error.";
+            }
+
+            // 2. Populate the Modal
+            document.getElementById('modal-day').textContent = day;
+            document.getElementById('modal-emotion').textContent = emotion;
+            document.getElementById('modal-emoji').textContent = emoji;
+            document.getElementById('modal-timestamp').textContent = formatTimestamp(timestamp);
+            document.getElementById('modal-note').textContent = note; // DISPLAYS THE USER'S NOTE
+
+            // 3. Style and Display
+            let modalContent = document.getElementById('modal-content');
+            modalContent.style.borderColor = color; // Applies mood color to modal border
+            document.getElementById('mood-modal').style.display = 'block';
+        }
+
+        function formatTimestamp(isoTimestamp) {
+            let date = new Date(isoTimestamp);
+            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' on ' + date.toLocaleDateString();
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            let modal = document.getElementById('mood-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
     
 </body>
 </html>

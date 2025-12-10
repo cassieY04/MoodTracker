@@ -116,7 +116,7 @@ def profile(username):
                 age = today.year - birthday_date.year - ((today.month, today.day) < (birthday_date.month, birthday_date.day))
                 
                 if not (7 <= age <= 100):
-                    flash("Age must be between 7 and 100 years.")
+                    flash("Age must be between 7 to 100 years.")
                     return redirect(url_for("profile.profile", username=username))
                 
                 update_data["birthday"] = new_birthday

@@ -1013,6 +1013,11 @@ textarea {
     margin: 5px auto 0 auto; 
 }
 
+.day-number { 
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
 .logged-day { 
     background-color: #c1ebffff; 
 }
@@ -1055,3 +1060,27 @@ textarea {
     margin: 10px 10px; 
     gap: 8px;
 }
+
+.mood-modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; /* Ensure it's above everything else */
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.6); /* Darker background for visibility */
+        }
+.modal-content { 
+            background-color: #fefefe; 
+            margin: 10% auto; /* Center modal vertically and horizontally */
+            padding: 20px; 
+            border: 3px solid; 
+            width: 80%; 
+            max-width: 400px; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
+        }
+.close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+.close:hover, .close:focus { color: #000; text-decoration: none; cursor: pointer; }
