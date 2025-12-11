@@ -58,7 +58,8 @@ function togglePassword(id) {
 
             <label>Answer</label>
             <input type="text" name="security_answer" placeholder="Enter your answer" required>
-
+            
+            <button class="main-btn" type="submit">Create Account</button>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="popup-msg">
@@ -67,8 +68,6 @@ function togglePassword(id) {
             {% endif %}
             {% endwith %}
 
-
-            <button class="main-btn" type="submit">Create Account</button>
         </form>
 
         <p class="switch-auth">

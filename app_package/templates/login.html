@@ -29,25 +29,25 @@ function togglePassword(id) {
                 </div>
 
             <button class="main-btn" type="submit">Log In</button>
-
-            <p class="switch-auth">
-                <a href="/forgot">Forgot your password?</a>
-            </p>
-
-            
-
-        </form>
-
-        <p class="switch-auth-login-new">
-            New here ?<a href="/register">Create an account</a>
-        </p>
-        {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <div class="popup-msg">
                 {{ messages[0] }}
                 </div>
             {% endif %}
             {% endwith %}
+
+
+        </form>
+
+        <p class="switch-auth-login-new">
+            <a href="/forgot">Forgot your password?</a>
+        </p>
+
+        <p class="switch-auth-login-new">
+        New here ? <a href="/register">Create an account</a>
+        </p>
+    
         <div class="Nav-to-welcome">
             <a href="/">← Welcome page</a>
         </div>

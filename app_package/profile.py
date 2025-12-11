@@ -97,8 +97,6 @@ def profile(username):
                 return redirect(url_for("profile.profile", username=username))
             update_data["password"] = new_password
         
-
-        
         if new_bio.strip():
             update_data["bio"] = new_bio
         
@@ -118,7 +116,7 @@ def profile(username):
                 age = today.year - birthday_date.year - ((today.month, today.day) < (birthday_date.month, birthday_date.day))
                 
                 if not (7 <= age <= 100):
-                    flash("Age must be between 7 and 100 years.")
+                    flash("Age must be between 7 to 100 years.")
                     return redirect(url_for("profile.profile", username=username))
                 
                 update_data["birthday"] = new_birthday
@@ -142,6 +140,7 @@ def profile(username):
             os.makedirs(UPLOAD_FOLDER, exist_ok=True)
             filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(filepath)
+            # store relative path for HTML
             update_data["profile_picture"] = url_for('static', filename=f'uploads/profile_pics/{filename}') 
 
         if new_question.strip():

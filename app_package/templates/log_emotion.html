@@ -7,39 +7,56 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body class="body">
+<body>
+    <div class="layout">
 
-    <div class="log-card">
-        <h2>How are you feeling right now, {{ session.username }}?</h2>
-        
-        <form method="POST">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h2 class="logo">MoodTracker</h2>
+
+            <nav>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/log_emotion">Log Emotion</a>
+                <a href="/mood_calendar">Mood Calendar</a>
+                <a href="/mood_statistics">Mood Statistics</a>
+                <a href="/ai_feedback">AI Feedback</a>
+                <a href="/emotionhistory">Emotion History</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-section">
+
+            <header class="topbar">
+                <h1>Log Emotion</h1>
+            </header>
             
-            <label for="emotion">Select Current Emotion:</label>
-            <select name="emotion" id="emotion" required>
+            <h3>How are you feeling right now, {{ session.username }}?</h3>
+            <form method="POST" class="emotion-log-form">
+                        
+                <label for="emotion">Select Current Emotion:</label>
+                <select name="emotion" id="emotion" required>
                 <option value="" disabled selected>-- Select an Emotion --</option>
                 {% for emo in emotions %}
                 <option value="{{ emo }}">{{ emo }}</option>
                 {% endfor %}
-            </select>
+                </select>
 
-            <label for="note">Optional Note (Reason):</label>
-            <textarea name="note" id="note" rows="3" placeholder="Describe what caused this emotion (e.g., 'Finished a big project' or 'Worrying about an exam')."></textarea>
+                <label for="note">Optional Note (Reason):</label>
+                <textarea name="note" id="note" rows="3" placeholder="Describe what caused this emotion (e.g., 'Finished a big project' or 'Worrying about an exam')."></textarea>
 
-            <button type="submit" class="main-btn">Save Log</button>
-        </form>
-
-        ---
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-            <div class="feedback-box {{ category }}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-        
+                <button type="submit" class="main-btn">Save Log</button>
+            </form>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="feedback-box {{ category }}">
+                        {% for category, message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+        </div>
     </div>
 
 </body>

@@ -5,104 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood Calendar - {{ month_name }} {{ year }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        /* Base Container & Grid Styling */
-        .mood-calendar-container { width: 90%; max-width: 900px; margin: 20px auto; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .mood-calendar-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .mood-calendar-table th, .mood-calendar-table td { 
-            border: 1px solid #ddd; 
-            padding: 5px; 
-            text-align: center; 
-            height: 70px; 
-            vertical-align: top; 
-            transition: background-color 0.3s;
-        }
-        .mood-calendar-table th { background-color: #f4f4f4; }
-        .empty-day { background-color: #fafafa; border: none; }
-        .day-number { font-weight: bold; font-size: 1.1em; display: block; margin-bottom: 5px; }
-        .day-emoji { font-size: 1.8em; } 
-        .logged-day:hover { cursor: pointer; filter: brightness(0.95); }
-
-        /* Summary Box Styling */
-        .summary-box { margin-top: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 6px; background-color: #f9f9f9; }
-        .breakdown-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px; }
-        .breakdown-list li { padding: 5px 10px; border-radius: 4px; background-color: #fff; border: 1px solid #eee; }
-
-        /* Modal Styles */
-        .mood-modal { 
-            display: none; 
-            position: fixed; 
-            z-index: 1000; /* Ensure it's above everything else */
-            left: 0; 
-            top: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.6); /* Darker background for visibility */
-        }
-        .modal-content { 
-            background-color: #fefefe; 
-            margin: 10% auto; /* Center modal vertically and horizontally */
-            padding: 20px; 
-            border: 3px solid; 
-            width: 80%; 
-            max-width: 400px; 
-            border-radius: 8px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); 
-        }
-        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .close:hover, .close:focus { color: #000; text-decoration: none; cursor: pointer; }
-    </style>
 </head>
 <body>
-    
-    <div class="mood-calendar-container">
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h2 class="logo">MoodTracker</h2>
+
+            <nav>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/log_emotion">Log Emotion</a>
+                <a href="/mood_calendar">Mood Calendar</a>
+                <a href="/mood_statistics">Mood Statistics</a>
+                <a href="/ai_feedback">AI Feedback</a>
+                <a href="/emotionhistory">Emotion History</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        </aside>
+
+        <div class="main-section">
+
+            <header class="topbar">
+                <h1>Mood calendar</h1>
+            </header>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <a href="#">&larr; Prev Month</a> 
             <h1>{{ month_name }} {{ year }}</h1>
             <a href="#">Next Month &rarr;</a>
-        </div>
-
-        <table class="mood-calendar-table">
-            <thead>
-                <tr>
-                    <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for week in calendar %}
-                <tr>
-                    {% for day in week %}
-                        {% if day != 0 %}
-                            {% set log = mood_data.get(day) %}
-                            
-                            <td class="{{ 'logged-day' if log else '' }}" 
-                                title="Mood: {{ log.emotion if log }}. Note: {{ log.note if log else 'N/A' }}"
+            </div>
+            <h2>Mood Calendar for {{ month_name }} {{ year }}</h2>
+            <p>Styling and interactive features (like clicking) are disabled to remove syntax errors.</p>
+            <table class="mood-calendar-table">
+                <thead class="calendar-header">
+                    <tr>
+                        <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody class="calendar-body">
+                    {% for week in calendar %}
+                    <tr class="week-row">
+                        {% for day in week %}
+                            {% if day != 0 %}
+                                {% set log = mood_data.get(day) %}
                                 
-                                style="background-color: '{{ log.color if log else 'transparent' }}';"
-                                
-                                {% if log %}
-                                onclick="showDayDetails('{{ day }}', '{{ log.emotion }}', '{{ log.note | tojson | safe }}', '{{ log.timestamp }}', '{{ log.emoji }}', '{{ log.color }}')"
-                                {% endif %}> 
-                                
-                                <span class="day-number">{{ day }}</span>
-                                <div class="day-emoji">{{ log.emoji if log }}</div>
-                            </td>
-                        {% else %}
-                            <td class="empty-day"></td>
-                        {% endif %}
+                                <td class="{{ 'logged-day' if log else '' }}" 
+                                    title="Mood: {{ log.emotion if log else 'None' }}. Note: {{ log.note if log else 'N/A' }}"
+                                    {% if log %}
+                                        onclick="showDayDetails('{{ day }}', '{{ log.emotion }}', '{{ log.note | tojson | safe }}', '{{ log.timestamp }}', '{{ log.emoji }}', '{{ log.color }}')"
+                                    {% endif %}>
+                                    <div class="day-number">{{ day }}</div>
+                                        
+                                    <div class="day-emoji">{{ log.emoji if log }}</div>
+                                </td>
+                            {% else %}
+                                <td class="empty-day"></td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
 
-        <div class="summary-box">
+            <div class="mood-sum">
             <h2>📊 Mood Summary</h2>
             <p><strong>Total Days Logged:</strong> {{ mood_summary.total_entries }}</p>
-            <p><strong>Most Frequent Mood:</strong> **{{ mood_summary.most_frequent }}**</p>
-            
+            <p><strong>Most Frequent Mood:</strong> {{ mood_summary.most_frequent }}</p>
+            </div>
+
             <hr>
             
             <h3>Emotion Breakdown:</h3>
@@ -111,12 +82,22 @@
                     <li><strong>{{ emotion }}</strong>: {{ count }} days</li>
                 {% endfor %}
             </ul>
+            
+            
+            <div id="mood-modal" class="mood-modal">
+                <div id="modal-content" class="modal-content">
+                    <span onclick="document.getElementById('mood-modal').style.display='none'" class="close">&times;</span>
+                    <h2>Details for Day <span id="modal-day"></span></h2>
+                    <p><strong>Emotion:</strong> <span id="modal-emotion"></span> <span id="modal-emoji"></span></p>
+                    <p><strong>Time:</strong> <span id="modal-timestamp"></span></p>
+                    <p><strong>Note:</strong> <span id="modal-note"></span></p>
+                </div>
+            </div>
 
         </div>
+    </div>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <p><a href="{{ url_for('home.dashboard') }}">Back to dashboard</a></p>
-        </div>
+
 
     </div>
 
@@ -130,6 +111,48 @@
         </div>
     </div>
 
+    <script>
+        function showDayDetails(day, emotion, noteJson, timestamp, emoji, color) {
+            
+            // 1. Safely retrieve the Note string
+            // Strip the outer single quotes ('...') added by the Jinja template
+            const safeNoteString = noteJson.substring(1, noteJson.length - 1);
+            let note;
+            try {
+                // Parse the JSON string (this handles internal quotes/newlines in the note)
+                note = JSON.parse(safeNoteString);
+            } catch (e) {
+                // Fallback, though this should rarely happen with |tojson|safe
+                note = "Note could not be loaded due to formatting error.";
+            }
+
+            // 2. Populate the Modal
+            document.getElementById('modal-day').textContent = day;
+            document.getElementById('modal-emotion').textContent = emotion;
+            document.getElementById('modal-emoji').textContent = emoji;
+            document.getElementById('modal-timestamp').textContent = formatTimestamp(timestamp);
+            document.getElementById('modal-note').textContent = note; // DISPLAYS THE USER'S NOTE
+
+            // 3. Style and Display
+            let modalContent = document.getElementById('modal-content');
+            modalContent.style.borderColor = color; // Applies mood color to modal border
+            document.getElementById('mood-modal').style.display = 'block';
+        }
+
+        function formatTimestamp(isoTimestamp) {
+            let date = new Date(isoTimestamp);
+            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' on ' + date.toLocaleDateString();
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            let modal = document.getElementById('mood-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    
     <script>
         function showDayDetails(day, emotion, noteJson, timestamp, emoji, color) {
             
