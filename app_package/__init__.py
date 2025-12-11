@@ -1,9 +1,17 @@
 from flask import Flask
 from Databases.userdb import init_db
 from Databases.emologdb import init_emologdb
+import os 
 
 def create_app():
-    app = Flask(__name__)
+    
+    BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+    
+    app = Flask(
+        __name__,
+        static_folder=os.path.join(BASE_DIR, 'static')
+    )
+    
     app.secret_key = "secret123"
     app.config['DATABASE_FILE'] = 'user.db'
 

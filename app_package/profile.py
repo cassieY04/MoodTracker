@@ -27,6 +27,15 @@ def file_size_allowed(file):
     file.seek(0)
     return size <= MAX_FILE_SIZE_MB * 1024 * 1024
 
+def delete_old_picture_file(user):
+    """Deletes the physical file associated with the user's current profile_picture path."""
+    current_path = user.get("profile_picture")
+    if current_path:
+        # Convert the Flask URL path (/static/...) back to a file system path (static/...)
+        filepath = current_path.replace("/static/", "static/")
+        if os.path.exists(filepath):
+            os.remove(filepath)
+
 @profile_bp.route("/profile/<username>", methods=["GET", "POST"]) 
 def profile(username):
     if not UserManager.user_exists(username):
@@ -34,27 +43,49 @@ def profile(username):
         return redirect(url_for("home.homepage"))
 
     user = UserManager.get_user(username)
-    update_data = {}
 
     if request.method == "POST":
        
         if 'delete' in request.form:
+            delete_old_picture_file(user)
             UserManager.delete_user(username)
             session.pop('username', None)
             flash("Your account has been successfully deleted.")
             return redirect(url_for("home.homepage"))
             
         if 'delete_profile_picture' in request.form: #delete profile pic
-            if user.get("profile_picture"):
-                filepath = user["profile_picture"].replace("/static/", "static/")
-                if os.path.exists(filepath):
-                    os.remove(filepath)
-
+            delete_old_picture_file(user)
             UserManager.update_user(username, {"profile_picture": None})
             flash("Profile picture deleted successfully.")
             return redirect(url_for("profile.profile", username=username))
             
+        update_data = {}
+
+        file = request.files.get("profile_picture")
         
+        if file and file.filename and 'Upload Picture' in request.form.get('upload_profile_picture', ''): 
+            
+            if not allowed_file(file.filename):
+                flash("Invalid file type for profile picture. Allowed: png, jpg, jpeg, gif.")
+                return redirect(url_for("profile.profile", username=username))
+            if not file_size_allowed(file):
+                flash(f"File is too large. Maximum size is {MAX_FILE_SIZE_MB} MB.")
+                return redirect(url_for("profile.profile", username=username))
+            
+            delete_old_picture_file(user)
+
+            ext = secure_filename(file.filename).rsplit('.', 1)[1].lower()
+            filename = f"{username}_{uuid.uuid4().hex}.{ext}"
+            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(filepath)
+            
+            new_pic_path = url_for('static', filename=f'uploads/profile_pics/{filename}') 
+            
+            UserManager.update_user(username, {"profile_picture": new_pic_path}) 
+            flash("Profile picture uploaded successfully!")
+            return redirect(url_for("profile.profile", username=username))
+     
         new_username = request.form.get("username", "").strip()
         new_phone = request.form.get("phone", "").strip()
         new_email = request.form.get("email", "").strip()
@@ -124,24 +155,6 @@ def profile(username):
             except ValueError:
                 flash("Invalid birthday format. Use YYYY-MM-DD.")
                 return redirect(url_for("profile.profile", username=username))
-        
-        #Profile picture upload
-        file = request.files.get("profile_picture")
-        if file and file.filename:
-            if not allowed_file(file.filename):
-                flash("Invalid file type for profile picture. Allowed: png, jpg, jpeg, gif.")
-                return redirect(url_for("profile.profile", username=username))
-            if not file_size_allowed(file):
-                flash(f"File is too large. Maximum size is {MAX_FILE_SIZE_MB} MB.")
-                return redirect(url_for("profile.profile", username=username))
-            #Appends the username + timestamp in seconds to avoid overwriting.
-            ext = secure_filename(file.filename).rsplit('.', 1)[1].lower()
-            filename = f"{username}_{uuid.uuid4().hex}.{ext}"
-            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-            filepath = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(filepath)
-            # store relative path for HTML
-            update_data["profile_picture"] = url_for('static', filename=f'uploads/profile_pics/{filename}') 
 
         if new_question.strip():
             question_error = validate_security_question(new_question, SECURITY_QUESTIONS)
