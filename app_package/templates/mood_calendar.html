@@ -6,64 +6,44 @@
     <title>Mood Calendar - {{ month_name }} {{ year }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Add basic styling to display emojis in a row and space the count */
+        .day-content-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: space-between; 
+            height: 100%; /* important for positioning the count */
+        }
+        .day-emoji-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows emojis to wrap to the next line */
+            justify-content: center;
+            margin-top: 5px;
+        }
+        .day-emoji {
+            font-size: 1.5em; /* Make the emojis visible */
+            margin: 0 2px;
+            cursor: help; /* Indicate that these are clickable/hoverable */
+        }
+        .total-input-message {
+            font-size: 0.7em;
+            color: #777;
+            margin-top: auto; /* Pushes the count to the bottom of the cell */
+            text-align: center;
+        }
+        .modal-entry {
+            border-left: 5px solid;
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-
     <div class="layout">
-
-        <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo2"></div>
-            
             <nav>
-            <ul class="menu">
-                <li class="active">
-                    <a href="/dashboard" >
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/log_emotion">
-                        <i class="fas fa-pencil-alt"></i>
-                        <span>Log Emotion</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/mood_calendar">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>Mood Calendar</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/mood_statistics">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Mood Statistics</span>
-                    </a>
-                </li>
-                </li>
-                <li class="active">
-                    <a href="/ai_feedback">
-                        <i class="fas fa-star"></i>
-                        <span>AI Feedback</span>
-                    </a>
-                </li>
-                </li>
-                <li class="active">
-                    <a href="/emotionhistory">
-                        <i class="fas fa-history"></i>
-                        <span>Emotion History</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-            </ul>
-            </nav>
-            
+                </nav>
         </div>
 
         <div class="main-section">
@@ -72,9 +52,9 @@
                 <h1>Mood calendar</h1>
             </header>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <a href="#">&larr; Prev Month</a> 
-            <h1>{{ month_name }} {{ year }}</h1>
-            <a href="#">Next Month &rarr;</a>
+                <a href="#">&larr; Prev Month</a> 
+                <h1>{{ month_name }} {{ year }}</h1>
+                <a href="#">Next Month &rarr;</a>
             </div>
             <h2>Mood Calendar for {{ month_name }} {{ year }}</h2>
             <p>Styling and interactive features (like clicking) are disabled to remove syntax errors.</p>
@@ -89,16 +69,38 @@
                     <tr class="week-row">
                         {% for day in week %}
                             {% if day != 0 %}
-                                {% set log = mood_data.get(day) %}
+                                {# The 'day' variable is an integer, convert to string for lookup #}
+                                {% set day_str = day|string %}
+                                {% set day_data = mood_data.get(day_str) %}
                                 
-                                <td class="{{ 'logged-day' if log else '' }}" 
-                                    title="Mood: {{ log.emotion if log else 'None' }}. Note: {{ log.note if log else 'N/A' }}"
-                                    {% if log %}
-                                        onclick="showDayDetails('{{ day }}', '{{ log.emotion }}', '{{ log.note | tojson | safe }}', '{{ log.timestamp }}', '{{ log.emoji }}', '{{ log.color }}')"
+                                <td class="{{ 'logged-day' if day_data else '' }}" 
+                                    {% if day_data %}
+                                        {# PASS ONLY THE DAY NUMBER. JS will fetch all entries #}
+                                        onclick="showDayDetails('{{ day_str }}')"
                                     {% endif %}>
                                     <div class="day-number">{{ day }}</div>
-                                        
-                                    <div class="day-emoji">{{ log.emoji if log }}</div>
+                                    
+                                    {# --- START OF NEW LOGIC --- #}
+                                    {% if day_data %}
+                                        <div class="day-content-container">
+                                            {# Display all emojis in a container #}
+                                            <div class="day-emoji-container">
+                                                {% for entry in day_data.entries %}
+                                                    <span class="day-emoji" 
+                                                          style="color: '{{ entry.color }}';" 
+                                                          title="{{ entry.emotion }} ({{ entry.timestamp }})">
+                                                        {{ entry.emoji }}
+                                                    </span>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                            {# Display the total count message #}
+                                            <div class="total-input-message">
+                                                Total Input: {{ day_data.total_entries }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {# --- END OF NEW LOGIC --- #}
                                 </td>
                             {% else %}
                                 <td class="empty-day"></td>
@@ -110,9 +112,9 @@
             </table>
 
             <div class="mood-sum">
-            <h2>📊 Mood Summary</h2>
-            <p><strong>Total Days Logged:</strong> {{ mood_summary.total_entries }}</p>
-            <p><strong>Most Frequent Mood:</strong> {{ mood_summary.most_frequent }}</p>
+                <h2>📊 Mood Summary</h2>
+                <p><strong>Total Mood Entries Logged (Month):</strong> {{ mood_summary.total_entries }}</p>
+                <p><strong>Most Frequent Mood:</strong> {{ mood_summary.most_frequent }}</p>
             </div>
 
             <hr>
@@ -120,7 +122,7 @@
             <h3>Emotion Breakdown:</h3>
             <ul class="breakdown-list">
                 {% for emotion, count in mood_summary.emotion_breakdown.items() %}
-                    <li><strong>{{ emotion }}</strong>: {{ count }} days</li>
+                    <li><strong>{{ emotion }}</strong>: {{ count }} entries</li>
                 {% endfor %}
             </ul>
             
@@ -129,105 +131,69 @@
                 <div id="modal-content" class="modal-content">
                     <span onclick="document.getElementById('mood-modal').style.display='none'" class="close">&times;</span>
                     <h2>Details for Day <span id="modal-day"></span></h2>
-                    <p><strong>Emotion:</strong> <span id="modal-emotion"></span> <span id="modal-emoji"></span></p>
-                    <p><strong>Time:</strong> <span id="modal-timestamp"></span></p>
-                    <p><strong>Note:</strong> <span id="modal-note"></span></p>
+                    
+                    {# Container to be filled dynamically by JavaScript #}
+                    <div id="modal-entries-container">
+                        </div>
+                    
                 </div>
             </div>
 
         </div>
     </div>
-
-
-
-    </div>
-
-    <div id="mood-modal" class="mood-modal">
-        <div id="modal-content" class="modal-content">
-            <span onclick="document.getElementById('mood-modal').style.display='none'" class="close">&times;</span>
-            <h2>Details for Day <span id="modal-day"></span></h2>
-            <p><strong>Emotion:</strong> <span id="modal-emotion"></span> <span id="modal-emoji"></span></p>
-            <p><strong>Time:</strong> <span id="modal-timestamp"></span></p>
-            <p><strong>Note:</strong> <span id="modal-note"></span></p>
-        </div>
-    </div>
-
-    <script>
-        function showDayDetails(day, emotion, noteJson, timestamp, emoji, color) {
-            
-            // 1. Safely retrieve the Note string
-            // Strip the outer single quotes ('...') added by the Jinja template
-            const safeNoteString = noteJson.substring(1, noteJson.length - 1);
-            let note;
-            try {
-                // Parse the JSON string (this handles internal quotes/newlines in the note)
-                note = JSON.parse(safeNoteString);
-            } catch (e) {
-                // Fallback, though this should rarely happen with |tojson|safe
-                note = "Note could not be loaded due to formatting error.";
-            }
-
-            // 2. Populate the Modal
-            document.getElementById('modal-day').textContent = day;
-            document.getElementById('modal-emotion').textContent = emotion;
-            document.getElementById('modal-emoji').textContent = emoji;
-            document.getElementById('modal-timestamp').textContent = formatTimestamp(timestamp);
-            document.getElementById('modal-note').textContent = note; // DISPLAYS THE USER'S NOTE
-
-            // 3. Style and Display
-            let modalContent = document.getElementById('modal-content');
-            modalContent.style.borderColor = color; // Applies mood color to modal border
-            document.getElementById('mood-modal').style.display = 'block';
-        }
-
-        function formatTimestamp(isoTimestamp) {
-            let date = new Date(isoTimestamp);
-            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' on ' + date.toLocaleDateString();
-        }
-
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            let modal = document.getElementById('mood-modal');
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
     
     <script>
-        function showDayDetails(day, emotion, noteJson, timestamp, emoji, color) {
-            
-            // 1. Safely retrieve the Note string
-            // Strip the outer single quotes ('...') added by the Jinja template
-            const safeNoteString = noteJson.substring(1, noteJson.length - 1);
-            let note;
-            try {
-                // Parse the JSON string (this handles internal quotes/newlines in the note)
-                note = JSON.parse(safeNoteString);
-            } catch (e) {
-                // Fallback, though this should rarely happen with |tojson|safe
-                note = "Note could not be loaded due to formatting error.";
-            }
-
-            // 2. Populate the Modal
-            document.getElementById('modal-day').textContent = day;
-            document.getElementById('modal-emotion').textContent = emotion;
-            document.getElementById('modal-emoji').textContent = emoji;
-            document.getElementById('modal-timestamp').textContent = formatTimestamp(timestamp);
-            document.getElementById('modal-note').textContent = note; // DISPLAYS THE USER'S NOTE
-
-            // 3. Style and Display
-            let modalContent = document.getElementById('modal-content');
-            modalContent.style.borderColor = color; // Applies mood color to modal border
-            document.getElementById('mood-modal').style.display = 'block';
-        }
-
+        // Store the mood data passed from Flask in a JavaScript variable
+        const MOOD_DATA = '{{ mood_data | tojson }}';
+    </script>
+    
+    {# Move the script block to the end of the body for best performance #}
+    <script>
         function formatTimestamp(isoTimestamp) {
             let date = new Date(isoTimestamp);
             return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' on ' + date.toLocaleDateString();
         }
 
-        // Close modal when clicking outside of it
+        function showDayDetails(day) {
+            
+            const dayData = MOOD_DATA[day];
+            if (!dayData || dayData.entries.length === 0) {
+                return;
+            }
+
+            // 1. Prepare Modal Header
+            document.getElementById('modal-day').textContent = day;
+            
+            // 2. Clear and Populate Entry Container
+            const container = document.getElementById('modal-entries-container');
+            container.innerHTML = '';
+            
+            dayData.entries.forEach((entry, index) => {
+                // Create a div for each individual entry
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'modal-entry';
+                // Use the entry's color for the left border (using the style from the <head>)
+                entryDiv.style.borderColor = entry.color; 
+                
+                // Populate the entry details
+                entryDiv.innerHTML = `
+                    <p><strong>Entry #${index + 1}</strong></p>
+                    <p><strong>Time:</strong> ${formatTimestamp(entry.timestamp)}</p>
+                    <p><strong>Emotion:</strong> ${entry.emotion} <span style="font-size: 1.5em">${entry.emoji}</span></p>
+                    <p><strong>Note:</strong> ${entry.note || 'No note provided.'}</p>
+                `;
+                container.appendChild(entryDiv);
+            });
+
+            // 3. Style and Display
+            // Note: Since we have multiple entries, styling the border with one color is tricky.
+            // We use the last entry's color for the main modal border, or keep it neutral.
+            let modalContent = document.getElementById('modal-content');
+            modalContent.style.borderColor = dayData.entries[dayData.entries.length - 1].color; 
+            document.getElementById('mood-modal').style.display = 'block';
+        }
+
+        // Close modal when clicking outside of it (kept the original logic)
         window.onclick = function(event) {
             let modal = document.getElementById('mood-modal');
             if (event.target == modal) {

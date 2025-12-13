@@ -6,13 +6,13 @@ import calendar
 
 emotion_choice = ['Happy', 'Sad', 'Anxious', 'Angry', 'Excited', 'Neutral', 'Stressed']
 EMOTION_MAP = {
-    'Happy': {'color': '#FFD700', 'emoji': '😊'},      # YELLOW
-    'Excited': {'color': "#FFA07A", 'emoji': '🤩'},    # BEIGE
-    'Neutral': {'color': '#D3D3D3', 'emoji': '😐'},    # GRAY
-    'Anxious': {'color': "#F58D16", 'emoji': '😟'},    # ORANGE
-    'Sad': {'color': '#000080', 'emoji': '😥'},        # NAVY BLUE
-    'Angry': {'color': '#FF4500', 'emoji': '😡'},      # RED
-    'Stressed': {'color': '#800080', 'emoji': '😩'},   # PURPLE
+    'Happy': {'color': '#FFD700', 'emoji': '😊'},      
+    'Excited': {'color': "#FFA07A", 'emoji': '🤩'},     
+    'Neutral': {'color': '#D3D3D3', 'emoji': '😐'},     
+    'Anxious': {'color': "#F58D16", 'emoji': '😟'},     
+    'Sad': {'color': '#000080', 'emoji': '😥'},         
+    'Angry': {'color': '#FF4500', 'emoji': '😡'},       
+    'Stressed': {'color': '#800080', 'emoji': '😩'},    
 }
 
 def get_emotion_styling(emotion):
@@ -23,18 +23,18 @@ def save_emolog(username, emotion, note):
     db = get_db()
     try:
         db.execute('''INSERT INTO emolog 
-                   (username, emotion_name, note)
-                   VALUES (?, ?, ?)''',
-                   (username, emotion, note)
+                    (username, emotion_name, note)
+                    VALUES (?, ?, ?)''',
+                    (username, emotion, note)
         )
         db.commit()
         return True
-    
+        
     except sqlite3.Error as e:
         db.rollback()
         print(f'Error saving emotion log: {e}')
         return False
-    
+        
     finally:
         db.close()
 
@@ -49,7 +49,7 @@ def get_monthly_mood_data(username, year, month):
     try:
         query = """
             SELECT 
-                CAST(strftime('%d', timestamp) AS INTEGER) AS day, 
+                CAST(strftime('%d', timestamp) AS TEXT) AS day, 
                 emotion_name, 
                 note,
                 timestamp
@@ -60,19 +60,26 @@ def get_monthly_mood_data(username, year, month):
                 timestamp >= ? AND 
                 timestamp < ?
             ORDER BY
-                timestamp DESC
+                timestamp ASC
         """
-        results = db.execute(query, (username, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))).fetchall()
+        results = db.execute(query, (username, start_date.strftime('%Y-%m-%d %H:%M:%S'), end_date.strftime('%Y-%m-%d %H:%M:%S'))).fetchall()
         
         mood_data = {}
         for row in results:
-            day = row['day']
-            if day not in mood_data: 
-                mood_data[day] = {
-                    'emotion': row['emotion_name'],
-                    'note': row['note'],
-                    'timestamp': row['timestamp']
-                }
+            day_key = row['day']
+            
+            entry = {
+                'emotion': row['emotion_name'],
+                'note': row['note'],
+                'timestamp': row['timestamp']
+            }
+            
+            # Appends all entries for a given day to a list
+            if day_key not in mood_data:
+                mood_data[day_key] = []
+                
+            mood_data[day_key].append(entry)
+            
         return mood_data
         
     except sqlite3.Error as e:

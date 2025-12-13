@@ -17,7 +17,8 @@ def calculate_mood_summary(processed_data):
         total_entries += day_data['total_entries']
         
         for entry in day_data['entries']:
-            emotion = entry['emotion']
+            # Assuming 'entry' is a dict with an 'emotion' key here
+            emotion = entry['emotion'] 
             emotion_counts[emotion] = emotion_counts.get(emotion, 0) + 1
 
     most_frequent = max(emotion_counts, key=emotion_counts.get) if emotion_counts else "N/A"
@@ -28,9 +29,7 @@ def calculate_mood_summary(processed_data):
         'most_frequent': most_frequent,
     }
     return summary
-        
     
-
 @mood_calendar_bp.route("/mood_calendar", methods=['GET'])
 @mood_calendar_bp.route("/mood_calendar/<int:year>/<int:month>", methods=['GET'])
 def mood_calendar(year=None, month=None):
@@ -52,14 +51,17 @@ def mood_calendar(year=None, month=None):
     monthly_mood_data = get_monthly_mood_data(username, year, month)
 
     processed_mood_data = {}
-    for day, log in monthly_mood_data.items():
+    for day, logs in monthly_mood_data.items(): 
         day_entries = []
-        for log in log:
-            styling = get_emotion_styling(log['emotion'])
+        for entry in logs: 
+            if not isinstance(entry, dict) or 'emotion' not in entry:
+                continue 
+            
+            styling = get_emotion_styling(entry['emotion'])
             day_entries.append({
-                'emotion': log['emotion'],
-                'note': log.get('note', ''),
-                'timestamp': log.get('timestamp', ''),
+                'emotion': entry['emotion'],
+                'note': entry.get('note', ''),
+                'timestamp': entry.get('timestamp', ''),
                 'color': styling['color'],
                 'emoji': styling['emoji']
             })
