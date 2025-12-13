@@ -1,5 +1,4 @@
 html, body {
-    overflow-x: hidden;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -478,41 +477,84 @@ body.body {
     text-decoration: underline;
 }
 
-/* ======================== HOME PAGE LAYOUT ======================== */
+/* ======================== Dashboard LAYOUT ======================== */
 
 .layout {
     display: flex;
-    height: 200vh;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* SIDEBAR */
 .sidebar {
-    width: 240px;
+    width: 60px;
+    height: 100vh;
     background: #c84ffc;
     color: white;
     padding: 20px;
     box-shadow: 10px 0 8px rgba(0,0,0,0.1);
     background: linear-gradient(180deg, #a64dff, #6f43f3);
+    transition: all 0.5s linear;
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+
+}
+
+.sidebar:hover {
+    width: 200px;
+    transition: 0.5s;
+}
+
+.logo2 {
+    height:80px;
+    padding: 0;
+}
+
+.menu{
+    height:70%;
+    position: relative;
+    list-style: none;
+    padding: 0;
+    align-items: center;
+}
+
+.menu li{
+    margin: 8px 0;
+    padding: 1rem;
+    align-items: center;
+    border-radius: 8px;
+    transition: all 0.5s ease-in-out;
+    background: transparent;
+}
+
+.menu li:hover,
+.active {
+    background: rgba(253, 189, 189, 0.44);
     
 }
 
-.sidebar h2 {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.sidebar nav {
+.menu a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 15px;
 }
 
-.sidebar nav a {
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
+.menu a span{
+    overflow: hidden;   
+    white-space: nowrap; 
 }
+
+.menu a i{
+    font-size: 20px;
+}
+
 
 /*MAIN SECTION */
 .main-section {
@@ -520,7 +562,7 @@ body.body {
     background: #dccbf3;
     box-shadow: #6c4bbf 15px 0px 15px;
     background:linear-gradient(150deg, #f3eaff, #d9c8f8);
-    padding: 25px;
+    padding: 35px ;
 }
 
 /*TOP BAR */
@@ -528,7 +570,8 @@ body.body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    padding: 0 10px;
 }
 
 .profile-btn-dashboard {
