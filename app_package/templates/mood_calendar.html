@@ -6,44 +6,62 @@
     <title>Mood Calendar - {{ month_name }} {{ year }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        /* Add basic styling to display emojis in a row and space the count */
-        .day-content-container { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: space-between; 
-            height: 100%; /* important for positioning the count */
-        }
-        .day-emoji-container {
-            display: flex;
-            flex-wrap: wrap; /* Allows emojis to wrap to the next line */
-            justify-content: center;
-            margin-top: 5px;
-        }
-        .day-emoji {
-            font-size: 1.5em; /* Make the emojis visible */
-            margin: 0 2px;
-            cursor: help; /* Indicate that these are clickable/hoverable */
-        }
-        .total-input-message {
-            font-size: 0.7em;
-            color: #777;
-            margin-top: auto; /* Pushes the count to the bottom of the cell */
-            text-align: center;
-        }
-        .modal-entry {
-            border-left: 5px solid;
-            padding-left: 10px;
-            margin-bottom: 15px;
-        }
-    </style>
 </head>
 <body>
     <div class="layout">
+        <!-- SIDEBAR -->
         <div class="sidebar">
+            <div class="logo2"></div>
+            
             <nav>
-                </nav>
+            <ul class="menu">
+                <li class="active">
+                    <a href="/dashboard" >
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/log_emotion">
+                        <i class="fas fa-pencil-alt"></i>
+                        <span>Log Emotion</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/mood_calendar">
+                        <i class="far fa-calendar-alt"></i>
+                        <span>Mood Calendar</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/mood_statistics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Mood Statistics</span>
+                    </a>
+                </li>
+                </li>
+                <li class="active">
+                    <a href="/ai_feedback">
+                        <i class="fas fa-star"></i>
+                        <span>AI Feedback</span>
+                    </a>
+                </li>
+                </li>
+                <li class="active">
+                    <a href="/emotionhistory">
+                        <i class="fas fa-history"></i>
+                        <span>Emotion History</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+            </nav>
+            
         </div>
 
         <div class="main-section">
@@ -51,7 +69,7 @@
             <header class="topbar">
                 <h1>Mood calendar</h1>
             </header>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="month-navigation">
                 <a href="#">&larr; Prev Month</a> 
                 <h1>{{ month_name }} {{ year }}</h1>
                 <a href="#">Next Month &rarr;</a>
@@ -87,7 +105,6 @@
                                             <div class="day-emoji-container">
                                                 {% for entry in day_data.entries %}
                                                     <span class="day-emoji" 
-                                                          style="color: '{{ entry.color }}';" 
                                                           title="{{ entry.emotion }} ({{ entry.timestamp }})">
                                                         {{ entry.emoji }}
                                                     </span>
@@ -179,7 +196,7 @@
                 entryDiv.innerHTML = `
                     <p><strong>Entry #${index + 1}</strong></p>
                     <p><strong>Time:</strong> ${formatTimestamp(entry.timestamp)}</p>
-                    <p><strong>Emotion:</strong> ${entry.emotion} <span style="font-size: 1.5em">${entry.emoji}</span></p>
+                    <p><strong>Emotion:</strong> ${entry.emotion} <span>${entry.emoji}</span></p>
                     <p><strong>Note:</strong> ${entry.note || 'No note provided.'}</p>
                 `;
                 container.appendChild(entryDiv);
