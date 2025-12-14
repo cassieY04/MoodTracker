@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emotion History</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo2"></div>
+            
+            <nav>
+            <ul class="menu">
+                <li class="active">
+                    <a href="/dashboard" >
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/log_emotion">
+                        <i class="fas fa-pencil-alt"></i>
+                        <span>Log Emotion</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/mood_calendar">
+                        <i class="far fa-calendar-alt"></i>
+                        <span>Mood Calendar</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/mood_statistics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Mood Statistics</span>
+                    </a>
+                </li>
+                </li>
+                <li class="active">
+                    <a href="/ai_feedback">
+                        <i class="fas fa-star"></i>
+                        <span>AI Feedback</span>
+                    </a>
+                </li>
+                </li>
+                <li class="active">
+                    <a href="/emotionhistory">
+                        <i class="fas fa-history"></i>
+                        <span>Emotion History</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+            </nav>
+            
+        </div>
+
+        <div class="main-section">
+
+            <header class="topbar">
+                <h1>Emotion History</h1>
+            </header>
+
+        </div>
+    </div>
+
+</body>
+</html>

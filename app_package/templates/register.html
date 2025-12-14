@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - MoodTracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<script>
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
+<body class="auth-body-register">
+
+    <div class="auth-card">
+        <h2>Create Your Account</h2>
+
+        <form method="POST">
+            <label>Full Name</label>
+            <input type="text" name="fullname" placeholder="Enter your full name" required>
+
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter your username" required>
+
+            <label>Email</label>
+            <input type="text" name="email" placeholder="e.g. @gmail.com" required>
+
+            <label>Phone Number</label>
+            <input type="text" name="phone" placeholder="e.g. 0123456789" required>
+
+            <label>Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="toggle-eye" onclick="togglePassword('password')">👁</span>
+                </div>
+                <ul class="password-requirements">
+                    <li>At least 8-12 characters</li>
+                    <li>Includes uppercase and lowercase letters</li>
+                    <li>Contains digit and special characters</li>
+                </ul>
+
+            <label>Confirm Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="confirm" name="confirm_password" placeholder="Confirm your password" required>
+                    <span class="toggle-eye" onclick="togglePassword('confirm')">👁</span>
+                </div>
+
+            <label>Security Question </label>
+            <select name="security_question" class="full-width-select" required>
+                <option value="disabled selected">Select a security question</option>
+                <option value="What is your favourite food?">What is your favourite food?</option>
+                <option value="What was your dream car?">What was your dream car?</option>
+                <option value="What is your first phone brand?">What is your first phone brand?</option>
+            </select>
+
+            <label>Answer</label>
+            <input type="text" name="security_answer" placeholder="Enter your answer" required>
+            
+            <button class="main-btn" type="submit">Create Account</button>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="popup-msg">
+                {{ messages[0] }}
+                </div>
+            {% endif %}
+            {% endwith %}
+
+        </form>
+
+        <p class="switch-auth">
+            Already have an account?
+            <a href="/login">Log In</a>
+        </p>
+
+        <div class="Nav-to-welcome">
+            <a href="/">← Welcome page</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
