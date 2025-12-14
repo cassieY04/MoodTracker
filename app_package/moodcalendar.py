@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash
 from datetime import datetime
 import calendar
+from dateutil.relativedelta import relativedelta
 from .logemotion import get_monthly_mood_data, get_emotion_styling
 
 mood_calendar_bp = Blueprint('mood_calendar', __name__)
@@ -17,7 +18,6 @@ def calculate_mood_summary(processed_data):
         total_entries += day_data['total_entries']
         
         for entry in day_data['entries']:
-            # Assuming 'entry' is a dict with an 'emotion' key here
             emotion = entry['emotion'] 
             emotion_counts[emotion] = emotion_counts.get(emotion, 0) + 1
 
@@ -40,13 +40,23 @@ def mood_calendar(year=None, month=None):
     username = session['username']
 
     if year is None or month is None:
-        now = datetime.now()
-        year = now.year
-        month = now.month
+        current_date = datetime.now()
+        year = current_date.year
+        month = current_date.month
     
     if not 1 <= month <= 12:
         flash("Invalid month specified.", 'error')
         return redirect(url_for('mood_calendar.mood_calendar'))
+    
+    current_view_date = datetime(year, month, 1)
+    
+    prev_date = current_view_date - relativedelta(months=1)
+    prev_year = prev_date.year
+    prev_month = prev_date.month
+
+    next_date = current_view_date + relativedelta(months=1)
+    next_year = next_date.year
+    next_month = next_date.month
     
     monthly_mood_data = get_monthly_mood_data(username, year, month)
 
@@ -71,7 +81,7 @@ def mood_calendar(year=None, month=None):
             'entries': day_entries,
         }
 
-    month_name = datetime(year, month, 1).strftime("%B")    
+    month_name = datetime(year, month, 1).strftime("%B")     
     
     cal_data = calendar.monthcalendar(year, month)
     mood_summary = calculate_mood_summary(processed_mood_data)
@@ -82,4 +92,8 @@ def mood_calendar(year=None, month=None):
                             calendar=cal_data,
                             mood_data=processed_mood_data,
                             mood_summary=mood_summary,
+                            prev_year=prev_year,
+                            prev_month=prev_month,
+                            next_year=next_year,
+                            next_month=next_month
     )
