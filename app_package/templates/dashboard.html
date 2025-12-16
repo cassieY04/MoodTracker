@@ -86,21 +86,31 @@
     <div class="main-section">
 
         <header class="topbar">
-            <h1>Dashboard</h1>
+            <div class="header-title">
+                <span>MoodTracker</span>
+                <h1>Dashboard</h1>
+            </div>
 
-            <a href="/profile/{{ username }}" class="profile-btn-dashboard">
-                <!-- Username text -->
-                <span class="profile-username-dashboard">{{ user.username }}</span>
+            <div class=" user-info">
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+            
 
-                <!-- Profile picture (same as profile page) -->
-                {% if user.profile_picture %}
-                    <img src="{{ user.profile_picture}}" 
-                        alt="Profile picture" 
-                        class="profile-pic-dashboard">
-                {% else %}
-                    <div class="profile-pic-dashboard default-icon">👤</div>
-                {% endif %}
-            </a>
+                <a href="/profile/{{ username }}" class="profile-btn-dashboard">
+                    <!-- Username text -->
+                    <span class="profile-username-dashboard">{{ user.username }}</span>
+                    <!-- Profile picture (same as profile page) -->
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture}}" 
+                            alt="Profile picture" 
+                            class="profile-pic-dashboard">
+                    {% else %}
+                        <div class="profile-pic-dashboard default-icon">👤</div>
+                    {% endif %}
+                </a>
+            </div>
         </header>
 
         <section class="dashboard-grid">

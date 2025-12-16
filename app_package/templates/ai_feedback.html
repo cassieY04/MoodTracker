@@ -68,9 +68,20 @@
         <div class="main-section">
 
             <header class="topbar">
-                <h1>AI Feedback</h1>
+                <div class="header-title">
+                    <span>MoodTracker</span>
+                    <h1>AI Feedback</h1>
+                </div>
             </header>
 
+            <div class="content-aifeedback">
+                <h3>Your AI-Generated Feedback</h3>
+                <div class="feedback-card">
+                    <p><strong>Your Emotion:</strong> {{ emotion }}</p>
+                    <p><strong>Your Notes:</strong> {{ reason or "No notes provided." }}</p>
+                    <p class="ai-response"><strong>Feedback:</strong> {{ feedback }}</p>
+                </div>
+            </div>
         </div>
     </div>
 

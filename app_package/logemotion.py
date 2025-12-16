@@ -3,6 +3,8 @@ import sqlite3
 from Databases.emologdb import get_db
 from datetime import datetime
 import calendar
+from .aifeedback import generate_ai_feedback
+
 
 emotion_choice = ['Happy', 'Sad', 'Anxious', 'Angry', 'Excited', 'Neutral', 'Stressed']
 EMOTION_MAP = {
@@ -98,24 +100,26 @@ def emolog():
             return redirect(url_for('auth.login'))
         
     username = session['username']
+    feedback = None
+    show_feedback = False
     
     if request.method == 'POST':
         selected_emotion = request.form.get('emotion')
         note = request.form.get('note', '').strip()
+        thought = request.form.get('thought', '').strip()
+        combined_note = f"{note} {thought}".strip()
 
         if not selected_emotion or selected_emotion not in emotion_choice:
             flash('Please select a valid emotion.', 'error')
             return redirect(url_for('log_emotion.emolog'))
         
-        if save_emolog(username, selected_emotion, note):
-            if selected_emotion in ['Happy', 'Excited']:
-                flash(f"🎉 Log Saved! Great to see you feeling {selected_emotion}!", "success")
-            else:
-                flash(f"🫂 Log Saved. We noted you felt {selected_emotion}.", "info")
-            return redirect(url_for('log_emotion.emolog'))
-        
+        if save_emolog(username, selected_emotion, combined_note):
+            feedback = generate_ai_feedback(selected_emotion, combined_note)
+            show_feedback = True
+            flash('Emotion log saved successfully!', 'success')
+            # We will now render the page again with the feedback
         else:
             flash("An error occurred while saving the log. Check the console.", "error")
-            return redirect(url_for("log_emotion.emolog"))
+            # Let the function fall through to render the template
 
-    return render_template("log_emotion.html", emotions = emotion_choice)
+    return render_template("log_emotion.html", emotions = emotion_choice, aifeedback=feedback, show_feedback=show_feedback)
