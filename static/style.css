@@ -1026,26 +1026,150 @@ textarea {
 }
 
 /* -------Log Emotion Page--------- */
-
-.emotion-log-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.content-logemotion{
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 30px;
     margin-top: 20px;
     font-family: Arial, sans-serif;
 }
-.emotion-log-form select,
+
+.emotion-log-form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.log-emotion-container{
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px 20px;
+    padding-top: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: default;
+}
+
+.greeting{
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    font-style: italic;
+    font-family: Arial, sans-serif;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }  
+}
+
+.log-right{
+    background: #f0e7ff;
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.log-left{
+    background: #f0e7ff;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.emotion-emoji-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    grid-template-columns: repeat(5, 50px);
+    justify-content: center;
+}
+
+.emoji-option {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border-radius: 20px;
+    position: relative;
+    background: white;
+    transition: all 0.2s ease;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+
+.emoji-option:hover span{
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px #d3b0ff;
+    background: #e8dbff;
+}
+
+.emoji-option input{
+    display: none;
+}
+
+.emoji-option span{
+    font-size: 25px;
+    padding: 10px;
+    border-radius: 12px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.emoji-option .text-emoji{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.emoji-option .emojiji{
+    display: none;
+    font-size: 26px;
+}
+
+.emoji-option:hover .text-emoji{
+    display: none;
+}
+
+.emoji-option:hover .emojiji{
+    display: block;
+}
+
+.emoji-option input:checked + span{
+    box-shadow: 0 0 0 4px #c9a9ff;
+    transform: scale(1.1);
+    background: #e8dbff;
+}
+
+.emoji-option input:checked + .text-emoji{
+    display: none;
+    color: #7c4dff
+}
+.emoji-option input:checked + .emojiji{
+    display: block;
+    opacity: 1;
+}
+
 .emotion-log-form textarea {
     font-size: 16px;
     padding: 10px 14px;
+    height: 120px;
     border-radius: 8px;
-    border: 1px solid #c9a9ff;
+    border: 2px solid #c9a9ff;
     outline: none;
+    resize: vertical;
+    font-family: Arial, sans-serif;
 }
-.emotion-log-form select:focus,
 .emotion-log-form textarea:focus {
     border-color: #9c6bff;
 }
+
 .emotion-log-form button {
     width: 150px;
     padding: 12px;
@@ -1061,17 +1185,33 @@ textarea {
     background: #9860ff;
 }
 
+.ai_detail_link{
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #7c4dff;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: right;
+}
+
+.ai_detail_link:hover{
+    text-decoration: underline;
+
+}
+
 .feedback-box {
-    padding: 1px 15px;
+    padding: 10px 15px;
     background: #ccfefe;
     color: #0d3f29;
     border-radius: 8px;
     font-weight: 600;
     font-size: 15px;
-    margin: auto;
+    margin: 18px auto;
     width: fit-content;
     font-family: Arial, sans-serif;
-    animation: fadeOut 8s forwards;
+    animation: fadeOut 12s forwards;
 }
 
 .feedback_box p {

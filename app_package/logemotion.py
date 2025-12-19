@@ -6,7 +6,7 @@ import calendar
 from .aifeedback import generate_ai_feedback
 
 
-emotion_choice = ['Happy', 'Sad', 'Anxious', 'Angry', 'Excited', 'Neutral', 'Stressed']
+emotion_choice = ['Happy', 'Excited', 'Neutral', 'Anxious', 'Sad', 'Angry', 'Stressed']
 EMOTION_MAP = {
     'Happy': {'color': '#FFD700', 'emoji': '😊'},      
     'Excited': {'color': "#FFA07A", 'emoji': '🤩'},     

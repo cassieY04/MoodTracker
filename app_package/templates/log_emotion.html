@@ -66,7 +66,7 @@
             
         </div>
 
-        <div class="main-section">
+        <div class="main-section" id="main-scroll">
 
             <header class="topbar">
                 <div class="header-title">
@@ -74,47 +74,81 @@
                     <h1>Log Emotion</h1>
                 </div>
             </header>
-
-            <div class="content-logemotion">
-            
-                <h3>How are you feeling right now, {{ session.username }}?</h3>
-                <form method="POST" class="emotion-log-form">
-                            
-                    <label for="emotion">Select Current Emotion:</label>
-                    <select name="emotion" id="emotion" required>
-                    <option value="" disabled selected>-- Select an Emotion --</option>
-                    {% for emo in emotions %}
-                    <option value="{{ emo }}">{{ emo }}</option>
-                    {% endfor %}
-                    </select>
-
-                    <label for="note">Optional Note (Reason):</label>
-                    <textarea name="note" id="note" rows="3" placeholder="What make you feel this way? (e.g., 'Finished a big project' or 'Worrying about an exam')."></textarea>
-
-                    <!--additional thought field-->
-                    <label for="note">Optional Note (Thought):</label>
-                    <textarea name="thought" id="thought" rows="3" placeholder="Was there a specific moment or thought?(e.g, 'I felt sad because I had a meeting on my birthday')"></textarea>
-
-
-                    <button type="submit" class="main-btn">Save Log</button>
-                </form>
+            <h2 class="greeting">How are you feeling right now, {{ session.username }}?</h2>
+            <div class="log-emotion-container">
                 
+                <form method="POST" class="emotion-log-form">
+                    <div class="content-logemotion">
+                        <div class="log-left">
+                            <label for="emotion" class="emotion-label">Select Current Emotion:</label>
+                            <div class="emotion-emoji-grid">
+                                {%  for emo in emotions %}
+                                <label class="emoji-option" >
+                                    <input type="radio" name="emotion" value="{{ emo }}" required>
+                                    <span class="emojiji">
+                                        {% if emo == 'Happy'%}
+                                        {{ '😊' }}
+                                        {% elif emo == 'Excited'%}
+                                        {{ '🤩' }}
+                                        {% elif emo == 'Neutral'%}
+                                        {{ '😐' }}
+                                        {% elif emo == 'Anxious'%}
+                                        {{ '😟' }}
+                                        {% elif emo == 'Sad'%}
+                                        {{ '😥' }}
+                                        {% elif emo == 'Angry'%}
+                                        {{ '😡' }}
+                                        {% elif emo == 'Stressed'%}
+                                        {{ '😩' }}
+                                        {% endif %}
+                                    </span>                                     
+                                    <span class="text-emoji">{{ emo }}</span>
+
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="log-right">
+
+                            <label for="note">Optional Note (Reason):</label>
+                            <textarea name="note" id="note" rows="3" placeholder="What make you feel this way? (e.g., 'Finished a big project' or 'Worrying about an exam')."></textarea>
+
+                            <!--additional thought field-->
+                            <label for="note">Optional Note (Thought):</label>
+                            <textarea name="thought" id="thought" rows="3" placeholder="Was there a specific moment or thought?(e.g, 'I felt sad because I had a meeting on my birthday')"></textarea>
+
+
+                            <button type="submit" class="main-btn">Save Log</button>
+                        </div>
+                    </div>
+                </form>
+            </div>   
+            
+
                     {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}{% if show_feedback%}
-                        <div class="feedback-box">
+                        <div class="feedback-box" id="feedback-box">
                             {% for category, message in messages %}
                             <p>{{ message }}</p>
                             <p>{{ aifeedback }}</p>
-                
+                            <a href="/ai_feedback" class="ai_detail_link">← View Full AI Feedback</a>
                             {% endfor %}{% endif %}
                         </div>
                     {% endif %}
                     {% endwith %}
+                
+                    
 
-
-            </div>
         </div>
     </div>
-
+                <script>
+                    window.addEventListener('load', function() {
+                        const feedback = document.getElementById('feedback-box');
+                        if (feedback) {
+                            feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    });
+                </script>
 </body>
 </html>
