@@ -73,12 +73,14 @@
                 </div>
             </header>
             <div class="month-navigation">
-                <a href="#">&larr; Prev Month</a> 
+                {# The 'mood_calendar.mood_calendar' is the Blueprint name + function name #}
+                <a href="{{ url_for('mood_calendar.mood_calendar', year=prev_year, month=prev_month) }}">&larr; Prev Month</a> 
+    
                 <h1>{{ month_name }} {{ year }}</h1>
-                <a href="#">Next Month &rarr;</a>
+    
+                <a href="{{ url_for('mood_calendar.mood_calendar', year=next_year, month=next_month) }}">Next Month &rarr;</a>
             </div>
             <h2>Mood Calendar for {{ month_name }} {{ year }}</h2>
-            <p>Styling and interactive features (like clicking) are disabled to remove syntax errors.</p>
             <table class="mood-calendar-table">
                 <thead class="calendar-header">
                     <tr>
