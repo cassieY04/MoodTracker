@@ -1058,6 +1058,7 @@ textarea {
     margin-bottom: 10px;
     margin-top: 25px;
     font-style: italic;
+    color: rgb(16, 38, 36);
     font-family: Arial, sans-serif;
     animation: fadeIn 1s ease-in-out;
 }

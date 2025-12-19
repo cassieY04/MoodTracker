@@ -73,7 +73,7 @@ def mood_calendar(year=None, month=None):
                 'note': entry.get('note', ''),
                 'timestamp': entry.get('timestamp', ''),
                 'color': styling['color'],
-                'emoji': styling['emoji']
+                'emoji': styling['emoji'],
             })
 
         processed_mood_data[day] = {
