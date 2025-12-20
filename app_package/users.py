@@ -184,3 +184,10 @@ class UserManager:
             return [dict(row) for row in cursor.fetchall()]
         finally:
             db.close()
+
+    @staticmethod
+    def update_emotion_log(log_id, username, new_note):
+        db = get_db()
+        db.execute("UPDATE emolog SET note = ? WHERE id = ? AND username = ?", (new_note, log_id, username))
+        db.commit()
+        return True

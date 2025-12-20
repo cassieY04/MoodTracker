@@ -78,7 +78,8 @@
                 {% if logs %}
                     <div class="history-list">
                         {% for log in logs %}
-                        <div class="history-card" id="log-{{ log.id }}" style="border-left-color: {{ log.color }};">
+                        <div class="history-card" id="log-{{ log.id }}">
+                            <div class="card-header">
                             <div class="card-header">
                                 <div class="emotion-info">
                                     <span class="emotion-emoji">{{ log.emoji }}</span>
@@ -100,6 +101,14 @@
                             
                             <div class="card-footer">
                                 <a href="/ai_feedback/{{ log.id }}" class="view-feedback-link">View AI Feedback &rarr;</a>
+                                <div class="card-actions">
+                                    <button class="icon-btn edit-btn" title="Edit Reason"
+                                            data-id="{{ log.id }}" 
+                                            data-note="{{ log.note or '' }}"
+                                            onclick="prepareEditModal(this)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -114,11 +123,27 @@
         </div>
     </div>
 
+    <div id="editModal" class="popup-overlay">
+        <div class="popup-box">
+            <h2>Edit Entry</h2>
+            <form method="POST">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="log_id" id="edit-log-id">
+                <label for="edit-note">Reason:</label>
+                <textarea name="note" id="edit-note" rows="5"></textarea>
+                <div class="popup-actions">
+                    <button type="button" class="secondary-btn" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="main-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Check if there is a hash in the URL (e.g., #log-15) indicating a specific log
+        // Smooth scroll to card if ID exists in URL hash
+        window.addEventListener("DOMContentLoaded", function() {
             if (window.location.hash) {
-                const targetId = window.location.hash.substring(1); // Remove the '#'
+                const targetId = window.location.hash.substring(1);
                 const targetElement = document.getElementById(targetId);
                 
                 if (targetElement) {
@@ -127,6 +152,22 @@
                 }
             }
         });
+
+        function openEditModal(id, currentNote) {
+            document.getElementById('edit-log-id').value = id;
+            document.getElementById('edit-note').value = currentNote;
+            document.getElementById('editModal').style.display = "flex";
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = "none";
+        }
+
+        // Close when clicking outside box
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target == modal) closeEditModal();
+        }
     </script>
 </body>
 </html>
