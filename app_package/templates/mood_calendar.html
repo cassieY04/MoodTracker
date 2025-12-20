@@ -103,7 +103,11 @@
                                                 {% if day_key in mood_data %}
                                                     <div class="day-emojis">
                                                         {% for entry in mood_data[day_key]['entries'] %}
-                                                            <span class="cal-emoji" title="{{ entry.emotion }}">{{ entry.emoji }}</span>
+                                                            <span class="cal-emoji" 
+                                                                  title="{{ entry.emotion }} at {{ entry.time }}"
+                                                                  onclick="openDayModal('{{ day_key }}')">
+                                                                {{ entry.emoji }}
+                                                            </span>
                                                         {% endfor %}
                                                     </div>
                                                 {% endif %}
@@ -151,5 +155,67 @@
 
         </div>
     </div>
+
+    <!-- Day Details Modal -->
+    <div id="mood-modal" class="mood-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-date-title">Log Details</h2>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modal-entries-container">
+                <!-- Entries will be injected here by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pass the Python dictionary to JavaScript
+        const MOOD_DATA = {{ mood_data | tojson }};
+
+        function openDayModal(dayKey) {
+            const dayData = MOOD_DATA[dayKey];
+            if (!dayData || !dayData.entries) return;
+
+            // Set Title
+            document.getElementById('modal-date-title').innerText = `Logs for ${dayKey} {{ month_name }}`;
+            
+            const container = document.getElementById('modal-entries-container');
+            container.innerHTML = '';
+            
+            dayData.entries.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'modal-entry';
+                
+                entryDiv.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <strong style="font-size:1.1em;">${entry.emoji} ${entry.emotion}</strong>
+                        <span style="color:#888; font-size:0.9em;">${entry.time}</span>
+                    </div>
+                    ${entry.note ? `<p style="margin:5px 0; color:#555;"><strong>Reason:</strong> ${entry.note}</p>` : ''}
+                    ${entry.thought ? `<p style="margin:5px 0; color:#555;"><strong>Thought:</strong> ${entry.thought}</p>` : ''}
+                `;
+                container.appendChild(entryDiv);
+            });
+
+            document.getElementById('mood-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('mood-modal').style.display = 'none';
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        }
+
+        // Close if clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('mood-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>

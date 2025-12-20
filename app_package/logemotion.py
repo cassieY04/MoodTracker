@@ -51,7 +51,7 @@ def emolog():
             ai_full = ai_full
         ):
             show_feedback = True
-            flash(ai_short, "ai")
             flash("Emotion log saved successfully!", "success")
+            flash(ai_short, "ai")
           
     return render_template("log_emotion.html", emotions=emotion_choice, aifeedback=ai_short, show_feedback=show_feedback)

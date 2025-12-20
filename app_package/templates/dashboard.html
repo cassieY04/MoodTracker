@@ -118,7 +118,7 @@
                 <div class="welcome-card">
                     <div class="welcome-text">
                         <h2>Welcome back, {{ session.username }}! 👋</h2>
-                        <p>Take a moment to check in with yourself. How are you feeling right now?</p>
+                        <p>Take a moment to check in with yourself. <br>How are you feeling right now?</p>
                         <a href="/log_emotion" class="action-btn">Log My Mood</a>
                     </div>
                     <div class="welcome-decoration">
@@ -172,5 +172,10 @@
 
         </div>
     </div>
+    <script>
+    function closePopup() {
+        document.getElementById("welcomePopup").style.display = "none";
+    }
+    </script>
 </body>
 </html>

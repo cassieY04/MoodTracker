@@ -19,8 +19,10 @@ def get_monthly_mood_data(username, year, month):
         query = """
             SELECT 
                 CAST(strftime('%d', timestamp) AS TEXT) AS day, 
+                strftime('%H:%M', timestamp) as time_str,
                 emotion_name, 
                 note,
+                thought,
                 timestamp
             FROM 
                 emolog
@@ -42,8 +44,10 @@ def get_monthly_mood_data(username, year, month):
             entry = {
                 'emotion': emotion,
                 'note': row['note'],
+                'thought': row['thought'],
                 'timestamp': row['timestamp'],
-                'emoji': style['emoji'] # Added emoji here
+                'time': row['time_str'],
+                'emoji': style['emoji']
             }
             
             # Structure matches template: mood_data['01']['entries']

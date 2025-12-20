@@ -36,7 +36,7 @@ function togglePassword(id) {
         </div>
 
         <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="profile_picture" accept="image/*" required>
+            <input class="pic-btn" type="file" name="profile_picture" accept="image/*" required>
             <button type="submit" class="small-btn" name="upload_profile_picture" value="Upload Picture">Upload Picture</button>        
         </form>
 
@@ -97,7 +97,7 @@ function togglePassword(id) {
 
                 <div>
                     <label>Birthday</label>  <!-- Santania edited -->
-                    <input type="date" name="birthday" placeholder="YYYY-MM-DD" value="{{ user.birthday }}"></input>
+                    <input class="birthday" type="date" name="birthday" placeholder="YYYY-MM-DD" value="{{ user.birthday }}"></input>
                 </div>
 
                 <div>
@@ -107,7 +107,7 @@ function togglePassword(id) {
 
                 <div>
                     <label>Security Question</label>
-                    <select name="security_question" required>
+                    <select name="security_question" class="cursor" >
                         <option value="">Select a question</option>
                         {% for q in security_questions %}
                             <option value="{{ q }}" {% if user.security_question == q %}selected{% endif %}>
@@ -119,7 +119,7 @@ function togglePassword(id) {
 
                 <div>
                     <label>Gender</label>
-                    <select name="gender">
+                    <select name="gender" class="cursor" >
                         <option value="">Select</option>
                         <option value="Male" {% if user.gender=="Male" %}selected{% endif %}>Male</option>
                         <option value="Female" {% if user.gender=="Female" %}selected{% endif %}>Female</option>
