@@ -74,13 +74,81 @@
                 </div>
             </header>
 
-            <div class="content-aifeedback">
-                <h3>Your AI-Generated Feedback</h3>
-                <div class="feedback-card">
-                    <p><strong>Your Emotion:</strong> {{ emotion }}</p>
-                    <p><strong>Your Notes:</strong> {{ reason or "No notes provided." }}</p>
-                    <p class="ai-response"><strong>Feedback:</strong> {{ feedback }}</p>
+            <div class="ai-feedback-page">
+
+                {% if empty%}
+                <p> No emotion data available yet. </p>
+                {% else %}
+                
+                <!-- Greeting -->
+                <section class="ai-card intro">
+                    <h2>Here's your feedback, {{ session.username }}!</h2>
+                    <p class="ai-subtitle">
+                        Let's break down what you're feeling.
+                    </p>
+                </section>
+
+                <!-- Emotion Card -->
+                <section class="ai-card">
+                    <h3>🎭 Selected Emotion</h3>
+                    <div style="text-align: center; font-size: 28px; font-weight: bold; color: #6c5ce7; margin-top: 10px;">
+                        {{ emoji }} {{ emotion }}
+                    </div>
+                </section>
+
+                <!-- User reflection -->
+                <section class="ai-card reflection">
+                    <h3>✍️ Your Reflection</h3>
+
+                    <div class="reflection-grid">
+                        <div class="reflection-box">
+                            <span class="ref-label">Reason</span>
+                            <p>{{ reason if reason else '-' }}</p>
+                        </div>
+                        <div class="reflection-box">
+                            <span class="ref-label">Thought</span>
+                            <p>{{ thought if thought else '-' }}</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI analysis -->
+                <section class="ai-card highlight">
+                    <h3>🤖 AI Analysis</h3>
+                    <p> Possible causes:</p>
+                    <ul>
+                        {% for c in causes%}
+                        <li>{{c}}</li>
+                        {% endfor %}
+                    </ul>
+                       
+                </section>
+
+                <!-- AI suggestions -->
+                <section class="ai-card suggestions">
+                    <h3>🌱 Suggested Actions</h3>
+                    <ul>
+                        {% for s in suggestions%}
+                        <li>{{s}}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+
+                <!-- Summary -->
+                <section class="ai-card summary">
+                    <h3>🧠 Emotional Summary</h3>
+                    <p>{{summary}} {{emoji}}</p>
+                        
+                </section>
+                {% endif %}
+
+
+                <div class="ai-footer">
+                    <a href="{{ url_for('emotion_history.emotion_history') }}{% if log_id %}#log-{{ log_id }}{% endif %}">← Back to Emotion History</a>
                 </div>
+
+            </div>
+
             </div>
         </div>
     </div>

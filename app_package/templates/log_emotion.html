@@ -122,22 +122,18 @@
                             <button type="submit" class="main-btn">Save Log</button>
                         </div>
                     </div>
-                </form>
-            </div>   
-            
-
+                </form> 
                     {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}{% if show_feedback%}
+                    {% if messages and show_feedback %}
                         <div class="feedback-box" id="feedback-box">
                             {% for category, message in messages %}
-                            <p>{{ message }}</p>
-                            <p>{{ aifeedback }}</p>
+                                <p>{{ message }}</p>
+                            {% endfor %}
                             <a href="/ai_feedback" class="ai_detail_link">View Full AI Feedback →</a>
-                            {% endfor %}{% endif %}
                         </div>
                     {% endif %}
                     {% endwith %}
-                
+            </div> 
                     
 
         </div>

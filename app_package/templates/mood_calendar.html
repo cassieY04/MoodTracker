@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mood Calendar - {{ month_name }} {{ year }}</title>
+    <title>Mood Calendar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="layout">
+
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="logo2"></div>
@@ -69,160 +70,86 @@
             <header class="topbar">
                 <div class="header-title">
                     <span>MoodTracker</span>
-                    <h1>Mood calendar</h1>
+                    <h1>Mood Calendar</h1>
                 </div>
             </header>
-            <div class="month-navigation">
-                {# The 'mood_calendar.mood_calendar' is the Blueprint name + function name #}
-                <a href="{{ url_for('mood_calendar.mood_calendar', year=prev_year, month=prev_month) }}">&larr; Prev Month</a> 
-    
-                <h1>{{ month_name }} {{ year }}</h1>
-    
-                <a href="{{ url_for('mood_calendar.mood_calendar', year=next_year, month=next_month) }}">Next Month &rarr;</a>
-            </div>
-            <h2>Mood Calendar for {{ month_name }} {{ year }}</h2>
-            <table class="mood-calendar-table">
-                <thead class="calendar-header">
-                    <tr>
-                        <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
-                    </tr>
-                </thead>
-                <tbody class="calendar-body">
-                    {% for week in calendar %}
-                    <tr class="week-row">
-                        {% for day in week %}
-                            {% if day != 0 %}
-                                {# The 'day' variable is an integer, convert to string for lookup #}
-                                {% set day_str = day|string %}
-                                {% set day_data = mood_data.get(day_str) %}
-                                
-                                <td class="{{ 'logged-day' if day_data else '' }}" 
-                                    {% if day_data %}
-                                        {# PASS ONLY THE DAY NUMBER. JS will fetch all entries #}
-                                        onclick="showDayDetails('{{ day_str }}')"
-                                    {% endif %}>
-                                    <div class="day-number">{{ day }}</div>
-                                    
-                                    {# --- START OF NEW LOGIC --- #}
-                                    {% if day_data %}
-                                        <div class="day-content-container">
-                                            {# Display all emojis in a container #}
-                                            <div class="day-emoji-container">
-                                                {% for entry in day_data.entries %}
-                                                    <span class="day-emoji" 
-                                                          title="{{ entry.emotion }} ({{ entry.timestamp }})">
-                                                        {{ entry.emoji }}
-                                                    </span>
-                                                {% endfor %}
-                                            </div>
-                                            
-                                            {# Display the total count message #}
-                                            <div class="total-input-message">
-                                                Total Input: {{ day_data.total_entries }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                    {# --- END OF NEW LOGIC --- #}
-                                </td>
-                            {% else %}
-                                <td class="empty-day"></td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
 
-            <div class="mood-sum">
-                <h2>📊 Mood Summary</h2>
-                <p><strong>Total Mood Entries Logged (Month):</strong> {{ mood_summary.total_entries }}</p>
-                <p><strong>Most Frequent Mood:</strong> {{ mood_summary.most_frequent }}</p>
-            </div>
-
-            <hr>
-            
-            <h3>Emotion Breakdown:</h3>
-            <ul class="breakdown-list">
-                {% for emotion, count in mood_summary.emotion_breakdown.items() %}
-                    <li><strong>{{ emotion }}</strong>: {{ count }} entries</li>
-                {% endfor %}
-            </ul>
-            
-            
-            <div id="mood-modal" class="mood-modal">
-                <div id="modal-content" class="modal-content">
-                    <span onclick="document.getElementById('mood-modal').style.display='none'" class="close">&times;</span>
-                    <h2>Details for Day <span id="modal-day"></span></h2>
+            <div class="calendar-wrapper">
+                <div class="calendar-card-container">
                     
-                    {# Container to be filled dynamically by JavaScript #}
-                    <div id="modal-entries-container">
+                    <!-- Month Navigation -->
+                    <div class="calendar-header-nav">
+                        <a href="{{ url_for('mood_calendar.mood_calendar', year=prev_year, month=prev_month) }}" class="nav-btn"><i class="fas fa-chevron-left"></i></a>
+                        <h2>{{ month_name }} {{ year }}</h2>
+                        <a href="{{ url_for('mood_calendar.mood_calendar', year=next_year, month=next_month) }}" class="nav-btn"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+
+                    <!-- Calendar Table -->
+                    <div class="table-responsive">
+                        <table class="styled-calendar">
+                            <thead>
+                                <tr>
+                                    <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for week in calendar %}
+                                <tr>
+                                    {% for day in week %}
+                                        {% set day_key = "%02d"|format(day) %}
+                                        <td class="{% if day == 0 %}empty-cell{% else %}day-cell{% endif %}">
+                                            {% if day != 0 %}
+                                                <div class="day-number">{{ day }}</div>
+                                                {% if day_key in mood_data %}
+                                                    <div class="day-emojis">
+                                                        {% for entry in mood_data[day_key]['entries'] %}
+                                                            <span class="cal-emoji" title="{{ entry.emotion }}">{{ entry.emoji }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Summary Footer -->
+                    <div class="calendar-footer">
+                        <div class="summary-item">
+                            <span class="sum-label">Total Entries</span>
+                            <span class="sum-value">{{ mood_summary.total_entries }}</span>
                         </div>
-                    
+                        <div class="summary-item">
+                            <span class="sum-label">Top Mood</span>
+                            <span class="sum-value">{{ mood_summary.most_frequent }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Mood Breakdown -->
+                    {% if emotion_counts %}
+                    <div class="breakdown-section">
+                        <h3>Monthly Breakdown</h3>
+                        <div class="breakdown-grid">
+                            {% for item in emotion_counts %}
+                            <div class="breakdown-card" style="border-left: 4px solid {{ item.color }}">
+                                <span class="bd-emoji">{{ item.emoji }}</span>
+                                <div class="bd-details">
+                                    <span class="bd-count">{{ item.count }}</span>
+                                    <span class="bd-label">{{ item.emotion }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
                 </div>
             </div>
 
         </div>
     </div>
-    
-    <script>
-        // Store the mood data passed from Flask in a JavaScript variable
-        const MOOD_DATA = '{{ mood_data | tojson }}';
-    </script>
-    
-    {# Move the script block to the end of the body for best performance #}
-    <script>
-        function formatTimestamp(isoTimestamp) {
-            let date = new Date(isoTimestamp);
-            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' on ' + date.toLocaleDateString();
-        }
-
-        function showDayDetails(day) {
-            
-            const dayData = MOOD_DATA[day];
-            if (!dayData || dayData.entries.length === 0) {
-                return;
-            }
-
-            // 1. Prepare Modal Header
-            document.getElementById('modal-day').textContent = day;
-            
-            // 2. Clear and Populate Entry Container
-            const container = document.getElementById('modal-entries-container');
-            container.innerHTML = '';
-            
-            dayData.entries.forEach((entry, index) => {
-                // Create a div for each individual entry
-                const entryDiv = document.createElement('div');
-                entryDiv.className = 'modal-entry';
-                // Use the entry's color for the left border (using the style from the <head>)
-                entryDiv.style.borderColor = entry.color; 
-                
-                // Populate the entry details
-                entryDiv.innerHTML = `
-                    <p><strong>Entry #${index + 1}</strong></p>
-                    <p><strong>Time:</strong> ${formatTimestamp(entry.timestamp)}</p>
-                    <p><strong>Emotion:</strong> ${entry.emotion} <span>${entry.emoji}</span></p>
-                    <p><strong>Note:</strong> ${entry.note || 'No note provided.'}</p>
-                `;
-                container.appendChild(entryDiv);
-            });
-
-            // 3. Style and Display
-            // Note: Since we have multiple entries, styling the border with one color is tricky.
-            // We use the last entry's color for the main modal border, or keep it neutral.
-            let modalContent = document.getElementById('modal-content');
-            modalContent.style.borderColor = dayData.entries[dayData.entries.length - 1].color; 
-            document.getElementById('mood-modal').style.display = 'block';
-        }
-
-        // Close modal when clicking outside of it (kept the original logic)
-        window.onclick = function(event) {
-            let modal = document.getElementById('mood-modal');
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-    
 </body>
 </html>

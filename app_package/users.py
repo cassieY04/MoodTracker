@@ -175,3 +175,12 @@ class UserManager:
             return int(time.time()) < row["locked_until"]
         finally:
             db.close()
+
+    @staticmethod
+    def get_emotion_logs(username):
+        db = get_db()
+        try:
+            cursor = db.execute('SELECT * FROM emolog WHERE username = ? ORDER BY timestamp DESC', (username,))
+            return [dict(row) for row in cursor.fetchall()]
+        finally:
+            db.close()
