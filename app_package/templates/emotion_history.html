@@ -177,32 +177,32 @@
             }
         });
 
-    function prepareEditModal(button) {
-        const logId = button.getAttribute('data-id');
-        const emotion = button.getAttribute('data-emotion');
-        const note = button.getAttribute('data-note');
-        const thought = button.getAttribute('data-thought');
+        function prepareEditModal(button) {
+            const logId = button.getAttribute('data-id');
+            const emotion = button.getAttribute('data-emotion');
+            const note = button.getAttribute('data-note');
+            const thought = button.getAttribute('data-thought');
 
-        document.getElementById('edit-log-id').value = logId;
-        document.getElementById('edit-emotion').value = emotion;
-        document.getElementById('edit-note').value = note;
-        document.getElementById('edit-thought').value = thought;
+            document.getElementById('edit-log-id').value = logId;
+            document.getElementById('edit-emotion').value = emotion;
+            document.getElementById('edit-note').value = note;
+            document.getElementById('edit-thought').value = thought;
 
-        document.getElementById('editModal').style.display = "flex";
-    }
-
-    function closeEditModal() {
-        // Hide the modal again
-        document.getElementById('editModal').style.display = "none";
-    }
-
-    // Close if user clicks outside the white box
-    window.onclick = function(event) {
-        const modal = document.getElementById('editModal');
-        if (event.target == modal) {
-            closeEditModal();
+            document.getElementById('editModal').style.display = "flex";
         }
-    }
+
+        function closeEditModal() {
+            // Hide the modal again
+            document.getElementById('editModal').style.display = "none";
+        }
+
+        // Close if user clicks outside the white box
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target == modal) {
+                closeEditModal();
+            }
+        }
     </script>
 </body>
 </html>
