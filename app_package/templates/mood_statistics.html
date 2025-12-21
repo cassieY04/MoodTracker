@@ -5,39 +5,47 @@
     <title>Mood Statistics - {{ title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
     <style>
+        /* Container for all bar charts */
         .bar-chart-container {
             width: 100%;
             margin-top: 20px;
         }
+        /* Flex container for each emotion row (label + bar) */
         .emotion-bar {
             margin-bottom: 10px;
             display: flex;
             align-items: center;
         }
+        /* Label for the emotion (e.g., Happy 😃:) */
         .emotion-bar-label {
             width: 120px;
             font-weight: bold;
             margin-right: 10px;
         }
+        /* Grey background wrapper for the bar */
         .bar-wrapper {
-            flex-grow: 1;
+            flex-grow: 1; /* Takes up remaining space */
             height: 30px;
             background-color: #eee;
             border-radius: 5px;
             overflow: hidden;
             position: relative;
         }
+        /* The colored bar filling the wrapper */
         .bar-fill {
             height: 100%;
             transition: width 0.5s ease-in-out;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: flex-end; /* Pushes text to the right edge of the fill */
             padding-right: 5px;
             color: #333; /* Color for text inside bar */
-            font-weight: bold;
+            font-weight: bold; /* Makes the number inside bold */
         }
+        
+        /* Navigation tabs styling */
         .stat-navigation {
             margin-bottom: 20px;
         }
@@ -56,14 +64,34 @@
             color: white;
             border-color: #6a1b9a;
         }
+        /* Summary box styling (new addition for better display) */
+        .mood-sum {
+            background-color: #f7f3ff; /* Light purple/grey background */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        /* Button styling */
         .main-btn {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 15px;
             text-decoration: none;
-            background-color: #4CAF50; /* Example button color */
+            background-color: #4CAF50; 
             color: white;
             border-radius: 5px;
+        }
+        /* Feedback/info box for zero entries */
+        .feedback-box {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .feedback-box.info {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            color: #1a6088;
         }
     </style>
 </head>
@@ -75,52 +103,50 @@
             <div class="logo2"></div>
             
             <nav>
-            <ul class="menu">
-                <li class="active">
-                    <a href="/dashboard" >
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/log_emotion">
-                        <i class="fas fa-pencil-alt"></i>
-                        <span>Log Emotion</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/mood_calendar">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>Mood Calendar</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/mood_statistics">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Mood Statistics</span>
-                    </a>
-                </li>
-                </li>
-                <li class="active">
-                    <a href="/ai_feedback">
-                        <i class="fas fa-star"></i>
-                        <span>AI Feedback</span>
-                    </a>
-                </li>
-                </li>
-                <li class="active">
-                    <a href="/emotionhistory">
-                        <i class="fas fa-history"></i>
-                        <span>Emotion History</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-            </ul>
+                <ul class="menu">
+                    <li class="active">
+                        <a href="/dashboard">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/log_emotion">
+                            <i class="fas fa-pencil-alt"></i>
+                            <span>Log Emotion</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/mood_calendar">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Mood Calendar</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/mood_statistics">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Mood Statistics</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/ai_feedback">
+                            <i class="fas fa-star"></i>
+                            <span>AI Feedback</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/emotionhistory">
+                            <i class="fas fa-history"></i>
+                            <span>Emotion History</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="/logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
             </nav>
             
         </div>
@@ -137,8 +163,61 @@
             <div>
                 <h2>Mood Statistics for {{ session.username }}</h2>
                 <p>Here you can view your mood statistics over time.</p>
-                <!-- Mood statistics content goes here -->
             </div>
+
+            <div class="stat-navigation">
+                <a href="{{ url_for('mood_statistics.mood_statistics_view', period='week') }}" class="{{ 'active' if period == 'week' }}">Weekly Summary</a>
+                <a href="{{ url_for('mood_statistics.mood_statistics_view', period='month') }}" class="{{ 'active' if period == 'month' }}">Monthly Summary</a>
+                <a href="{{ url_for('mood_statistics.mood_statistics_view', period='all') }}" class="{{ 'active' if period == 'all' }}">All-Time Summary</a>
+            </div>
+
+            <h2>{{ title }}</h2>
+
+            {% if stats.total_entries == 0 %}
+                <p class="feedback-box info">No emotion logs found for this period. Start logging your emotions!</p>
+            {% else %}
+                <div class="mood-sum">
+                    <p><strong>Total Entries Logged:</strong> {{ stats.total_entries }}</p>
+                    <p><strong>Most Frequent Mood:</strong> {{ stats.most_frequent }} {{ get_styling(stats.most_frequent).emoji if stats.most_frequent != 'N/A' }}</p>
+                </div>
+                
+                <hr>
+                
+                <h3>Colored Bar Charts (Emotion Counts & Percentages)</h3>
+                
+                <div class="bar-chart-container">
+                    {% for emotion in all_emotions %}
+                        {% set data = stats.emotion_breakdown.get(emotion) %}
+                        {% set count = data.count if data else 0 %}
+                        {% set percentage = data.percentage if data else 0 %}
+                        {% set color = data.color if data else '#CCCCCC' %}
+
+                        <div class="emotion-bar">
+                            <span class="emotion-bar-label">{{ emotion }} {{ get_styling(emotion).emoji }}:</span>
+                            
+                            <div class="bar-wrapper" title="{{ count }} entries">
+                                
+                                <div class="bar-fill" style="width: '{{ percentage }}%'; background-color: '{{ color }}'"> 
+                                    
+                                    {% if percentage > 0 %}
+                                        {{ percentage }}%
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            {% if percentage == 0 %}
+                                <span style="margin-left: 5px;">({{ percentage }}%)</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <hr>
+                
+                <h3>Quick Link to AI Feedback</h3>
+                <p>Curious about what your recent mood trends mean? Get personalized insights.</p>
+                <a href="/ai_feedback" class="main-btn"><i class="fas fa-star"></i> Generate AI Feedback for {{ title }}</a>
+            {% endif %}
 
         </div>
     </div>
