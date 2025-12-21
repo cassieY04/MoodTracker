@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash, request
 from .users import UserManager
 from .logemotion import get_emotion_styling
+from datetime import datetime, timedelta, timezone
 
 emotion_history_bp = Blueprint('emotion_history', __name__)
 
@@ -22,7 +23,10 @@ def emotion_history():
             new_note = request.form.get('note')
             new_thought = request.form.get('thought')
 
-            if UserManager.update_emotion_log(log_id, username, new_emotion, new_note, new_thought):
+            msia_tz = timezone(timedelta(hours=8))
+            updated_timestamp = datetime.now(msia_tz).strftime("%Y-%m-%d %H:%M:%S")
+
+            if UserManager.update_emotion_log(log_id, username, new_emotion, new_note, new_thought, updated_timestamp):
                 flash("Entry updated successfully.", "success")
             else:
                 flash("Error updating entry.", "error")
