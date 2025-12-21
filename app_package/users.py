@@ -188,6 +188,7 @@ class UserManager:
     @staticmethod
     def update_emotion_log(log_id, username, new_note):
         db = get_db()
+        # Change 'emotion_logs' to the actual name found in Step 1
         db.execute("UPDATE emolog SET note = ? WHERE id = ? AND username = ?", (new_note, log_id, username))
         db.commit()
         return True

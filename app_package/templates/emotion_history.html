@@ -123,14 +123,16 @@
         </div>
     </div>
 
-    <div id="editModal" class="popup-overlay">
+    <div id="editModal" class="popup-overlay" style="display: none;">
         <div class="popup-box">
             <h2>Edit Entry</h2>
             <form method="POST">
                 <input type="hidden" name="action" value="edit">
                 <input type="hidden" name="log_id" id="edit-log-id">
+                
                 <label for="edit-note">Reason:</label>
                 <textarea name="note" id="edit-note" rows="5"></textarea>
+                
                 <div class="popup-actions">
                     <button type="button" class="secondary-btn" onclick="closeEditModal()">Cancel</button>
                     <button type="submit" class="main-btn">Save Changes</button>
@@ -153,21 +155,31 @@
             }
         });
 
-        function openEditModal(id, currentNote) {
-            document.getElementById('edit-log-id').value = id;
-            document.getElementById('edit-note').value = currentNote;
-            document.getElementById('editModal').style.display = "flex";
-        }
+        function prepareEditModal(button) {
+        // 1. Extract data from the clicked button
+        const logId = button.getAttribute('data-id');
+        const logNote = button.getAttribute('data-note');
 
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = "none";
-        }
+        // 2. Fill the modal inputs with that data
+        document.getElementById('edit-log-id').value = logId;
+        document.getElementById('edit-note').value = logNote;
 
-        // Close when clicking outside box
-        window.onclick = function(event) {
-            const modal = document.getElementById('editModal');
-            if (event.target == modal) closeEditModal();
+        // 3. ONLY NOW show the modal
+        document.getElementById('editModal').style.display = "flex";
+    }
+
+    function closeEditModal() {
+        // Hide the modal again
+        document.getElementById('editModal').style.display = "none";
+    }
+
+    // Close if user clicks outside the white box
+    window.onclick = function(event) {
+        const modal = document.getElementById('editModal');
+        if (event.target == modal) {
+            closeEditModal();
         }
+    }
     </script>
 </body>
 </html>

@@ -4,7 +4,7 @@ from .logemotion import get_emotion_styling
 
 emotion_history_bp = Blueprint('emotion_history', __name__)
 
-@emotion_history_bp.route("/emotionhistory")
+@emotion_history_bp.route("/emotionhistory", methods=["GET", "POST"])
 def emotion_history():
     if 'username' not in session:
         flash("Please login to view your history.", "warning")
