@@ -39,5 +39,6 @@ def create_app():
     app.register_blueprint(mood_calendar_bp)
     app.register_blueprint(mood_statistics_bp)
     app.register_blueprint(emotion_history_bp)
+
     
     return app

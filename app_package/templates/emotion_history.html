@@ -68,11 +68,149 @@
         <div class="main-section">
 
             <header class="topbar">
-                <h1>Emotion History</h1>
+                <div class="header-title">
+                    <span>MoodTracker</span>
+                    <h1>Emotion History</h1>
+                </div>
             </header>
+
+            <div class="history-content">
+                {% if logs %}
+                    <div class="history-list">
+                        {% for log in logs %}
+                        <div class="history-card" id="log-{{ log.id }}">
+                            <div class="card-header">
+                            <div class="card-header">
+                                <div class="emotion-info">
+                                    <span class="emotion-emoji">{{ log.emoji }}</span>
+                                    <span class="emotion-name">{{ log.emotion_name }}</span>
+                                </div>
+                                <div class="date-info">
+                                    {{ log.timestamp }}
+                                </div>
+                            </div>
+                            
+                            <div class="card-body">
+                                {% if log.note %}
+                                    <p><strong>Reason:</strong> {{ log.note }}</p>
+                                {% endif %}
+                                {% if log.thought %}
+                                    <p><strong>Thought:</strong> {{ log.thought }}</p>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="card-footer">
+                                <a href="/ai_feedback/{{ log.id }}" class="view-feedback-link">View AI Feedback &rarr;</a>
+                                <div class="card-actions">
+                                    <button class="icon-btn edit-btn" title="Edit Entry"
+                                            data-id="{{ log.id }}" 
+                                            data-emotion="{{ log.emotion_name }}"
+                                            data-note="{{ log.note or '' }}"
+                                            data-thought="{{ log.thought or '' }}"
+                                            onclick="prepareEditModal(this)">
+                                        <i class="fas fa-edit"></i>
+
+                                        <form method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this memory permanently?');">
+                                            <input type="hidden" name="log_id" value="{{ log.id }}">
+                                            <input type="hidden" name="action" value="delete">
+                                            <button type="submit" class="icon-btn delete-btn" title="Delete Entry">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-history">
+                        <p>No emotion history found. <a href="/log_emotion">Log your first emotion</a>.</p>
+                    </div>
+                {% endif %}
+            </div>
 
         </div>
     </div>
 
+    <div id="editModal" class="popup-overlay" style="display: none;">
+        <div class="popup-box">
+            <h2>Edit Entry</h2>
+            <form method="POST">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="log_id" id="edit-log-id">
+                
+                <div class="form-group">
+                    <label for="edit-emotion">Emotion:</label>
+                    <select name="emotion_name" id="edit-emotion">
+                        <option value="Happy">Happy</option>
+                        <option value="Excited">Excited</option>
+                        <option value="Neutral">Neutral</option>
+                        <option value="Anxious">Anxious</option>
+                        <option value="Sad">Sad</option>
+                        <option value="Angry">Angry</option>
+                        <option value="Stressed">Stressed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-note">Reason:</label>
+                    <textarea name="note" id="edit-note" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-thought">Thought:</label>
+                    <textarea name="thought" id="edit-thought" rows="3"></textarea>
+                </div>
+                
+                <div class="popup-actions">
+                    <button type="button" class="secondary-btn" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="main-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Smooth scroll to card if ID exists in URL hash
+        window.addEventListener("DOMContentLoaded", function() {
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    // Scroll the element to the center of the viewport immediately
+                    targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }
+        });
+
+        function prepareEditModal(button) {
+            const logId = button.getAttribute('data-id');
+            const emotion = button.getAttribute('data-emotion');
+            const note = button.getAttribute('data-note');
+            const thought = button.getAttribute('data-thought');
+
+            document.getElementById('edit-log-id').value = logId;
+            document.getElementById('edit-emotion').value = emotion;
+            document.getElementById('edit-note').value = note;
+            document.getElementById('edit-thought').value = thought;
+
+            document.getElementById('editModal').style.display = "flex";
+        }
+
+        function closeEditModal() {
+            // Hide the modal again
+            document.getElementById('editModal').style.display = "none";
+        }
+
+        // Close if user clicks outside the white box
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target == modal) {
+                closeEditModal();
+            }
+        }
+    </script>
 </body>
 </html>

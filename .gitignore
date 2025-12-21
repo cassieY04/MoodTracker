@@ -3,3 +3,6 @@ __pycache__/
 user.db
 
 .venv/
+
+static/uploads/profile_pics/*
+!static/uploads/profile_pics/.gitkeep

@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mood Calendar - {{ month_name }} {{ year }}</title>
+    <title>Mood Calendar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="layout">
+
+        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="logo2"></div>
             
@@ -66,140 +68,154 @@
         <div class="main-section">
 
             <header class="topbar">
-                <h1>Mood calendar</h1>
+                <div class="header-title">
+                    <span>MoodTracker</span>
+                    <h1>Mood Calendar</h1>
+                </div>
             </header>
-            <div class="month-navigation">
-                <a href="{{ url_for('mood_calendar.mood_calendar', year=prev_year, month=prev_month) }}">&larr; Prev Month</a> 
-    
-                <h1>{{ month_name }} {{ year }}</h1>
-    
-                <a href="{{ url_for('mood_calendar.mood_calendar', year=next_year, month=next_month) }}">Next Month &rarr;</a>
-            </div>
-            <h2>Mood Calendar for {{ month_name }} {{ year }}</h2>
-            <table class="mood-calendar-table">
-                <thead class="calendar-header">
-                    <tr>
-                        <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
-                    </tr>
-                </thead>
-                <tbody class="calendar-body">
-                    {% for week in calendar %}
-                    <tr class="week-row">
-                        {% for day in week %}
-                            {% if day != 0 %}
-                                {% set day_str = day|string %}
-                                {% set day_data = mood_data.get(day_str) %}
-                                
-                                <td class="{{ 'logged-day' if day_data else '' }}" 
-                                    {% if day_data %}
-                                        onclick="showDayDetails('{{ day_str }}')"
-                                    {% endif %}>
-                                    <div class="day-number">{{ day }}</div>
-                                    
-                                    {% if day_data %}
-                                        <div class="day-content-container">
-                                            <div class="day-emoji-container">
-                                                {% for entry in day_data.entries %}
-                                                    <span class="day-emoji" 
-                                                          title="{{ entry.emotion }} ({{ entry.timestamp }})">
-                                                        {{ entry.emoji }}
-                                                    </span>
-                                                {% endfor %}
-                                            </div>
-                                            
-                                            <div class="total-input-message">
-                                                Total Input: {{ day_data.total_entries }}
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </td>
-                            {% else %}
-                                <td class="empty-day"></td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
 
-            <div class="mood-sum">
-                <a href="{{ url_for('mood_statistics.mood_statistics_view', period='month') }}" style="text-decoration: none; color: inherit;">
-                    <h2>📊 Mood Summary</h2>
-                </a>
-                <p><strong>Total Mood Entries Logged (Month):</strong> {{ mood_summary.total_entries }}</p>
-                <p><strong>Most Frequent Mood:</strong> {{ mood_summary.most_frequent }}</p>
-            </div>
-
-            <hr>
-            
-            <h3>Emotion Breakdown:</h3>
-            <ul class="breakdown-list">
-                {% for emotion, count in mood_summary.emotion_breakdown.items() %}
-                    <li><strong>{{ emotion }}</strong>: {{ count }} entries</li>
-                {% endfor %}
-            </ul>
-            
-            
-            <div id="mood-modal" class="mood-modal">
-                <div id="modal-content" class="modal-content">
-                    <span onclick="document.getElementById('mood-modal').style.display='none'" class="close">&times;</span>
-                    <h2>Details for Day <span id="modal-day"></span></h2>
+            <div class="calendar-wrapper">
+                <div class="calendar-card-container">
                     
-                    <div id="modal-entries-container">
+                    <!-- Month Navigation -->
+                    <div class="calendar-header-nav">
+                        <a href="{{ url_for('mood_calendar.mood_calendar', year=prev_year, month=prev_month) }}" class="nav-btn"><i class="fas fa-chevron-left"></i></a>
+                        <h2>{{ month_name }} {{ year }}</h2>
+                        <a href="{{ url_for('mood_calendar.mood_calendar', year=next_year, month=next_month) }}" class="nav-btn"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+
+                    <!-- Calendar Table -->
+                    <div class="table-responsive">
+                        <table class="styled-calendar">
+                            <thead>
+                                <tr>
+                                    <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for week in calendar %}
+                                <tr>
+                                    {% for day in week %}
+                                        {% set day_key = "%02d"|format(day) %}
+                                        <td class="{% if day == 0 %}empty-cell{% else %}day-cell{% endif %}">
+                                            {% if day != 0 %}
+                                                <div class="day-number">{{ day }}</div>
+                                                {% if day_key in mood_data %}
+                                                    <div class="day-emojis">
+                                                        {% for entry in mood_data[day_key]['entries'] %}
+                                                            <span class="cal-emoji" 
+                                                                  title="{{ entry.emotion }} at {{ entry.time }}"
+                                                                  onclick="openDayModal('{{ day_key }}')">
+                                                                {{ entry.emoji }}
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Summary Footer -->
+                    <div class="calendar-footer">
+                        <div class="summary-item">
+                            <span class="sum-label">Total Entries</span>
+                            <span class="sum-value">{{ mood_summary.total_entries }}</span>
                         </div>
-                    
+                        <div class="summary-item">
+                            <span class="sum-label">Top Mood</span>
+                            <span class="sum-value">{{ mood_summary.most_frequent }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Mood Breakdown -->
+                    {% if emotion_counts %}
+                    <div class="breakdown-section">
+                        <h3>Monthly Breakdown</h3>
+                        <div class="breakdown-grid">
+                            {% for item in emotion_counts %}
+                            <div class="breakdown-card" style="border-left: 4px solid {{ item.color }}">
+                                <span class="bd-emoji">{{ item.emoji }}</span>
+                                <div class="bd-details">
+                                    <span class="bd-count">{{ item.count }}</span>
+                                    <span class="bd-label">{{ item.emotion }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
                 </div>
             </div>
 
         </div>
     </div>
-    
+
+    <!-- Day Details Modal -->
+    <div id="mood-modal" class="mood-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-date-title">Log Details</h2>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modal-entries-container">
+                <!-- Entries will be injected here by JS -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        const MOOD_DATA = JSON.parse('{{ mood_data | tojson | safe }}'); 
+        // Pass the Python dictionary to JavaScript
+        const MOOD_DATA = {{ mood_data | tojson }};
 
-        function formatTimestamp(isoTimestamp) {
-            let date = new Date(isoTimestamp);
-            return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' on ' + date.toLocaleDateString();
-        }
+        function openDayModal(dayKey) {
+            const dayData = MOOD_DATA[dayKey];
+            if (!dayData || !dayData.entries) return;
 
-        function showDayDetails(day) {
-            
-            const dayData = MOOD_DATA[day];
-            if (!dayData || dayData.entries.length === 0) {
-                return;
-            }
-
-            document.getElementById('modal-day').textContent = day;
+            // Set Title
+            document.getElementById('modal-date-title').innerText = `Logs for ${dayKey} {{ month_name }}`;
             
             const container = document.getElementById('modal-entries-container');
             container.innerHTML = '';
             
-            dayData.entries.forEach((entry, index) => {
+            dayData.entries.forEach(entry => {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'modal-entry';
-                entryDiv.style.borderColor = entry.color; 
                 
                 entryDiv.innerHTML = `
-                    <p><strong>Entry #${index + 1}</strong></p>
-                    <p><strong>Time:</strong> ${formatTimestamp(entry.timestamp)}</p>
-                    <p><strong>Emotion:</strong> ${entry.emotion} <span>${entry.emoji}</span></p>
-                    <p><strong>Note:</strong> ${entry.note || 'No note provided.'}</p>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <strong style="font-size:1.1em;">${entry.emoji} ${entry.emotion}</strong>
+                        <span style="color:#888; font-size:0.9em;">${entry.time}</span>
+                    </div>
+                    ${entry.note ? `<p style="margin:5px 0; color:#555;"><strong>Reason:</strong> ${entry.note}</p>` : ''}
+                    ${entry.thought ? `<p style="margin:5px 0; color:#555;"><strong>Thought:</strong> ${entry.thought}</p>` : ''}
                 `;
                 container.appendChild(entryDiv);
             });
 
-            let modalContent = document.getElementById('modal-content');
-            modalContent.style.borderColor = dayData.entries[dayData.entries.length - 1].color; 
-            document.getElementById('mood-modal').style.display = 'block';
+            document.getElementById('mood-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
         }
 
+        function closeModal() {
+            document.getElementById('mood-modal').style.display = 'none';
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        }
+
+        // Close if clicking outside
         window.onclick = function(event) {
-            let modal = document.getElementById('mood-modal');
+            const modal = document.getElementById('mood-modal');
             if (event.target == modal) {
-                modal.style.display = "none";
+                closeModal();
             }
         }
     </script>
-    
 </body>
 </html>

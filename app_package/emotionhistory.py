@@ -1,9 +1,48 @@
-from flask import Blueprint, render_template, session, redirect, url_for, flash
+from flask import Blueprint, render_template, session, redirect, url_for, flash, request
+from .users import UserManager
+from .logemotion import get_emotion_styling
+from datetime import datetime, timedelta, timezone
 
 emotion_history_bp = Blueprint('emotion_history', __name__)
 
-@emotion_history_bp.route("/emotionhistory")
+@emotion_history_bp.route("/emotionhistory", methods=["GET", "POST"])
 def emotion_history():
-    
-    return render_template("emotion_history.html")
+    if 'username' not in session:
+        flash("Please login to view your history.", "warning")
+        return redirect(url_for('auth.login'))
+        
+    username = session['username']
+    logs = UserManager.get_emotion_logs(username)
 
+    if request.method == 'POST':
+        action = request.form.get('action')
+        log_id = request.form.get('log_id')
+
+        if action == 'edit':
+            new_emotion = request.form.get('emotion_name')
+            new_note = request.form.get('note')
+            new_thought = request.form.get('thought')
+
+            msia_tz = timezone(timedelta(hours=8))
+            updated_timestamp = datetime.now(msia_tz).strftime("%Y-%m-%d %H:%M:%S")
+
+            if UserManager.update_emotion_log(log_id, username, new_emotion, new_note, new_thought, updated_timestamp):
+                flash("Entry updated successfully.", "success")
+            else:
+                flash("Error updating entry.", "error")
+
+        elif action == 'delete':
+            if UserManager.delete_emotion_log(log_id, username):
+                flash("Entry deleted successfully.", "success")
+            else:
+                flash("Error deleting entry.", "error")
+
+        return redirect(url_for('emotion_history.emotion_history', logs=logs))
+    
+    # Enhance logs with emoji and color for the UI
+    for log in logs:
+        style = get_emotion_styling(log['emotion_name'])
+        log['emoji'] = style['emoji']
+        log['color'] = style['color']
+        
+    return render_template("emotion_history.html", logs=logs)

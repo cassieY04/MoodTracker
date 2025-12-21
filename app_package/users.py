@@ -175,3 +175,50 @@ class UserManager:
             return int(time.time()) < row["locked_until"]
         finally:
             db.close()
+
+    @staticmethod
+    def get_emotion_logs(username):
+        db = get_db()
+        try:
+            cursor = db.execute('SELECT * FROM emolog WHERE username = ? ORDER BY timestamp DESC', (username,))
+            return [dict(row) for row in cursor.fetchall()]
+        finally:
+            db.close()
+
+    @staticmethod
+    def log_emotion(username, emotion, note, thought, ai_short, ai_full, timestamp):
+        db = get_db()
+        try:
+            db.execute("""
+                INSERT INTO emolog (username, emotion_name, note, thought, ai_short_feedback, ai_full_feedback, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (username, emotion, note, thought, ai_short, ai_full, timestamp))
+            db.commit()
+            return True
+        finally:
+            db.close()
+
+    @staticmethod
+    def update_emotion_log(log_id, username, emotion, note, thought, timestamp):
+        db = get_db()
+        try:
+            db.execute("""
+                UPDATE emolog 
+                SET emotion_name = ?, note = ?, thought = ?, timestamp = ? 
+                WHERE id = ? AND username = ?
+            """, (emotion, note, thought, timestamp, log_id, username))
+            db.commit()
+            return True
+        finally:
+            db.close()
+    
+    @staticmethod
+    def delete_emotion_log(log_id, username):
+        db = get_db()
+        try:
+            # Using username as a secondary check for security
+            db.execute("DELETE FROM emolog WHERE id = ? AND username = ?", (log_id, username))
+            db.commit()
+            return True
+        finally:
+            db.close()
