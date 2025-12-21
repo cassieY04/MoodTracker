@@ -109,6 +109,14 @@
                                             data-thought="{{ log.thought or '' }}"
                                             onclick="prepareEditModal(this)">
                                         <i class="fas fa-edit"></i>
+
+                                        <form method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this memory permanently?');">
+                                            <input type="hidden" name="log_id" value="{{ log.id }}">
+                                            <input type="hidden" name="action" value="delete">
+                                            <button type="submit" class="icon-btn delete-btn" title="Delete Entry">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </button>
                                 </div>
                             </div>

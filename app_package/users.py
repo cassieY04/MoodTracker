@@ -196,3 +196,11 @@ class UserManager:
         """, (emotion, note, thought, log_id, username))
         db.commit()
         return True
+    
+    @staticmethod
+    def delete_emotion_log(log_id, username):
+        db = get_db()
+        # Using username as a secondary check for security
+        db.execute("DELETE FROM emolog WHERE id = ? AND username = ?", (log_id, username))
+        db.commit()
+        return True

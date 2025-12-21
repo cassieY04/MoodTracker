@@ -27,6 +27,12 @@ def emotion_history():
             else:
                 flash("Error updating entry.", "error")
 
+        elif action == 'delete':
+            if UserManager.delete_emotion_log(log_id, username):
+                flash("Entry deleted successfully.", "success")
+            else:
+                flash("Error deleting entry.", "error")
+
         return redirect(url_for('emotion_history.emotion_history', logs=logs))
     
     # Enhance logs with emoji and color for the UI
