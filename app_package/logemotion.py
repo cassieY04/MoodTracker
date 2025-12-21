@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash, request
 from Databases.emologdb import get_db, save_emolog
 from app_package.aifeedback import generate_short_feedback, generate_full_feedback
-
-
+from datetime import datetime, timedelta, timezone
 
 emotion_choice = ['Happy', 'Excited', 'Neutral', 'Anxious', 'Sad', 'Angry', 'Stressed']
 EMOTION_MAP = {
@@ -38,6 +37,9 @@ def emolog():
         selected_emotion = request.form.get('emotion')
         note = request.form.get('note', '').strip()
         thought = request.form.get('thought', '').strip()
+
+        msia_tz = timezone(timedelta(hours=8))
+        current_msia_time = datetime.now(msia_tz).strftime("%Y-%m-%d %H:%M:%S")
         
         ai_short = generate_short_feedback(selected_emotion, note, thought)
         ai_full = generate_full_feedback(selected_emotion, note, thought)
@@ -48,7 +50,8 @@ def emolog():
             note = note,
             thought = thought,
             ai_short = ai_short,
-            ai_full = ai_full
+            ai_full = ai_full,
+            timestamp = current_msia_time
         ):
             show_feedback = True
             flash("Emotion log saved successfully!", "success")

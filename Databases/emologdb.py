@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime, timedelta, timezone
 
 def get_db():
     db = sqlite3.connect(
@@ -19,7 +20,7 @@ def init_emologdb():
                    thought TEXT,
                    ai_short_feedback TEXT,
                    ai_full_feedback TEXT,
-                   timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                   timestamp TEXT, 
                    FOREIGN KEY(username) REFERENCES users(username)
             )''')
         
@@ -43,13 +44,13 @@ def init_emologdb():
     finally:
         db.close()
         
-def save_emolog(username, emotion, note, thought, ai_short, ai_full):
+def save_emolog(username, emotion, note, thought, ai_short, ai_full, timestamp):
     db = get_db()
     try:
         db.execute('''INSERT INTO emolog
-                    (username, emotion_name, note, thought, ai_short_feedback, ai_full_feedback)
-                    VALUES (?, ?, ?, ?, ?, ?)''',
-                    (username, emotion, note, thought, ai_short, str(ai_full))
+                    (username, emotion_name, note, thought, ai_short_feedback, ai_full_feedback, timestamp)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                    (username, emotion, note, thought, ai_short, str(ai_full), timestamp)
         )
         db.commit()
         return True
