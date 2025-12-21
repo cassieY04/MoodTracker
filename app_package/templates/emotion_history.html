@@ -102,9 +102,11 @@
                             <div class="card-footer">
                                 <a href="/ai_feedback/{{ log.id }}" class="view-feedback-link">View AI Feedback &rarr;</a>
                                 <div class="card-actions">
-                                    <button class="icon-btn edit-btn" title="Edit Reason"
+                                    <button class="icon-btn edit-btn" title="Edit Entry"
                                             data-id="{{ log.id }}" 
+                                            data-emotion="{{ log.emotion_name }}"
                                             data-note="{{ log.note or '' }}"
+                                            data-thought="{{ log.thought or '' }}"
                                             onclick="prepareEditModal(this)">
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -130,8 +132,26 @@
                 <input type="hidden" name="action" value="edit">
                 <input type="hidden" name="log_id" id="edit-log-id">
                 
-                <label for="edit-note">Reason:</label>
-                <textarea name="note" id="edit-note" rows="5"></textarea>
+                <div class="form-group">
+                    <label for="edit-emotion">Emotion:</label>
+                    <select name="emotion_name" id="edit-emotion">
+                        <option value="Happy">Happy</option>
+                        <option value="Sad">Sad</option>
+                        <option value="Angry">Angry</option>
+                        <option value="Anxious">Anxious</option>
+                        <option value="Calm">Calm</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-note">Reason:</label>
+                    <textarea name="note" id="edit-note" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-thought">Thought:</label>
+                    <textarea name="thought" id="edit-thought" rows="3"></textarea>
+                </div>
                 
                 <div class="popup-actions">
                     <button type="button" class="secondary-btn" onclick="closeEditModal()">Cancel</button>
@@ -155,16 +175,17 @@
             }
         });
 
-        function prepareEditModal(button) {
-        // 1. Extract data from the clicked button
+    function prepareEditModal(button) {
         const logId = button.getAttribute('data-id');
-        const logNote = button.getAttribute('data-note');
+        const emotion = button.getAttribute('data-emotion');
+        const note = button.getAttribute('data-note');
+        const thought = button.getAttribute('data-thought');
 
-        // 2. Fill the modal inputs with that data
         document.getElementById('edit-log-id').value = logId;
-        document.getElementById('edit-note').value = logNote;
+        document.getElementById('edit-emotion').value = emotion;
+        document.getElementById('edit-note').value = note;
+        document.getElementById('edit-thought').value = thought;
 
-        // 3. ONLY NOW show the modal
         document.getElementById('editModal').style.display = "flex";
     }
 

@@ -18,8 +18,11 @@ def emotion_history():
         log_id = request.form.get('log_id')
 
         if action == 'edit':
-            new_note = request.form.get("note")
-            if UserManager.update_emotion_log(log_id, username, new_note):
+            new_emotion = request.form.get('emotion_name')
+            new_note = request.form.get('note')
+            new_thought = request.form.get('thought')
+
+            if UserManager.update_emotion_log(log_id, username, new_emotion, new_note, new_thought):
                 flash("Entry updated successfully.", "success")
             else:
                 flash("Error updating entry.", "error")
