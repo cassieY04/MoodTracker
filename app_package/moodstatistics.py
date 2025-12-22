@@ -15,14 +15,15 @@ def get_logs_for_period(username, period='month'):
     """
     db = get_db()
     
-    today = datetime.now()
+    current_time = datetime.now()
     start_date = None
+    end_date = None
     
     if period == 'week':
-        start_date = today - timedelta(days=today.weekday())
+        start_date = current_time.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=current_time.weekday())
         end_date = start_date + timedelta(days=7)
     elif period == 'month':
-        start_date = datetime(today.year, today.month, 1)
+        start_date = datetime(current_time.year, current_time.month, 1)
         end_date = start_date + relativedelta(months=1)
     elif period == 'all':
         start_date = datetime.min.strftime('%Y-%m-%d %H:%M:%S')
@@ -56,7 +57,9 @@ def get_logs_for_period(username, period='month'):
         else:
             start_str = start_date
             end_str = end_date
-            
+        
+        print(f"DEBUG: Period={period}, Start={start_str}, End={end_str}")   
+       
         results = db.execute(query, (username, start_str, end_str)).fetchall()
         
         logs = [{
