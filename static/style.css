@@ -445,6 +445,10 @@ body.body {
     font-weight: 600;
 }
 
+.switch-auth :hover {
+    color: #50298e;
+}
+
 .switch-auth-login-new {
     margin-top: 12px;
     font-size: 14px;
@@ -454,6 +458,10 @@ body.body {
 .switch-auth-login-new a {
     color: #7a3bc6;
     font-weight: 600;
+}
+
+.switch-auth-login-new :hover {
+    color: #50298e;
 }
 
 .popup-msg {
@@ -480,6 +488,7 @@ body.body {
     margin-top: 25px;
     display: flex;
     justify-content: space-between;
+    font-size: 17px;
 }
 
 .Nav-to-welcome a {
@@ -489,7 +498,7 @@ body.body {
 }
 
 .Nav-to-welcome a:hover {
-    text-decoration: underline;
+    color: #50298e;
 }
 
 /* ======================== Dashboard LAYOUT ======================== */
@@ -610,36 +619,6 @@ body.body {
     display: flex;
     align-items: center;
     gap: 15px;
-}
-
-.search-box{
-    color: rgba(113,99,186,255);
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 8px;
-    gap: 10px;
-    cursor: pointer;
-}
-
-.search-box input{
-    background: transparent;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 15px;
-    border: 1px solid rgba(113,99,186,255);
-}
-
-.search-box i{
-    font-size: 18px;
-    cursor: default;
-    transition: all 0.5s ease-out;
-}
-
-.search-box i:hover{
-    color: #6f4bd8;
-    transform: scale(1.2);
-    cursor: pointer;
 }
 
 .profile-btn-dashboard {
@@ -940,6 +919,10 @@ textarea {
     transition: all 0.3s ease;
 }
 
+.danger-btn-deletepropic:hover {
+    background: #cf3f31;
+}
+
 .danger-btn-profile {
     margin-top: 20px;
     padding: 12px;
@@ -954,7 +937,7 @@ textarea {
 }
 
 .danger-btn-profile:hover {
-    background: #cf3f31;
+    background-color: #c0392b; 
 }
 
 .profile-links {
@@ -967,6 +950,12 @@ textarea {
     color: #7f5bd9;
     font-weight: bold;
     text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 16px;
+}
+
+.profile-links a:hover {
+    color:#6a47c9;
 }
 
 .flash-box {

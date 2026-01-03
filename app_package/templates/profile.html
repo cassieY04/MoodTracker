@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>My Profile - MoodTracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -96,7 +97,7 @@ function togglePassword(id) {
                 </div>
 
                 <div>
-                    <label>Birthday</label>  <!-- Santania edited -->
+                    <label>Birth Date</label>  <!-- Santania edited -->
                     <input class="birthday" type="date" name="birthday" placeholder="YYYY-MM-DD" value="{{ user.birthday }}"></input>
                 </div>
 
@@ -150,7 +151,7 @@ function togglePassword(id) {
         </form>
 
         <div class="profile-links">
-            <a href="{{ url_for('home.dashboard') }}">← Back to Dashboard</a>
+            <a href="{{ url_for('home.dashboard') }}"><i class="fas fa-arrow-left"></i> <i class="fas fa-home fa-lg"></i></a>
             <a href="/logout">Logout</a>
         </div>
 

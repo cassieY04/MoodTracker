@@ -217,6 +217,5 @@ def reset_password():
 @auth_bp.route("/logout", methods=["GET"])
 def logout():
     session.pop('username', None)
-    flash("You have been logged out.")
     return redirect(url_for("home.homepage"))
 
