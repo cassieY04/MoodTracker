@@ -419,7 +419,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     has_pos = bool(unique_emotions & positives)
     has_neg = bool(unique_emotions & negatives)
     
-    main_emoji = "📅"
+    main_emoji = "📝"
     if has_pos and has_neg:
         main_emotion = "Mixed Emotions"
         main_emoji = "🔀"

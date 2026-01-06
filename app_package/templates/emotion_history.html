@@ -220,6 +220,17 @@
     <script>
         // Smooth scroll to card if ID exists in URL hash
         window.addEventListener("DOMContentLoaded", function() {
+            // 1. Check if we just edited an entry (stored in sessionStorage)
+            const editedLogId = sessionStorage.getItem('lastEditedLogId');
+            if (editedLogId) {
+                const targetElement = document.getElementById('log-' + editedLogId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+                sessionStorage.removeItem('lastEditedLogId');
+            }
+
+            // 2. Check URL hash (fallback)
             if (window.location.hash) {
                 const targetId = window.location.hash.substring(1);
                 const targetElement = document.getElementById(targetId);
@@ -228,6 +239,15 @@
                     // Scroll the element to the center of the viewport immediately
                     targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
+            }
+
+            // 3. Attach listener to Edit Form to save ID before submit
+            const editForm = document.querySelector('#editModal form');
+            if (editForm) {
+                editForm.addEventListener('submit', function() {
+                    const logId = document.getElementById('edit-log-id').value;
+                    sessionStorage.setItem('lastEditedLogId', logId);
+                });
             }
         });
 

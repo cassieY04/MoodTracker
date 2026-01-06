@@ -136,8 +136,7 @@
                             {% for category, message in messages %}
                                 <p>{{ message }}</p>
                             {% endfor %}
-                            <a href="/ai_feedback" class="ai_detail_link">View Full AI Feedback →</a>
-                        </div>
+                            <a href="{{ url_for('ai_feedback.ai_feedback', log_id=new_log_id) }}" class="ai_detail_link">View AI Feedback &rarr;</a>                        </div>
                     {% endif %}
                     {% endwith %}
             </div> 

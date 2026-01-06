@@ -47,13 +47,13 @@ def init_emologdb():
 def save_emolog(username, emotion, note, thought, ai_short, ai_full, timestamp):
     db = get_db()
     try:
-        db.execute('''INSERT INTO emolog
+        cursor = db.execute('''INSERT INTO emolog
                     (username, emotion_name, note, thought, ai_short_feedback, ai_full_feedback, timestamp)
                     VALUES (?, ?, ?, ?, ?, ?, ?)''',
                     (username, emotion, note, thought, ai_short, str(ai_full), timestamp)
         )
         db.commit()
-        return True
+        return cursor.lastrowid
         
     except sqlite3.Error as e:
         db.rollback()

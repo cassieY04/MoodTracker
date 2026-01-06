@@ -1071,7 +1071,13 @@ textarea {
 
 /* Cleaned up styles from HTML */
 .history-flash-msg {
-    margin-bottom: 20px;
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3000;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    min-width: 300px;
 }
 
 .delete-modal-text {
