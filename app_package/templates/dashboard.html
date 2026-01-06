@@ -91,12 +91,7 @@
             </div>
 
                 <div class=" user-info">
-                    <div class="search-box">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="text" placeholder="Search...">
-                    </div>
                 
-
                     <a href="/profile/{{ username }}" class="profile-btn-dashboard">
                         <!-- Username text -->
                         <span class="profile-username-dashboard">{{ user.username }}</span>
@@ -119,7 +114,7 @@
                     <div class="welcome-text">
                         <h2>Welcome back, {{ session.username }}! 👋</h2>
                         <p>Take a moment to check in with yourself. <br>How are you feeling right now?</p>
-                        <a href="/log_emotion" class="action-btn">Log My Mood</a>
+                        <a href="/log_emotion" class="action-btn">Log Emotion</a>
                     </div>
                     <div class="welcome-decoration">
                         <i class="fas fa-heart-pulse"></i>
@@ -142,7 +137,7 @@
                     <a href="/mood_statistics" class="dash-card">
                         <div class="icon-box stat"><i class="fas fa-chart-pie"></i></div>
                         <div class="card-info">
-                            <h4>Statistics</h4>
+                            <h4>Mood Statistics</h4>
                             <p>Analyze trends and see what affects your mood.</p>
                         </div>
                         <div class="arrow-icon"><i class="fas fa-arrow-right"></i></div>
@@ -151,7 +146,7 @@
                     <a href="/ai_feedback" class="dash-card">
                         <div class="icon-box ai"><i class="fas fa-robot"></i></div>
                         <div class="card-info">
-                            <h4>AI Insights</h4>
+                            <h4>AI Feedback</h4>
                             <p>Get personalized feedback and coping strategies.</p>
                         </div>
                         <div class="arrow-icon"><i class="fas fa-arrow-right"></i></div>
@@ -160,7 +155,7 @@
                     <a href="/emotionhistory" class="dash-card">
                         <div class="icon-box hist"><i class="fas fa-history"></i></div>
                         <div class="card-info">
-                            <h4>History Log</h4>
+                            <h4>Emotion History</h4>
                             <p>Review your past notes and reflections.</p>
                         </div>
                         <div class="arrow-icon"><i class="fas fa-arrow-right"></i></div>
