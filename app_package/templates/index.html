@@ -23,7 +23,7 @@
     <!-- HERO SECTION -->
     <section class="hero">
         <div class="hero-text">
-            <h1>The Easiest Way to Track<br>Your Moods Online or Offline</h1>
+            <h1>Your Personal Companion<br>for Emotional Well-being</h1>
 
             <h3 class="subtitle">
                 Recommended by Students, Counsellors and Mental Health Educators
@@ -31,8 +31,8 @@
 
             <p class="description">
                 MoodTracker is a simple and user-friendly mood tracking web app 
-                designed to help users record emotions, identify trends, and improve 
-                emotional wellbeing through meaningful insights.
+                designed to help you record emotions, identify trends, and improve 
+                your mental health through meaningful AI-driven insights.
             </p>
 
             <div class="hero-buttons">
@@ -42,14 +42,11 @@
 
         </div>
 
-        <div class="hero-image">
-            <div class="mockup-box">
-                <div class="mockup-header"></div>
-                <div class="mockup-content">
-                    <div class="mockup-card"></div>
-                    <div class="mockup-chart"></div>
-                </div>
-            </div>
+        <div class="hero-image-container">
+            <!-- TIP: Take a screenshot of your actual dashboard and save it as 'dashboard_preview.png' in your static folder -->
+            <img src="{{ url_for('static', filename='dashboard_preview.png') }}" 
+                 alt="MoodTracker Dashboard Preview" 
+                 class="hero-dashboard-img">
         </div>
     </section>
 

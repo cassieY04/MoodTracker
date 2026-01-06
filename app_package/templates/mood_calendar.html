@@ -16,13 +16,13 @@
             
             <nav>
             <ul class="menu">
-                <li class="active">
+                <li>
                     <a href="/dashboard" >
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/log_emotion">
                         <i class="fas fa-pencil-alt"></i>
                         <span>Log Emotion</span>
@@ -34,27 +34,25 @@
                         <span>Mood Calendar</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_statistics">
                         <i class="fas fa-chart-bar"></i>
                         <span>Mood Statistics</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/ai_feedback">
                         <i class="fas fa-star"></i>
                         <span>AI Feedback</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/emotionhistory">
                         <i class="fas fa-history"></i>
                         <span>Emotion History</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -102,13 +100,20 @@
                                                 <div class="day-number">{{ day }}</div>
                                                 {% if day_key in mood_data %}
                                                     <div class="day-emojis">
-                                                        {% for entry in mood_data[day_key]['entries'] %}
+                                                        {% set entries = mood_data[day_key]['entries'] %}
+                                                        {% set display_entries = entries[-3:] if entries|length > 3 else entries %}
+                                                        {% for entry in display_entries|reverse %}
                                                             <span class="cal-emoji" 
                                                                   title="{{ entry.emotion }} at {{ entry.time }}"
                                                                   onclick="openDayModal('{{ day_key }}')">
                                                                 {{ entry.emoji }}
                                                             </span>
                                                         {% endfor %}
+                                                        {% if entries|length > 3 %}
+                                                            <span class="cal-more-btn" onclick="openDayModal('{{ day_key }}')">
+                                                                +{{ entries|length - 3 }}
+                                                            </span>
+                                                        {% endif %}
                                                     </div>
                                                 {% endif %}
                                             {% endif %}
@@ -171,7 +176,7 @@
 
     <script>
         // Pass the Python dictionary to JavaScript
-        const MOOD_DATA = '{{ mood_data | tojson }}';
+        const MOOD_DATA = {{ mood_data | tojson }};
 
         function openDayModal(dayKey) {
             const dayData = MOOD_DATA[dayKey];
@@ -188,12 +193,12 @@
                 entryDiv.className = 'modal-entry';
                 
                 entryDiv.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                        <strong style="font-size:1.1em;">${entry.emoji} ${entry.emotion}</strong>
-                        <span style="color:#888; font-size:0.9em;">${entry.time}</span>
+                    <div class="modal-entry-header">
+                        <strong class="modal-entry-title">${entry.emoji} ${entry.emotion}</strong>
+                        <span class="modal-entry-time">${entry.time}</span>
                     </div>
-                    ${entry.note ? `<p style="margin:5px 0; color:#555;"><strong>Reason:</strong> ${entry.note}</p>` : ''}
-                    ${entry.thought ? `<p style="margin:5px 0; color:#555;"><strong>Thought:</strong> ${entry.thought}</p>` : ''}
+                    ${entry.note ? `<p class="modal-entry-text"><strong>Reason:</strong> ${entry.note}</p>` : ''}
+                    ${entry.thought ? `<p class="modal-entry-text"><strong>Thought:</strong> ${entry.thought}</p>` : ''}
                 `;
                 container.appendChild(entryDiv);
             });

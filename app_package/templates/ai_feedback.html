@@ -1,3 +1,66 @@
+{% macro render_feedback_card(data) %}
+    <!-- Emotion Card -->
+    <section class="ai-card">
+        <h3>🎭 Logged Emotion</h3>
+        <div class="feedback-emoji-large">
+            {{ data.emoji }} {{ data.emotion|capitalize }}
+        </div>
+        {% if data.timestamp %}
+        <div class="feedback-timestamp">
+            <i class="far fa-clock"></i> {{ data.timestamp }}
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- User reflection -->
+    <section class="ai-card reflection">
+        <h3>✍️ Reflection & Timeline</h3>
+
+        <div class="reflection-grid">
+            <div class="reflection-box">
+                <span class="ref-label">Situation</span>
+                <p>{{ data.reflection.reason if data.reflection.reason else '-' }}</p>
+            </div>
+            <div class="reflection-box">
+                <span class="ref-label">Thoughts</span>
+                <p>{{ data.reflection.thought if data.reflection.thought else '-' }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI analysis -->
+    <section class="ai-card highlight">
+        <h3>🤖 AI Analysis</h3>
+        {% if data.causes %}
+        <p class="feedback-intro-text">Here is what might be influencing your mood:</p>
+        <ul>
+            {% for c in data.causes%}
+            <li>{{c}}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No specific patterns detected, but your feelings are valid.</p>
+        {% endif %}
+    </section>
+
+    <!-- AI suggestions -->
+    <section class="ai-card suggestions">
+        <h3>🌱 Suggested Actions</h3>
+        <p class="feedback-intro-text">Try these small steps to help you feel better:</p>
+        <ul>
+            {% for s in data.suggestions%}
+            <li>{{s}}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <!-- Encouragement -->
+    <section class="ai-card encouragement">
+        <h3>💡 Word of Encouragement</h3>
+        <p>"{{ data.encouragement }}"</p>
+    </section>
+{% endmacro %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,30 +79,29 @@
             
             <nav>
             <ul class="menu">
-                <li class="active">
+                <li>
                     <a href="/dashboard" >
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/log_emotion">
                         <i class="fas fa-pencil-alt"></i>
                         <span>Log Emotion</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_calendar">
                         <i class="far fa-calendar-alt"></i>
                         <span>Mood Calendar</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_statistics">
                         <i class="fas fa-chart-bar"></i>
                         <span>Mood Statistics</span>
                     </a>
-                </li>
                 </li>
                 <li class="active">
                     <a href="/ai_feedback">
@@ -47,14 +109,13 @@
                         <span>AI Feedback</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/emotionhistory">
                         <i class="fas fa-history"></i>
                         <span>Emotion History</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -81,71 +142,75 @@
                 {% else %}
                 
                 <!-- Greeting -->
-                <section class="ai-card intro">
-                    <h2>Here's your feedback, {{ session.username }}!</h2>
-                    <p class="ai-subtitle">
-                        Let's break down what you're feeling.
-                    </p>
-                </section>
-
-                <!-- Emotion Card -->
-                <section class="ai-card">
-                    <h3>🎭 Selected Emotion</h3>
-                    <div style="text-align: center; font-size: 28px; font-weight: bold; color: #6c5ce7; margin-top: 10px;">
-                        {{ emoji }} {{ emotion }}
+                <div class="ai-header-card">
+                    <div class="ai-header-text">
+                        <h2>Here's your feedback, {{ session.username }}!</h2>
+                        <p>Let's break down what you're feeling.</p>
                     </div>
-                </section>
-
-                <!-- User reflection -->
-                <section class="ai-card reflection">
-                    <h3>✍️ Your Reflection</h3>
-
-                    <div class="reflection-grid">
-                        <div class="reflection-box">
-                            <span class="ref-label">Reason</span>
-                            <p>{{ reason if reason else '-' }}</p>
-                        </div>
-                        <div class="reflection-box">
-                            <span class="ref-label">Thought</span>
-                            <p>{{ thought if thought else '-' }}</p>
-                        </div>
+                    <div class="ai-header-icon">
+                        <i class="fas fa-robot"></i>
                     </div>
-                </section>
+                </div>
 
-                <!-- AI analysis -->
-                <section class="ai-card highlight">
-                    <h3>🤖 AI Analysis</h3>
-                    <p> Possible causes:</p>
-                    <ul>
-                        {% for c in causes%}
-                        <li>{{c}}</li>
-                        {% endfor %}
-                    </ul>
-                       
-                </section>
+                {% if view_type == 'single' %}
+                    <!-- SINGLE LOG VIEW -->
+                    {{ render_feedback_card(single_data) }}
+                
+                {% else %}
+                    <!-- DASHBOARD VIEW (Tabs) -->
+                    <div class="tab-nav">
+                        <button class="tab-btn {{ 'active' if active_tab == 'daily' else '' }}" onclick="openTab(event, 'daily')">Daily</button>
+                        <button class="tab-btn {{ 'active' if active_tab == 'weekly' else '' }}" onclick="openTab(event, 'weekly')">Weekly</button>
+                        <button class="tab-btn {{ 'active' if active_tab == 'monthly' else '' }}" onclick="openTab(event, 'monthly')">Monthly</button>
+                    </div>
 
-                <!-- AI suggestions -->
-                <section class="ai-card suggestions">
-                    <h3>🌱 Suggested Actions</h3>
-                    <ul>
-                        {% for s in suggestions%}
-                        <li>{{s}}</li>
-                        {% endfor %}
-                    </ul>
-                </section>
+                    <div id="daily" class="tab-content {{ 'active' if active_tab == 'daily' else '' }}">
+                        <div class="ai-picker-container">
+                            <label for="ai-date" class="picker-label">View Date:</label>
+                            <input type="date" id="ai-date" value="{{ selected_date }}" onchange="window.location.href='?date='+this.value" class="picker-input">
+                        </div>
 
-                <!-- Summary -->
-                <section class="ai-card summary">
-                    <h3>🧠 Emotional Summary</h3>
-                    <p>{{summary}} {{emoji}}</p>
-                        
-                </section>
+                        {% if daily_data %}
+                            {{ render_feedback_card(daily_data) }}
+                        {% else %}
+                            <p class="no-logs-text">No feedback found for this date.</p>
+                        {% endif %}
+                    </div>
+
+                    <div id="weekly" class="tab-content {{ 'active' if active_tab == 'weekly' else '' }}">
+                        <div class="ai-picker-container">
+                            <label for="ai-week" class="picker-label">View Week:</label>
+                            <input type="week" id="ai-week" value="{{ selected_week }}" onchange="window.location.href='?week='+this.value" class="picker-input">
+                        </div>
+
+                        {% if weekly_data %}
+                            {{ render_feedback_card(weekly_data) }}
+                        {% else %}
+                            <p class="no-logs-text">No feedback found for this week yet.</p>
+                        {% endif %}
+                    </div>
+
+                    <div id="monthly" class="tab-content {{ 'active' if active_tab == 'monthly' else '' }}">
+                        <div class="ai-picker-container">
+                            <label for="ai-month" class="picker-label">View Month:</label>
+                            <input type="month" id="ai-month" value="{{ selected_month }}" onchange="window.location.href='?month='+this.value" class="picker-input">
+                        </div>
+
+                        {% if monthly_data %}
+                            {{ render_feedback_card(monthly_data) }}
+                        {% else %}
+                            <p class="no-logs-text">No feedback found for this month yet.</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                
                 {% endif %}
 
-
+                {% if view_type == 'single' %}
                 <div class="ai-footer">
-                    <a href="{{ url_for('emotion_history.emotion_history') }}{% if log_id %}#log-{{ log_id }}{% endif %}">← Back to Emotion History</a>
+                    <a href="{{ url_for('emotion_history.emotion_history') }}#log-{{ log_id }}">← Back to Emotion History</a>
                 </div>
+                {% endif %}
 
             </div>
 
@@ -153,5 +218,20 @@
         </div>
     </div>
 
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
 </body>
 </html>

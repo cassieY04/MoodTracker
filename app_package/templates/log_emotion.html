@@ -17,7 +17,7 @@
             
             <nav>
             <ul class="menu">
-                <li class="active">
+                <li>
                     <a href="/dashboard" >
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
@@ -29,33 +29,31 @@
                         <span>Log Emotion</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_calendar">
                         <i class="far fa-calendar-alt"></i>
                         <span>Mood Calendar</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_statistics">
                         <i class="fas fa-chart-bar"></i>
                         <span>Mood Statistics</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/ai_feedback">
                         <i class="fas fa-star"></i>
                         <span>AI Feedback</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/emotionhistory">
                         <i class="fas fa-history"></i>
                         <span>Emotion History</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -74,7 +72,16 @@
                     <h1>Log Emotion</h1>
                 </div>
             </header>
-            <h2 class="greeting">How are you feeling right now, {{ session.username }}?</h2>
+            <div class="log-page-wrapper">
+            <div class="log-header-card">
+                <div class="log-header-text">
+                    <h2>How are you feeling right now, {{ session.username }}?</h2>
+                    <p>Take a moment to check in with yourself.</p>
+                </div>
+                <div class="log-header-icon">
+                    <i class="fas fa-heart-pulse"></i>
+                </div>
+            </div>
             <div class="log-emotion-container">
                 
                 <form method="POST" class="emotion-log-form">
@@ -111,12 +118,12 @@
 
                         <div class="log-right">
 
-                            <label for="note">Optional Note (Reason):</label>
-                            <textarea name="note" id="note" rows="3" placeholder="What make you feel this way? (e.g., 'Finished a big project' or 'Worrying about an exam')."></textarea>
+                            <label for="note">What happened? (Situation):</label>
+                            <textarea name="note" id="note" rows="3" placeholder="Describe the event (e.g., 'Finished a big project' or 'My friend cancelled plans')."></textarea>
 
                             <!--additional thought field-->
-                            <label for="note">Optional Note (Thought):</label>
-                            <textarea name="thought" id="thought" rows="3" placeholder="Was there a specific moment or thought?(e.g., 'I felt sad because I had a meeting on my birthday')"></textarea>
+                            <label for="thought">What's on your mind? (Thoughts):</label>
+                            <textarea name="thought" id="thought" rows="3" placeholder="What are you telling yourself? (e.g., 'I did a great job' or 'I'm worried I might fail')."></textarea>
 
 
                             <button type="submit" class="main-btn">Save Log</button>
@@ -134,7 +141,7 @@
                     {% endif %}
                     {% endwith %}
             </div> 
-                    
+            </div>        
 
         </div>
     </div>

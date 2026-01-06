@@ -16,37 +16,35 @@
             
             <nav>
             <ul class="menu">
-                <li class="active">
+                <li>
                     <a href="/dashboard" >
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/log_emotion">
                         <i class="fas fa-pencil-alt"></i>
                         <span>Log Emotion</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_calendar">
                         <i class="far fa-calendar-alt"></i>
                         <span>Mood Calendar</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_statistics">
                         <i class="fas fa-chart-bar"></i>
                         <span>Mood Statistics</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/ai_feedback">
                         <i class="fas fa-star"></i>
                         <span>AI Feedback</span>
                     </a>
-                </li>
                 </li>
                 <li class="active">
                     <a href="/emotionhistory">
@@ -54,7 +52,7 @@
                         <span>Emotion History</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -75,50 +73,82 @@
             </header>
 
             <div class="history-content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="popup-msg history-flash-msg">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Filter Section -->
+                <div class="history-filters">
+                    <form method="GET" class="filter-form">
+                        <div class="filter-group">
+                            <label>Date:</label>
+                            <input type="date" name="date" value="{{ request.args.get('date', '') }}" class="filter-input">
+                        </div>
+                        <div class="filter-group">
+                            <label>Emotion:</label>
+                            <select name="emotion" class="filter-input">
+                                <option value="">All Emotions</option>
+                                <option value="Happy" {% if request.args.get('emotion') == 'Happy' %}selected{% endif %}>Happy</option>
+                                <option value="Excited" {% if request.args.get('emotion') == 'Excited' %}selected{% endif %}>Excited</option>
+                                <option value="Neutral" {% if request.args.get('emotion') == 'Neutral' %}selected{% endif %}>Neutral</option>
+                                <option value="Anxious" {% if request.args.get('emotion') == 'Anxious' %}selected{% endif %}>Anxious</option>
+                                <option value="Sad" {% if request.args.get('emotion') == 'Sad' %}selected{% endif %}>Sad</option>
+                                <option value="Angry" {% if request.args.get('emotion') == 'Angry' %}selected{% endif %}>Angry</option>
+                                <option value="Stressed" {% if request.args.get('emotion') == 'Stressed' %}selected{% endif %}>Stressed</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="filter-btn">Filter</button>
+                        <a href="{{ url_for('emotion_history.emotion_history') }}" class="clear-btn">Clear</a>
+                    </form>
+                </div>
+
                 {% if logs %}
                     <div class="history-list">
                         {% for log in logs %}
-                        <div class="history-card" id="log-{{ log.id }}">
-                            <div class="card-header">
+                        <div class="history-card" id="log-{{ log.id }}" style="border-left-color: {{ log.color }};">
                             <div class="card-header">
                                 <div class="emotion-info">
                                     <span class="emotion-emoji">{{ log.emoji }}</span>
                                     <span class="emotion-name">{{ log.emotion_name }}</span>
                                 </div>
-                                <div class="date-info">
-                                    {{ log.timestamp }}
+                                <div class="header-meta">
+                                    <div class="card-actions">
+                                        <button class="icon-btn edit-btn" title="Edit Entry"
+                                                data-id="{{ log.id }}" 
+                                                data-emotion="{{ log.emotion_name }}"
+                                                data-note="{{ log.note or '' }}"
+                                                data-thought="{{ log.thought or '' }}"
+                                                onclick="prepareEditModal(this)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+
+                                        <button class="icon-btn delete-btn" title="Delete Entry" onclick="prepareDeleteModal('{{ log.id }}')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div class="date-info">
+                                        {{ log.timestamp }}
+                                    </div>
                                 </div>
                             </div>
                             
                             <div class="card-body">
                                 {% if log.note %}
-                                    <p><strong>Reason:</strong> {{ log.note }}</p>
+                                    <p><strong>Situation:</strong> {{ log.note }}</p>
                                 {% endif %}
                                 {% if log.thought %}
-                                    <p><strong>Thought:</strong> {{ log.thought }}</p>
+                                    <p><strong>Thoughts:</strong> {{ log.thought }}</p>
                                 {% endif %}
                             </div>
                             
                             <div class="card-footer">
                                 <a href="/ai_feedback/{{ log.id }}" class="view-feedback-link">View AI Feedback &rarr;</a>
-                                <div class="card-actions">
-                                    <button class="icon-btn edit-btn" title="Edit Entry"
-                                            data-id="{{ log.id }}" 
-                                            data-emotion="{{ log.emotion_name }}"
-                                            data-note="{{ log.note or '' }}"
-                                            data-thought="{{ log.thought or '' }}"
-                                            onclick="prepareEditModal(this)">
-                                        <i class="fas fa-edit"></i>
-
-                                        <form method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this memory permanently?');">
-                                            <input type="hidden" name="log_id" value="{{ log.id }}">
-                                            <input type="hidden" name="action" value="delete">
-                                            <button type="submit" class="icon-btn delete-btn" title="Delete Entry">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </button>
-                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -142,7 +172,7 @@
                 
                 <div class="form-group">
                     <label for="edit-emotion">Emotion:</label>
-                    <select name="emotion_name" id="edit-emotion">
+                    <select name="emotion_name" id="edit-emotion" class="modal-select">
                         <option value="Happy">Happy</option>
                         <option value="Excited">Excited</option>
                         <option value="Neutral">Neutral</option>
@@ -154,18 +184,34 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="edit-note">Reason:</label>
-                    <textarea name="note" id="edit-note" rows="3"></textarea>
+                    <label for="edit-note">Situation:</label>
+                    <textarea name="note" id="edit-note" rows="3" class="modal-textarea"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="edit-thought">Thought:</label>
-                    <textarea name="thought" id="edit-thought" rows="3"></textarea>
+                    <label for="edit-thought">Thoughts:</label>
+                    <textarea name="thought" id="edit-thought" rows="3" class="modal-textarea"></textarea>
                 </div>
                 
                 <div class="popup-actions">
-                    <button type="button" class="secondary-btn" onclick="closeEditModal()">Cancel</button>
-                    <button type="submit" class="main-btn">Save Changes</button>
+                    <button type="button" class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="edit-save-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete pop up -->
+    <div id="deleteModal" class="popup-overlay" style="display: none;">
+        <div class="popup-box small-popup">
+            <h2>Delete Entry</h2>
+            <p class="delete-modal-text">Are you sure you want to delete this emotion permanently?</p>
+            <form method="POST">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="log_id" id="delete-log-id">
+                <div class="popup-actions">
+                    <button type="button" class="secondary-btn" onclick="closeDeleteModal()">No</button>
+                    <button type="submit" class="danger-btn">Yes</button>
                 </div>
             </form>
         </div>
@@ -204,11 +250,23 @@
             document.getElementById('editModal').style.display = "none";
         }
 
+        function prepareDeleteModal(logId) {
+            document.getElementById('delete-log-id').value = logId;
+            document.getElementById('deleteModal').style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = "none";
+        }
+
         // Close if user clicks outside the white box
         window.onclick = function(event) {
-            const modal = document.getElementById('editModal');
-            if (event.target == modal) {
+            const editModal = document.getElementById('editModal');
+            const deleteModal = document.getElementById('deleteModal');
+            if (event.target == editModal) {
                 closeEditModal();
+            } else if (event.target == deleteModal) {
+                closeDeleteModal();
             }
         }
     </script>

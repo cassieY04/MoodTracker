@@ -13,6 +13,17 @@ def emotion_history():
         
     username = session['username']
     logs = UserManager.get_emotion_logs(username)
+    
+    # --- Filtering Logic ---
+    filter_date = request.args.get('date')
+    filter_emotion = request.args.get('emotion')
+
+    if filter_date:
+        # Filter by date (timestamp starts with YYYY-MM-DD)
+        logs = [l for l in logs if l['timestamp'].startswith(filter_date)]
+    
+    if filter_emotion:
+        logs = [l for l in logs if l['emotion_name'] == filter_emotion]
 
     if request.method == 'POST':
         action = request.form.get('action')
@@ -23,8 +34,10 @@ def emotion_history():
             new_note = request.form.get('note')
             new_thought = request.form.get('thought')
 
-            msia_tz = timezone(timedelta(hours=8))
-            updated_timestamp = datetime.now(msia_tz).strftime("%Y-%m-%d %H:%M:%S")
+            # Find original log to preserve timestamp (don't move history to "now")
+            current_log = next((log for log in logs if str(log['id']) == str(log_id)), None)
+            # Use original timestamp if found, otherwise fallback to now
+            updated_timestamp = current_log['timestamp'] if current_log else datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
 
             if UserManager.update_emotion_log(log_id, username, new_emotion, new_note, new_thought, updated_timestamp):
                 flash("Entry updated successfully.", "success")
@@ -37,7 +50,7 @@ def emotion_history():
             else:
                 flash("Error deleting entry.", "error")
 
-        return redirect(url_for('emotion_history.emotion_history', logs=logs))
+        return redirect(url_for('emotion_history.emotion_history'))
     
     # Enhance logs with emoji and color for the UI
     for log in logs:

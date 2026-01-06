@@ -94,6 +94,31 @@ body.body {
     margin: 0 auto;       
 }
 
+.hero-image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    perspective: 1000px; /* For 3D effect */
+}
+
+.hero-dashboard-img {
+    width: 100%;
+    max-width: 550px;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(111, 75, 216, 0.2);
+    border: 4px solid white;
+    transform: rotateY(-10deg) rotateX(5deg);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.hero-dashboard-img:hover {
+    transform: rotateY(0deg) rotateX(0deg);
+    box-shadow: 0 25px 60px rgba(111, 75, 216, 0.3);
+}
+
+.hero-text {
+    padding-top: 40px;
+}
 .hero-text h1 {
     font-size: 40px;
     font-weight: 800;
@@ -154,35 +179,6 @@ body.body {
     background: #8b5cf6;
     color: white;
     transform: translateY(-3px);
-}
-
-.hero-image { display: flex; }
-.mockup-box {
-    width: 380px;
-    height: 260px;
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-}
-.mockup-header {
-    width: 100%;
-    height: 25px;
-    background: #e8dbff;
-    border-radius: 10px;
-}
-.mockup-card {
-    width: 100%;
-    height: 60px;
-    background: #d8c4ff;
-    border-radius: 12px;
-    margin: 20px 0;
-}
-.mockup-chart {
-    width: 100%;
-    height: 100px;
-    background: #f0e7ff;
-    border-radius: 12px;
 }
 
 .section-line {
@@ -556,7 +552,7 @@ body.body {
 }
 
 .menu li:hover,
-.active {
+.menu li.active {
     background: rgba(253, 189, 189, 0.44);
     
 }
@@ -999,6 +995,35 @@ textarea {
     text-align: center;
     width: 90%;
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    font-family: Arial, sans-serif;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4b2e83;
+    font-size: 15px;
+}
+
+.modal-input, .modal-select, .modal-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbbff0;
+    border-radius: 10px;
+    font-size: 15px;
+    box-sizing: border-box;
+    font-family: inherit;
+    outline: none;
+}
+
+.modal-input:focus, .modal-select:focus, .modal-textarea:focus {
+    border-color: #8158d8;
 }
 
 .small-popup {
@@ -1044,6 +1069,49 @@ textarea {
     background: #cf3f31;
 }
 
+/* Cleaned up styles from HTML */
+.history-flash-msg {
+    margin-bottom: 20px;
+}
+
+.delete-modal-text {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Specific buttons for Edit Entry Modal */
+.edit-cancel-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: #7f5bd9;
+    color: #ffffff;
+    font-weight: 200;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+.edit-cancel-btn:hover {
+    background: #6a47c9;
+}
+
+.edit-save-btn {
+    background: #6f4bd8;
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+
+.edit-save-btn:hover {
+    background: #5a39b8;
+}
+
 /* -------Log Emotion Page--------- */
 .content-logemotion{
     display: grid;
@@ -1071,15 +1139,118 @@ textarea {
     cursor: default;
 }
 
-.greeting{
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    margin-top: 25px;
-    font-style: italic;
-    color: rgb(16, 38, 36);
-    font-family: Arial, sans-serif;
-    animation: fadeIn 1s ease-in-out;
+.log-header-card {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border-left: 6px solid #6f4bd8;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.log-header-text h2 {
+    margin: 0 0 8px 0;
+    color: #4b2e83;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.log-header-text p {
+    margin: 0;
+    color: #718096;
+    font-size: 16px;
+}
+
+.log-header-icon {
+    width: 60px;
+    height: 60px;
+    background: #f3eaff;
+    color: #6f4bd8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.ai-header-card {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border-left: 6px solid #6f4bd8;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.ai-header-text h2 {
+    margin: 0 0 8px 0;
+    color: #4b2e83;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.ai-header-text p {
+    margin: 0;
+    color: #718096;
+    font-size: 16px;
+}
+
+.ai-header-icon {
+    width: 60px;
+    height: 60px;
+    background: #f3eaff;
+    color: #6f4bd8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.stats-header-card {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border-left: 6px solid #6f4bd8;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.stats-header-text h2 {
+    margin: 0 0 8px 0;
+    color: #4b2e83;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.stats-header-text p {
+    margin: 0;
+    color: #718096;
+    font-size: 16px;
+}
+
+.stats-header-icon {
+    width: 60px;
+    height: 60px;
+    background: #f3eaff;
+    color: #6f4bd8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
 }
 
 @keyframes fadeIn {
@@ -1326,9 +1497,10 @@ textarea {
 
 .day-emojis {
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
+    flex-wrap: nowrap;
+    gap: 2px;
     justify-content: center;
+    align-items: center;
 }
 
 .cal-emoji {
@@ -1339,6 +1511,27 @@ textarea {
 
 .cal-emoji:hover {
     transform: scale(1.2);
+}
+
+.cal-more-btn {
+    font-size: 11px;
+    background: #e0d6ff;
+    color: #6f4bd8;
+    border-radius: 12px;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+}
+
+.cal-more-btn:hover {
+    background: #6f4bd8;
+    color: white;
+    transform: scale(1.1);
 }
 
 .calendar-footer {
@@ -1472,12 +1665,33 @@ textarea {
     border-left: 5px solid #ccc;
 }
 
+.modal-entry-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.modal-entry-title {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.modal-entry-time {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.modal-entry-text {
+    margin: 5px 0;
+    color: #555;
+}
+
 /* ====================AI FEEDBACK PAGE===================== */
 
 .ai-feedback-page {
-    max-width: 850px;
-    margin: 40px auto 80px;
-    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px;
     font-family: Arial, sans-serif;
     }
 
@@ -1528,44 +1742,6 @@ textarea {
     margin-bottom: 10px;
 }
 
-.ai-card.intro {
-    background: linear-gradient(135deg, #9b75ed 0%, #6f4bd8 100%);
-    color: white;
-    border: none;
-    text-align: center;
-}
-
-.ai-card.intro h2 {
-    color: white;
-    margin-bottom: 5px;
-}
-
-.ai-card.intro .ai-subtitle {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 16px;
-    margin-bottom: 0;
-}
-
-.ai-card.summary {
-    color: white;
-    background: linear-gradient(135deg, #9b75ed 0%, #6f4bd8 100%);
-    border: none;
-    padding: 10px;
-    text-align: center;
-}
-
-.ai-card.summary h3 {
-    color: white;
-    justify-content: center;
-    font-size: 25px;
-}
-
-.ai-card.summary p {
-    font-size: 18px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.95);
-}
-
 /* Reflection Styling */
 .reflection-grid {
     display: flex;
@@ -1594,6 +1770,7 @@ textarea {
     margin: 0;
     color: #2d3748;
     font-style: italic;
+    white-space: pre-line; /* Allows newlines for Daily Summary */
 }
 
 /* Analysis Styling */
@@ -1658,6 +1835,61 @@ textarea {
     color: #48bb78;
 }
 
+/* Encouragement Styling */
+.ai-card.encouragement {
+    border-left: 5px solid #f39c12;
+    background: #fffdf5;
+}
+
+.ai-card.encouragement h3 {
+    color: #d35400;
+}
+
+.ai-card.encouragement p {
+    font-style: italic;
+    font-size: 18px;
+    color: #555;
+    font-weight: 500;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* Tabs Styling for AI Feedback */
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    background: white;
+    border: 2px solid #e0d6ff;
+    color: #6f4bd8;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: #6f4bd8;
+    color: white;
+    border-color: #6f4bd8;
+}
+
+.tab-btn.active {
+    background: #6f4bd8;
+    color: white;
+    border-color: #6f4bd8;
+    box-shadow: 0 4px 12px rgba(111, 75, 216, 0.3);
+}
+
+.tab-content { display: none; animation: fadeIn 0.5s; }
+.tab-content.active { display: block; }
+
 .ai-footer {
     margin-top: 40px;
     text-align: left;
@@ -1694,7 +1926,7 @@ textarea {
 /* ==================== EMOTION HISTORY PAGE ===================== */
 .history-content {
     padding: 30px;
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
     font-family: Arial, sans-serif;
 }
@@ -1728,6 +1960,13 @@ textarea {
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid #f0f0f0;
+}
+
+.header-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
 }
 
 .emotion-info {
@@ -1767,6 +2006,24 @@ textarea {
     font-weight: 600;
 }
 
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #b2bec3;
+    transition: color 0.3s;
+    padding: 0;
+}
+
+.icon-btn:hover { color: #6f4bd8; }
+.delete-btn:hover { color: #e74c3c; }
+
 .card-footer {
     text-align: right;
 }
@@ -1801,16 +2058,172 @@ textarea {
 /* ==================== DASHBOARD PAGE ===================== */
 
 .dashboard-content {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
+    padding: 30px;
+}
+
+/* Enhanced Welcome Popup */
+.welcome-popup {
+    padding: 0 !important;
+    width: 450px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.popup-header-banner {
+    background: linear-gradient(135deg, #9b75ed 0%, #6f4bd8 100%);
+    padding: 30px 25px;
+    text-align: center;
+    color: white;
+}
+
+.popup-emoji {
+    font-size: 40px;
+    margin-bottom: 10px;
+    display: inline-block;
+    animation: wave 2s infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-15deg); }
+}
+
+.popup-header-banner h2 {
+    color: white !important;
+    margin: 0 0 5px 0 !important;
+    font-size: 26px !important;
+}
+
+.popup-header-banner p {
+    margin: 0;
+    opacity: 0.95;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.popup-content-grid {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.feature-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.feature-icon {
+    width: 42px;
+    height: 42px;
+    background: #f3eaff;
+    color: #6f4bd8;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.feature-desc h4 {
+    margin: 0 0 4px 0;
+    color: #4b2e83;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.feature-desc p {
+    margin: 0;
+    color: #718096;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.popup-action-btn {
+    width: calc(100% - 50px);
+    margin: 0 25px 25px;
+    display: block;
+    font-size: 16px;
+    padding: 12px;
+}
+
+/* History Filters */
+.history-filters {
+    background: white;
     padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.filter-form {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b2e83;
+}
+
+.filter-input {
+    padding: 10px;
+    border: 1px solid #cbbff0;
+    border-radius: 8px;
+    font-size: 14px;
+    min-width: 150px;
+    font-family: Arial, sans-serif;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    background: #6f4bd8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.filter-btn:hover {
+    background: #5a39b8;
+}
+
+.clear-btn {
+    padding: 10px 20px;
+    background: #f0e7ff;
+    color: #6f4bd8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+.clear-btn:hover {
+    background: #e0d6ff;
 }
 
 /* Welcome Banner */
 .welcome-card {
     background: linear-gradient(135deg, #9b75ed 0%, #6f4bd8 100%);
     border-radius: 20px;
-    padding: 35px;
+    padding: 25px;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -1871,7 +2284,7 @@ textarea {
 /* Dashboard Grid */
 .dash-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 25px;
 }
 
@@ -1932,4 +2345,248 @@ textarea {
 
 .dash-card:hover .arrow-icon {
     color: #6f4bd8;
+}
+
+/* ==================== MOOD STATISTICS PAGE ===================== */
+.stats-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+}
+
+.stats-header-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(111, 75, 216, 0.1);
+    border-color: #e0d6ff;
+}
+
+.stat-icon-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.stat-icon-box.total { background: linear-gradient(135deg, #6f4bd8, #9b75ed); }
+.stat-icon-box.streak { background: linear-gradient(135deg, #f39c12, #f1c40f); }
+.stat-icon-box.mood { background: linear-gradient(135deg, #e74c3c, #ff7675); }
+.stat-icon-box.avg { background: linear-gradient(135deg, #2ecc71, #55efc4); }
+
+.stat-details h3 {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.stat-details p {
+    font-size: 26px;
+    font-weight: 800;
+    color: #2d3436;
+    margin: 0;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.chart-container {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    border: 1px solid #f0f0f0;
+}
+
+.chart-container h2 {
+    font-size: 20px;
+    color: #4b2e83;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Statistics Tabs */
+.stats-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stats-tab-btn {
+    padding: 10px 25px;
+    border-radius: 25px;
+    background: white;
+    border: 2px solid #e0d6ff;
+    color: #6f4bd8;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.stats-tab-btn.active, .stats-tab-btn:hover {
+    background: #6f4bd8;
+    color: white;
+    border-color: #6f4bd8;
+}
+
+/* Breakdown Bars */
+.breakdown-item {
+    margin-bottom: 15px;
+}
+
+.breakdown-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b2e83;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.ai-btn-container {
+    text-align: center;
+    margin-top: 20px;
+    text-align: right;
+    margin-top: 30px;
+}
+
+.main-btn-ai-btn-large{
+    text-decoration: none;
+    padding: 12px 30px;
+    font-size: 15px;
+    background: #6f4bd8;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.main-btn-ai-btn-large:hover {
+    background: #5a39b8;
+}
+
+/* ==================== REFACTORED INLINE STYLES ===================== */
+
+/* AI Feedback Specific */
+.feedback-emoji-large {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #6c5ce7;
+    margin-top: 10px;
+}
+
+.feedback-timestamp {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.feedback-intro-text {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.ai-picker-container {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.picker-label {
+    font-weight: 600;
+    color: #4b2e83;
+    margin-right: 10px;
+}
+
+.picker-input {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.no-logs-text {
+    text-align: center;
+    color: #888;
+    margin-top: 40px;
+}
+
+/* Mood Statistics Specific */
+.stats-picker-container {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.stats-breakdown-container {
+    margin-top: 25px;
+}
+
+.stats-no-data {
+    text-align: center;
+    color: #888;
+}
+
+.ai-btn-large {
+    text-decoration: none;
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+/* Log Emotion Page Wrapper */
+.log-page-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px;
 }

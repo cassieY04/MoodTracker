@@ -11,17 +11,40 @@
         <!-- POPUP -->
     {% if show_popup %}
     <div class="popup-overlay" id="welcomePopup">
-        <div class="popup-card">
-            <h2>Welcome to MoodTracker  {{ username }}! 💜</h2>
+        <div class="popup-card welcome-popup">
+            <div class="popup-header-banner">
+                <div class="popup-emoji">👋</div>
+                <h2>Welcome, {{ username }}!</h2>
+                <p>Your journey to emotional well-being starts here.</p>
+            </div>
 
-            <ul class="popup-list">
-                <li>📊 Track your moods and emotions daily</li>
-                <li>📅 View mood history using calendar</li>
-                <li>🤖 Get simple AI motivational feedback</li>
-                <li>🔒 Your data stays private</li>
-            </ul>
+            <div class="popup-content-grid">
+                <div class="feature-row">
+                    <div class="feature-icon"><i class="fas fa-pencil-alt"></i></div>
+                    <div class="feature-desc">
+                        <h4>Log Your Mood</h4>
+                        <p>Track emotions, situations, and thoughts daily.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-row">
+                    <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
+                    <div class="feature-desc">
+                        <h4>Visualize Trends</h4>
+                        <p>See your patterns with Calendar & Statistics.</p>
+                    </div>
+                </div>
 
-            <button class="main-btn" onclick="closePopup()">Got It!</button>
+                <div class="feature-row">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <div class="feature-desc">
+                        <h4>AI Insights</h4>
+                        <p>Get personalized feedback & encouragement.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="main-btn popup-action-btn" onclick="closePopup()">Let's Get Started!</button>
         </div>
     </div>
     {% endif %}
@@ -39,39 +62,37 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/log_emotion">
                         <i class="fas fa-pencil-alt"></i>
                         <span>Log Emotion</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_calendar">
                         <i class="far fa-calendar-alt"></i>
                         <span>Mood Calendar</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/mood_statistics">
                         <i class="fas fa-chart-bar"></i>
                         <span>Mood Statistics</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/ai_feedback">
                         <i class="fas fa-star"></i>
                         <span>AI Feedback</span>
                     </a>
                 </li>
-                </li>
-                <li class="active">
+                <li>
                     <a href="/emotionhistory">
                         <i class="fas fa-history"></i>
                         <span>Emotion History</span>
                     </a>
                 </li>
-                <li class="active">
+                <li>
                     <a href="/logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
