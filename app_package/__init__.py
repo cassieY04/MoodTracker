@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, session, jsonify
 from Databases.userdb import init_db
 from Databases.emologdb import init_emologdb
 import os 
@@ -40,5 +40,12 @@ def create_app():
     app.register_blueprint(mood_statistics_bp)
     app.register_blueprint(emotion_history_bp)
 
+    @app.route('/update_theme', methods=['POST'])
+    def update_theme():
+        data = request.get_json()
+        if data and 'theme' in data:
+            session['theme'] = data['theme']
+            return jsonify({"success": True}), 200
+        return jsonify({"success": False}), 400
     
     return app
