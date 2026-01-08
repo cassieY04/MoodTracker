@@ -23,8 +23,8 @@ class UserManager:
             db.execute(
                 '''INSERT INTO users 
                 (username, fullname, phone, email, password, security_question, security_answer, 
-                bio, profile_picture, address, birthday, age, gender, failed_attempts, locked_until)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)''',
+                bio, profile_picture, address, birthday, age, gender, failed_attempts, locked_until, theme)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?)''',
                 (
                     username,
                     user_data.get('fullname', ''),
@@ -38,7 +38,8 @@ class UserManager:
                     user_data.get('address', ''),
                     user_data.get('birthday', None),
                     user_data.get('age', None),
-                    user_data.get('gender', '')
+                    user_data.get('gender', ''),
+                    user_data.get('theme', 'light')
                 )
             )
             db.commit()
@@ -55,7 +56,7 @@ class UserManager:
             cursor = db.execute(
                 '''SELECT username, fullname, phone, email, password,
                           security_question, security_answer, bio, profile_picture,
-                          address, birthday, age, gender, failed_attempts, locked_until
+                          address, birthday, age, gender, failed_attempts, locked_until, theme
                    FROM users WHERE username = ?''',
                 (username,)
             )
@@ -100,7 +101,7 @@ class UserManager:
         db = get_db()
         try:
             cursor = db.execute(
-                "SELECT username, email , phone, password, bio, address, birthday, age, gender, security_question, security_answer, profile_picture FROM users WHERE username = ? OR email = ?",
+                "SELECT username, email , phone, password, bio, address, birthday, age, gender, security_question, security_answer, profile_picture, theme FROM users WHERE username = ? OR email = ?",
                 (identity, identity)
             )
             row = cursor.fetchone()

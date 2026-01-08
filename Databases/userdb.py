@@ -23,15 +23,23 @@ def init_db():
                 password TEXT NOT NULL,
                 security_question TEXT NOT NULL,
                 security_answer TEXT NOT NULL,
-                    bio TEXT,
-                    profile_picture TEXT,
-                    address TEXT,
-                    birthday DATE,
-                    age INTEGER,
-                    gender TEXT,
-                    failed_attempts INTEGER DEFAULT 0,
-                    locked_until INTEGER DEFAULT 0
-                )''')
+                bio TEXT,
+                profile_picture TEXT,
+                address TEXT,
+                birthday DATE,
+                age INTEGER,
+                gender TEXT,
+                failed_attempts INTEGER DEFAULT 0,
+                locked_until INTEGER DEFAULT 0,
+                theme TEXT DEFAULT 'light'
+            )''')
+
+        try:
+            db.execute('ALTER TABLE users ADD COLUMN theme TEXT DEFAULT "light"')
+        except sqlite3.OperationalError:
+            # If the column already exists, SQLite will throw an error, which we ignore
+            pass
+        
         db.commit()
 
     except Exception as e:

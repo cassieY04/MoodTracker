@@ -1,6 +1,7 @@
 from flask import Flask, request, session, jsonify
 from Databases.userdb import init_db
 from Databases.emologdb import init_emologdb
+from Databases.userdb import get_db
 import os 
 
 def create_app():
@@ -43,8 +44,16 @@ def create_app():
     @app.route('/update_theme', methods=['POST'])
     def update_theme():
         data = request.get_json()
-        if data and 'theme' in data:
-            session['theme'] = data['theme']
+        new_theme = data.get('theme')
+        username = session.get('username')
+
+        if username and new_theme:
+            session['theme'] = new_theme
+            
+            db = get_db()
+            db.execute('UPDATE users SET theme = ? WHERE username = ?', (new_theme, username))
+            db.commit()
+            db.close()
             return jsonify({"success": True}), 200
         return jsonify({"success": False}), 400
     

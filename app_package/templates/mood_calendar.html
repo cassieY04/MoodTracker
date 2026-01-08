@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        const currentTheme = "{{ session.get('theme', 'light') }}";
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
     <script src="{{ url_for('static', filename='theme.js') }}"></script>
     <meta charset="UTF-8">
     <title>Mood Calendar</title>
@@ -64,7 +68,7 @@
                 <li>
                     <a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar">
                         <i id="theme-icon" class="fas fa-moon"></i>
-                        <span>Light/Dark</span>
+                        <span>Theme</span>
                     </a>
                 </li>
             </ul>
