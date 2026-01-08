@@ -143,8 +143,10 @@
                             <span class="sum-value">{{ mood_summary.total_entries }}</span>
                         </div>
                         <div class="summary-item">
-                            <span class="sum-label">Top Mood</span>
-                            <span class="sum-value">{{ mood_summary.most_frequent }}</span>
+                            <span class="sum-label">Emotional Pattern</span>
+                            <span class="sum-value">{{ mood_summary.emotional_pattern.emoji }} 
+                                                    {{ mood_summary.emotional_pattern.title }}
+                            </span>
                         </div>
                     </div>
 
