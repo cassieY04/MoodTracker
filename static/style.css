@@ -5,11 +5,15 @@
     --sidebar-bg: linear-gradient(180deg, #a64dff, #6f43f3);
     --topheader-bg: #ffffff;
     --topborder-color: #e0d6ff;
-    --bg-main-section:#dccbf3;
+    --bg-main-section: linear-gradient(150deg, #f3eaff, #d9c8f8);
     --bg-profile-body:#f4ecff;
     --prosidebar-bg:#7f5bd9;
     --log-right:#f0e7ff;
     --log-left:#f0e7ff;
+    --header-title:#000000;
+    --profile-btn-dashboard:#2c136b;
+    --emotion-emoji-grid: #ffffff;
+
     
     /* New Semantic Variables for Components */
     --text-heading: #4b2e83;
@@ -34,37 +38,40 @@
 }
 
 [data-theme="dark"] {
-    --bg-main-body: #121212;       /* Deep dark gray, comfortable for eyes */
-    --card-bg: #1e1e1e;            /* Dark surface for cards */
-    --text-main-body: #f0f0f0;     /* Soft white text for readability */
-    --sidebar-bg: #0a0a0a;         /* Near black for sidebar */
-    --topheader-bg: #1e1e1e;
-    --topborder-color: #333333;
-    --bg-main-section: #181818;    /* Dark background for main section */
-    --bg-profile-body: #121212;    /* Matches main body */
-    --prosidebar-bg: #2d2b3b;      /* Muted dark purple for profile sidebar */
-    --log-right: #252525;          /* Dark gray for log containers */
-    --log-left: #252525;           /* Dark gray for log containers */
+    --bg-main-body: #0f0b15;       /* Deep purple-black, comfortable for eyes */
+    --card-bg: #1a1625;            /* Dark slate purple surface */
+    --text-main-body: #e0d9f0;     /* Soft lavender-white text */
+    --sidebar-bg: linear-gradient(180deg, #2a1647, #190f2b); /* Dark purple gradient */
+    --topheader-bg: #1a1625;
+    --topborder-color: #2d2438;
+    --bg-main-section: #0f0b15;    /* Matches body */
+    --bg-profile-body: #0f0b15;    /* Matches body */
+    --prosidebar-bg: #1a1625;      /* Dark slate purple */
+    --log-right: #1a1625;          
+    --log-left: #1a1625;
+    --header-title:#ffffff;  
+    --profile-btn-dashboard:#ffffff;
+    --emotion-emoji-grid: #2d2438;
     
     /* New Semantic Variables for Components - Dark Mode Overrides */
-    --text-heading: #f0f0f0;
-    --text-sub: #b0b0b0;
-    --text-muted: #888888;
-    --border-subtle: #333333;
-    --input-bg: #2d2d2d;
-    --input-border: #444444;
-    --hover-light: #2c2c2c;
-    --active-light: #383838;
-    --icon-bg: #2d2b3b;
+    --text-heading: #f0e6ff;
+    --text-sub: #b0a8c0;
+    --text-muted: #7a728a;
+    --border-subtle: #2d2438;
+    --input-bg: #241e33;
+    --input-border: #4a3b69;
+    --hover-light: #2f2640;
+    --active-light: #3a2f52;
+    --icon-bg: #2a1647;
     --icon-color: #a64dff;
     
     /* AI Feedback Specifics - Dark Mode */
-    --reflection-bg: #252525;
-    --reflection-text: #d1d5db;
-    --highlight-text: #cbd5e0;
-    --suggestion-bg: #064e3b;
+    --reflection-bg: #1a1625;
+    --reflection-text: #d1cce0;
+    --highlight-text: #d1cce0;
+    --suggestion-bg: #0d2e21;
     --suggestion-text: #68d391;
-    --encouragement-bg: #4a3b2a;
+    --encouragement-bg: #2e2010;
     --encouragement-text: #e2e8f0;
 }
 /*i put base and dark mode later u adjust on ur own if u want*/
@@ -414,6 +421,7 @@ body.body {
 .auth-card h2 {
     margin-bottom: 25px;
     color: #5c2ea6;
+    color: var(--text-heading);
     font-size: 28px;
     font-weight: 700;
 }
@@ -421,6 +429,7 @@ body.body {
 .auth-card h3 {
     margin-bottom: 25px;
     color: #5c2ea6;
+    color: var(--text-heading);
     font-size: 22px;
     font-weight: 700;
 }
@@ -435,6 +444,7 @@ body.body {
     font-size: 16px;
     font-weight: 600;
     color: #4a2d7e;
+    color: var(--text-heading);
 }
 
 .auth-card input {
@@ -561,6 +571,7 @@ body.body {
 
 .Nav-to-welcome a {
     color: #18161d;
+    color: var(--text-heading);
     font-weight: bold;
     text-decoration: none;
 }
@@ -586,7 +597,7 @@ body.body {
     color: white;
     padding: 20px;
     box-shadow: 10px 0 8px rgba(0,0,0,0.1);
-    background: linear-gradient(180deg, #a64dff, #6f43f3);
+    background: var(--sidebar-bg);
     transition: all 0.5s linear;
     position: sticky;
     top: 0;
@@ -653,7 +664,6 @@ body.body {
     flex: 1;
     background: var(--bg-main-section); 
     box-shadow: #6c4bbf 15px 0px 15px;
-    background:linear-gradient(150deg, #f3eaff, #d9c8f8);
     padding: 30px ;
     position: relative;
     width: 100%;
@@ -680,7 +690,7 @@ body.body {
 }
 
 .header-title h1{
-    color:#000000;
+    color:var(--header-title);
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -696,7 +706,7 @@ body.body {
     align-items: center;
     gap: 10px;               /* space between name and picture */
     text-decoration: none;
-    color: #2c136b;          /* same purple as rest of UI, adjust if needed */
+    color: var(--profile-btn-dashboard);          /* same purple as rest of UI, adjust if needed */
     font-family: Arial, sans-serif;
 }
 
@@ -1027,6 +1037,7 @@ textarea {
 
 .profile-links a {
     color: #7f5bd9;
+    color: var(--icon-color);
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s ease;
@@ -1366,6 +1377,7 @@ textarea {
 
 .log-right{
     background: var(--log-right);
+    color: var(--text-main-body);
     padding: 20px;
     border-radius: 16px;
     display: flex;
@@ -1375,6 +1387,7 @@ textarea {
 
 .log-left{
     background: var(--log-left);
+    color: var(--text-main-body);
     padding: 20px;
     border-radius: 16px;
 }
@@ -1397,7 +1410,7 @@ textarea {
     height: 80px; /* Fixed height for uniformity */
     border-radius: 16px;
     position: relative;
-    background: var(--card-bg);
+    background: var(--emotion-emoji-grid);
     transition: all 0.2s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     border: 2px solid transparent; /* Reserve space for border */
@@ -1559,6 +1572,7 @@ textarea {
 
 .calendar-header-nav h2 {
     color: #4b2e83;
+    color: var(--text-heading);
     font-size: 24px;
     font-weight: 700;
     margin: 0;
@@ -2307,6 +2321,7 @@ textarea {
 .feature-desc h4 {
     margin: 0 0 4px 0;
     color: #4b2e83;
+    color: var(--text-heading);
     font-size: 16px;
     font-weight: 700;
 }
@@ -2314,6 +2329,7 @@ textarea {
 .feature-desc p {
     margin: 0;
     color: #718096;
+    color: var(--text-muted);
     font-size: 14px;
     line-height: 1.4;
 }
@@ -2353,6 +2369,7 @@ textarea {
     font-size: 14px;
     font-weight: 600;
     color: #4b2e83;
+    color: var(--text-heading);
 }
 
 .filter-input {
@@ -2515,6 +2532,7 @@ textarea {
     font-weight: 700;
     margin-bottom: 5px;
     color: #2d3748;
+    color: var(--text-heading);
 }
 
 .card-info p {
@@ -2745,6 +2763,7 @@ textarea {
 .picker-label {
     font-weight: 600;
     color: #4b2e83;
+    color: var(--text-heading);
     margin-right: 10px;
 }
 
