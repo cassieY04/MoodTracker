@@ -28,7 +28,7 @@ EMOTIONAL_PATTERN_RESULT = {
     'Mostly Positive': {'title': 'Mostly Positive', 'emoji': '😊'},
     'Stress-Dominant': {'title': 'Stress-Dominant', 'emoji': '😔'},
     'Emotionally Balanced': {'title': 'Emotionally Balanced', 'emoji': '⚖️'},
-    'Mixed Emotion': {'title': 'Mixed Emotion', 'emoji': '🤔'}, 
+    'Mixed Emotion': {'title': 'Mixed Emotion', 'emoji': '🔀'}, 
     'N/A': {'title': 'No Entries Yet', 'emoji': '❓'},
 }
 
