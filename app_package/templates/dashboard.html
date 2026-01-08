@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <script>
+        const currentTheme = "{{ session.get('theme', 'light') }}";
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
     <meta charset="UTF-8">
     <title>Dashboard - MoodTracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -98,6 +103,12 @@
                         <span>Logout</span>
                     </a>
                 </li>
+                <li>
+                    <a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar">
+                        <i id="theme-icon" class="fas fa-moon"></i>
+                        <span>Theme</span>
+                    </a>
+                </li>
             </ul>
             </nav>
             
@@ -112,7 +123,6 @@
             </div>
 
                 <div class=" user-info">
-                
                     <a href="/profile/{{ username }}" class="profile-btn-dashboard">
                         <!-- Username text -->
                         <span class="profile-username-dashboard">{{ user.username }}</span>

@@ -118,6 +118,8 @@ def login():
         
         UserManager.reset_failed_attempts(username)
         session['username'] = username
+
+        session['theme'] = user['theme'] if user['theme'] else 'light'
     
         session["show_welcome_popup"] = True
         return redirect(url_for("home.dashboard"))
@@ -217,5 +219,6 @@ def reset_password():
 @auth_bp.route("/logout", methods=["GET"])
 def logout():
     session.pop('username', None)
+    session.pop('theme', None)
     return redirect(url_for("home.homepage"))
 

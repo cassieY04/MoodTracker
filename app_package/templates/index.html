@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        const currentTheme = "{{ session.get('theme', 'light') }}";
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
     <meta charset="UTF-8">
     <title>MoodTracker - Welcome</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
