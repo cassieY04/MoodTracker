@@ -18,18 +18,22 @@ def detect_context(text):
             "lab", "semester", "submission", "due", "fail", "pass", "resit", "repeat", "transcript",
             "scholarship", "tuition", "fees", "enrollment", "coursework", "syllabus", "lecturer", "professor",
             "tutor", "dean", "campus", "university", "college", "uni", "degree", "diploma", "group project",
-            "capstone", "internship", "practicum", "viva", "research", "paper", "essay"
+            "capstone", "internship", "practicum", "viva", "research", "paper", "essay",
+            "procrastinate", "cramming", "burnout", "dropout", "academic validation", "study group", "library"
         ],
         "fatigue": [
             "tired", "sleep", "exhausted", "burnt out", "insomnia", "nap", "drained", "fatigue",
             "all-nighter", "sleepy", "zombie", "caffeine", "coffee", "energy drink", "no sleep", "awake",
-            "burnout", "overworked", "collapse", "rest", "bed", "pillow", "woke up"
+            "burnout", "overworked", "collapse", "rest", "bed", "pillow", "woke up",
+            "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish"
         ],
         "relationship issues": [
             "friend", "family", "partner", "argument", "fight", "conflict", "breakup", "toxic", "parents",
             "crush", "ghosted", "situationship", "roommate", "housemate", "drama", "gossip", "red flag", "bestie",
             "squad", "peer", "social", "reject", "dumped", "cheated", "ex", "boyfriend", "girlfriend", "bf", "gf",
-            "tea", "ick", "trust", "lie", "betray", "jealous", "envy", "date", "dating", "marriage", "divorce"
+            "tea", "ick", "trust", "lie", "betray", "jealous", "envy", "date", "dating", "marriage", "divorce",
+            "gaslight", "love bomb", "boundaries", "clingy", "distant", "misunderstanding", "attachment style", 
+            "codependent", "third wheel", "friendzone", "catfish", "talking stage", "soft launch"
         ],
         "health concerns": [
             "sick", "pain", "doctor", "ill", "headache", "hurt", "health", "body",
@@ -41,17 +45,23 @@ def detect_context(text):
             "job", "boss", "work", "salary", "meeting", "career", "colleague", "project",
             "internship", "part-time", "shift", "manager", "customer", "rude", "overtime", "ot", "client",
             "interview", "resume", "cv", "fired", "hired", "promotion", "raise", "colleague", "coworker",
-            "office", "business"
+            "office", "business",
+            "micromanage", "toxic workplace", "kpi", "workload", "underpaid", "hustle", "grind", "corporate", 
+            "9 to 5", "slack", "teams", "zoom fatigue", "commute", "unemployed", "job hunt"
         ],
         "financial": [
             "money", "cost", "expensive", "debt", "pay", "broke", "bill", "rent",
             "loan", "allowance", "budget", "save", "spend", "price", "cash", "wallet",
-            "bank", "transfer", "shopping", "buy", "purchase", "afford", "cheap"
+            "bank", "transfer", "shopping", "buy", "purchase", "afford", "cheap",
+            "inflation", "groceries", "savings", "investment", "crypto", "stocks", "salary", "wage", 
+            "poverty", "rich", "poor", "splurge", "treat myself", "retail therapy"
         ],
         "self-esteem": [
             "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "confidence",
             "cringe", "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb", "flop",
-            "mistake", "guilt", "shame", "embarrassed", "regret", "fault"
+            "mistake", "guilt", "shame", "embarrassed", "regret", "fault",
+            "body image", "skinny", "acne", "looks", "appearance", "unlovable", "not enough", "validation",
+            "glow up", "mid", "basic", "try hard", "people pleaser"
         ],
         "loneliness": [
             "lonely", "alone", "isolated", "nobody", "ignored", "miss",
@@ -65,12 +75,15 @@ def detect_context(text):
             "game", "music", "read", "sport", "art", "draw", "code", "movie",
             "gaming", "valorant", "league", "netflix", "binge", "gym", "workout", "spotify", "concert",
             "travel", "food", "eat", "football", "basketball", "badminton", "hiking", "swim", "dance",
-            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano"
+            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano",
+            "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
+            "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama"
         ],
         "positive_events": [
             "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won", "success", "bonus", "award",
             "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", "fun", "happy",
-            "slay", "ate", "gift", "present", "surprise", "lucky", "blessed"
+            "slay", "ate", "gift", "present", "surprise", "lucky", "blessed",
+            "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", "w", "win"
         ],
         "emotional_release": [
             "cry", "crying", "tears", "sob", "weep", "bawling", "break down", "teary",
@@ -79,7 +92,9 @@ def detect_context(text):
         "social_media": [
             "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "story", "post", "like", "comment",
             "follower", "viral", "trend", "feed", "scroll", "screen", "phone", "notification", "dm", "message",
-            "reply", "block", "unfollow"
+            "reply", "block", "unfollow",
+            "doomscrolling", "fomo", "influencer", "reel", "algorithm", "screen time", "cyberbully", "troll",
+            "cancel", "cancelled", "ratio", "clout", "aesthetic"
         ],
         "technology": [
             "wifi", "internet", "lag", "slow", "crash", "bug", "error", "laptop", "pc", "computer", "battery",
@@ -105,37 +120,51 @@ def get_encouragement(emotion, contexts):
         "happy": [
             "Keep shining! Your positivity is a gift to those around you.",
             "Savor this feeling. You deserve every bit of this happiness.",
-            "Happiness looks good on you! Keep this momentum going."
+            "Happiness looks good on you! Keep this momentum going.",
+            "Love this for you! Keep that main character energy going.",
+            "You're glowing today! Soak up every moment."
         ],
         "excited": [
             "Ride this wave of energy! You are capable of amazing things.",
             "Your enthusiasm is your superpower today.",
-            "Go for it! The world is ready for your energy."
+            "Go for it! The world is ready for your energy.",
+            "This energy is unmatched! Use it to fuel your passions.",
+            "Let's go! Big things are happening for you."
         ],
         "neutral": [
             "Peace is power. Enjoy the calm in the chaos.",
             "A quiet mind is a creative mind. Use this balance wisely.",
-            "It's okay to just 'be'. Not every day needs to be a rollercoaster."
+            "It's okay to just 'be'. Not every day needs to be a rollercoaster.",
+            "Sometimes a chill day is exactly what the soul needs.",
+            "Embrace the stillness. You don't always have to be 'on'."
         ],
         "sad": [
             "This feeling is temporary, but your strength is permanent.",
             "It's okay not to be okay. Be gentle with yourself today.",
-            "Stars can't shine without darkness. You will get through this."
+            "Stars can't shine without darkness. You will get through this.",
+            "It’s okay to rot in bed for a bit if you need to. Your feelings are valid.",
+            "Sending you a virtual hug. Take all the time you need to heal."
         ],
         "anxious": [
             "You are stronger than your anxiety. One breath at a time.",
             "Don't believe everything you think. You are safe right now.",
-            "Focus on what you can control, and let go of what you can't."
+            "Focus on what you can control, and let go of what you can't.",
+            "Remember to unclench your jaw and drop your shoulders. You got this.",
+            "Your anxiety is lying to you. You are more capable than you know."
         ],
         "stressed": [
             "You have survived 100% of your bad days. You've got this.",
             "Rest is not a reward; it's a necessity. Take a break.",
-            "One step at a time. You don't have to solve everything today."
+            "One step at a time. You don't have to solve everything today.",
+            "Deep breaths. You don't need to carry the weight of the world.",
+            "It's okay to say no and protect your peace."
         ],
         "angry": [
             "Your feelings are valid, but don't let them consume you.",
             "Take a deep breath. You are in control, not your anger.",
-            "Channel this energy into something that serves you, not hurts you."
+            "Channel this energy into something that serves you, not hurts you.",
+            "It's okay to be mad. Just don't let it ruin your peace.",
+            "Frustration is natural. Let it out safely, then let it go."
         ]
     }
     
@@ -374,11 +403,29 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Continue observing your emotions and reflecting on them")
 
     # -------- GENERAL SUGGESTIONS (Fallback & Context-Specific) --------
+    if "social_media" in detected_contexts:
+        suggestions.append("Consider a 'digital detox' or setting app limits")
+        suggestions.append("Unfollow accounts that make you feel drained")
+
+    if "self-esteem" in detected_contexts:
+        suggestions.append("Practice positive affirmations or write down 3 things you like about yourself")
+        suggestions.append("Remember that social media is a highlight reel, not reality")
+
+    if "academic pressure" in detected_contexts or "work stress" in detected_contexts:
+        suggestions.append("Try the Pomodoro technique (25 min work, 5 min break)")
+        suggestions.append("Celebrate small wins, even just finishing one task")
+
     if "financial" in detected_contexts:
         suggestions.append("Review your budget and identify one small change you can make")
+        suggestions.append("Try a 'no-spend' day challenge")
     
     if "health concerns" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed")
+        suggestions.append("Stay hydrated and prioritize sleep")
+        
+    if "relationship issues" in detected_contexts:
+        suggestions.append("Set healthy boundaries to protect your energy")
+        suggestions.append("Communicate your needs clearly using 'I' statements")
     
     # Ensure suggestions list is never empty
     if not suggestions:
