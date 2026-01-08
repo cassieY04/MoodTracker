@@ -1,19 +1,71 @@
 :root {
-    --bg-main: #f7f2ff;       /* Your current light purple */
+    --bg-main-body: #f7f2ff;       
     --card-bg: #ffffff;
-    --text-main: #4b2e83;     /* Your current deep purple */
+    --text-main-body: #4b2e83;     
     --sidebar-bg: linear-gradient(180deg, #a64dff, #6f43f3);
-    --topbar-bg: #ffffff;
-    --border-color: #e0d6ff;
+    --topheader-bg: #ffffff;
+    --topborder-color: #e0d6ff;
+    --bg-main-section:#dccbf3;
+    --bg-profile-body:#f4ecff;
+    --prosidebar-bg:#7f5bd9;
+    --log-right:#f0e7ff;
+    --log-left:#f0e7ff;
+    
+    /* New Semantic Variables for Components */
+    --text-heading: #4b2e83;
+    --text-sub: #555555;
+    --text-muted: #718096;
+    --border-subtle: #f0f0f0;
+    --input-bg: #ffffff;
+    --input-border: #c9a9ff;
+    --hover-light: #f8f5ff;
+    --active-light: #f0eaff;
+    --icon-bg: #f3eaff;
+    --icon-color: #6f4bd8;
+    
+    /* AI Feedback Specifics */
+    --reflection-bg: #f8f9fa;
+    --reflection-text: #2d3748;
+    --highlight-text: #4a5568;
+    --suggestion-bg: #f0fff4;
+    --suggestion-text: #2f855a;
+    --encouragement-bg: #fffdf5;
+    --encouragement-text: #555555;
 }
 
 [data-theme="dark"] {
-    --bg-main: #121212;
-    --card-bg: #1e1e1e;
-    --text-main: #e0e0e0;
-    --sidebar-bg: #181818;    /* Solid dark for sidebar in dark mode */
-    --topbar-bg: #1e1e1e;
-    --border-color: #333333;
+    --bg-main-body: #121212;       /* Deep dark gray, comfortable for eyes */
+    --card-bg: #1e1e1e;            /* Dark surface for cards */
+    --text-main-body: #f0f0f0;     /* Soft white text for readability */
+    --sidebar-bg: #0a0a0a;         /* Near black for sidebar */
+    --topheader-bg: #1e1e1e;
+    --topborder-color: #333333;
+    --bg-main-section: #181818;    /* Dark background for main section */
+    --bg-profile-body: #121212;    /* Matches main body */
+    --prosidebar-bg: #2d2b3b;      /* Muted dark purple for profile sidebar */
+    --log-right: #252525;          /* Dark gray for log containers */
+    --log-left: #252525;           /* Dark gray for log containers */
+    
+    /* New Semantic Variables for Components - Dark Mode Overrides */
+    --text-heading: #f0f0f0;
+    --text-sub: #b0b0b0;
+    --text-muted: #888888;
+    --border-subtle: #333333;
+    --input-bg: #2d2d2d;
+    --input-border: #444444;
+    --hover-light: #2c2c2c;
+    --active-light: #383838;
+    --icon-bg: #2d2b3b;
+    --icon-color: #a64dff;
+    
+    /* AI Feedback Specifics - Dark Mode */
+    --reflection-bg: #252525;
+    --reflection-text: #d1d5db;
+    --highlight-text: #cbd5e0;
+    --suggestion-bg: #064e3b;
+    --suggestion-text: #68d391;
+    --encouragement-bg: #4a3b2a;
+    --encouragement-text: #e2e8f0;
 }
 /*i put base and dark mode later u adjust on ur own if u want*/
 
@@ -29,15 +81,15 @@ body.body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", Arial, sans-serif;
-    background: var(--bg-main); /* Changed from #f7f2ff */
-    color: var(--text-main);    /* Changed from #4b2e83 */
+    background: var(--bg-main-body); 
+    color: var(--text-main-body);    
     transition: background 0.3s ease, color 0.3s ease;
 }
 
 .top-header {
     width: 100%;
-    background: var(--topbar-bg); /* Changed from white */
-    border-bottom: 1px solid var(--border-color); /* Changed from #e0d6ff */
+    background: var(--topheader-bg); 
+    border-bottom: 1px solid var(--topborder-color); 
     padding: 18px 40px;  
     display: flex;
     justify-content: space-between;
@@ -599,7 +651,9 @@ body.body {
 /*MAIN SECTION */
 .main-section {
     flex: 1;
-    background: var(--bg-main); /* Now it uses the variable from :root */
+    background: var(--bg-main-section); 
+    box-shadow: #6c4bbf 15px 0px 15px;
+    background:linear-gradient(150deg, #f3eaff, #d9c8f8);
     padding: 30px ;
     position: relative;
     width: 100%;
@@ -612,13 +666,12 @@ body.body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    background: var(--topbar-bg); /* Changed from #ffffff */
+    background: var(--topheader-bg); 
     border-radius: 10px;
     padding: 10px 20px;
     margin-bottom: 15px;
-    /* We use var(--border-color) or a subtle dark shadow for dark mode */
     box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-    border: 1px solid var(--border-color); /* Added this to define the edge in dark mode */
+    border: 1px solid var(--topborder-color); 
     cursor: default;
 }
 
@@ -726,13 +779,13 @@ body.body {
 
 .popup-card {
     background: var(--card-bg); 
-    color: var(--text-main);    
+    color: var(--text-main-body);    
     width: 420px;
     padding: 30px;
     border-radius: 16px;
     text-align: center;
     font-family: Arial,sans-serif;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--topborder-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -764,7 +817,7 @@ body.body {
 /* =============== PROFILE PAGE============ */
 
 .profile-body {
-    background: var(--bg-main);
+    background: var(--bg-profile-body);
     font-family: Arial, sans-serif;
     transition: background 0.3s ease;
 }
@@ -778,13 +831,12 @@ body.body {
 
 .profile-sidebar {
     width: 280px;
-    /* Option: Use var(--sidebar-bg) if you want it to match the main dashboard sidebar */
-    background: #7f5bd9; 
+    background: var(--prosidebar-bg); 
     padding: 30px;
     border-radius: 18px;
     text-align: center;
     color: white;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--topborder-color);
 }
 
 .profile-sidebar form {
@@ -799,7 +851,6 @@ body.body {
 
 .profile-sidebar .small-btn {
     width: 100%;
-    /* This makes the button background change in dark mode */
     background: var(--card-bg); 
     color: #7f5bd9;
     font-weight: bold;
@@ -852,8 +903,8 @@ body.body {
 
 .profile-card {
     flex: 1;
-    background: var(--card-bg); /* Changed from white */
-    color: var(--text-main);    /* Ensures text turns light */
+    background: var(--card-bg); 
+    color: var(--text-main-body);   
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
@@ -1021,6 +1072,8 @@ textarea {
 }
 .popup-box {
     background: #ffffff;
+    background: var(--card-bg);
+    color: var(--text-main-body);
     padding: 30px 32px;
     border-radius: 18px;
     max-width: 480px;
@@ -1179,6 +1232,7 @@ textarea {
 
 .log-header-card {
     background: white;
+    background: var(--card-bg);
     border-radius: 18px;
     padding: 30px;
     margin-bottom: 30px;
@@ -1193,6 +1247,7 @@ textarea {
 .log-header-text h2 {
     margin: 0 0 8px 0;
     color: #4b2e83;
+    color: var(--text-heading);
     font-size: 26px;
     font-weight: 700;
 }
@@ -1200,6 +1255,7 @@ textarea {
 .log-header-text p {
     margin: 0;
     color: #718096;
+    color: var(--text-muted);
     font-size: 16px;
 }
 
@@ -1208,6 +1264,8 @@ textarea {
     height: 60px;
     background: #f3eaff;
     color: #6f4bd8;
+    background: var(--icon-bg);
+    color: var(--icon-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1217,6 +1275,7 @@ textarea {
 
 .ai-header-card {
     background: white;
+    background: var(--card-bg);
     border-radius: 18px;
     padding: 30px;
     margin-bottom: 30px;
@@ -1231,6 +1290,7 @@ textarea {
 .ai-header-text h2 {
     margin: 0 0 8px 0;
     color: #4b2e83;
+    color: var(--text-heading);
     font-size: 26px;
     font-weight: 700;
 }
@@ -1238,6 +1298,7 @@ textarea {
 .ai-header-text p {
     margin: 0;
     color: #718096;
+    color: var(--text-muted);
     font-size: 16px;
 }
 
@@ -1246,6 +1307,8 @@ textarea {
     height: 60px;
     background: #f3eaff;
     color: #6f4bd8;
+    background: var(--icon-bg);
+    color: var(--icon-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1255,6 +1318,7 @@ textarea {
 
 .stats-header-card {
     background: white;
+    background: var(--card-bg);
     border-radius: 18px;
     padding: 30px;
     margin-bottom: 30px;
@@ -1269,6 +1333,7 @@ textarea {
 .stats-header-text h2 {
     margin: 0 0 8px 0;
     color: #4b2e83;
+    color: var(--text-heading);
     font-size: 26px;
     font-weight: 700;
 }
@@ -1276,6 +1341,7 @@ textarea {
 .stats-header-text p {
     margin: 0;
     color: #718096;
+    color: var(--text-muted);
     font-size: 16px;
 }
 
@@ -1284,6 +1350,8 @@ textarea {
     height: 60px;
     background: #f3eaff;
     color: #6f4bd8;
+    background: var(--icon-bg);
+    color: var(--icon-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1297,7 +1365,7 @@ textarea {
 }
 
 .log-right{
-    background: var(--card-bg);
+    background: var(--log-right);
     padding: 20px;
     border-radius: 16px;
     display: flex;
@@ -1306,7 +1374,7 @@ textarea {
 }
 
 .log-left{
-    background: var(--card-bg);
+    background: var(--log-left);
     padding: 20px;
     border-radius: 16px;
 }
@@ -1339,6 +1407,7 @@ textarea {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(129, 88, 216, 0.15);
     background: #f8f5ff;
+    background: var(--hover-light);
 }
 
 .emoji-option input{
@@ -1371,6 +1440,7 @@ textarea {
 .emoji-option:has(input:checked) {
     border-color: #8158d8;
     background: #f0eaff;
+    background: var(--active-light);
     box-shadow: 0 4px 12px rgba(129, 88, 216, 0.2);
 }
 
@@ -1388,6 +1458,9 @@ textarea {
     height: 120px;
     border-radius: 8px;
     border: 2px solid #c9a9ff;
+    border: 2px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-main-body);
     outline: none;
     resize: vertical;
     font-family: Arial, sans-serif;
@@ -1440,6 +1513,17 @@ textarea {
     animation: fadeOut 12s forwards;
 }
 
+/* Dark Mode Overrides for Specific Elements */
+[data-theme="dark"] .popup-msg {
+    background: #006064;
+    color: #e0f7fa;
+}
+
+[data-theme="dark"] .feedback-box {
+    background: #004d40;
+    color: #e0f2f1;
+}
+
 .feedback-box p {
     margin: 10px 0;
     font-size: 16px;
@@ -1455,10 +1539,12 @@ textarea {
 
 .calendar-card-container {
     background: #ffffff;
+    background: var(--card-bg);
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     border: 1px solid #f0f0f0;
+    border: 1px solid var(--border-subtle);
 }
 
 .calendar-header-nav {
@@ -1468,6 +1554,7 @@ textarea {
     margin-bottom: 25px;
     padding-bottom: 15px;
     border-bottom: 2px solid rgb(194, 166, 240);
+    border-bottom: 2px solid var(--input-border);
 }
 
 .calendar-header-nav h2 {
@@ -1505,6 +1592,7 @@ textarea {
 .styled-calendar th {
     padding: 15px;
     color: #6f4bd8;
+    color: var(--text-heading);
     font-weight: 700;
     text-transform: uppercase;
     font-size: 14px;
@@ -1516,6 +1604,7 @@ textarea {
     height: 100px;
     vertical-align: top;
     border-top: 1px solid #bdaed4;
+    border-top: 1px solid var(--border-subtle);
     padding: 10px;
     transition: background 0.2s;
 }
@@ -1523,12 +1612,14 @@ textarea {
 .styled-calendar td.day-cell:hover {
     background: #faf8ff;
     background: #eaddff;
+    background: var(--hover-light);
     border-radius: 12px;
 }
 
 .day-number {
     font-weight: 600;
     color: rgb(88, 94, 101);
+    color: var(--text-sub);
     font-size: 16px;
     margin-bottom: 5px;
 }
@@ -1576,6 +1667,7 @@ textarea {
     margin-top: 30px;
     padding-top: 20px;
     border-top: 2px solid #a18dc2;
+    border-top: 2px solid var(--input-border);
     display: flex;
     gap: 40px;
     justify-content: center;
@@ -1591,6 +1683,7 @@ textarea {
     font-size: 16px;
     text-transform: uppercase;
     color: #718096;
+    color: var(--text-muted);
     font-weight: 700;
     margin-bottom: 5px;
 }
@@ -1599,10 +1692,12 @@ textarea {
     font-size: 20px;
     font-weight: 700;
     color: #6f4bd8;
+    color: var(--icon-color);
 }
 
 .empty-cell {
     background: #fcfaff;
+    background: var(--bg-main-body);
 }
 
 /* Mood Breakdown Section */
@@ -1610,11 +1705,13 @@ textarea {
     margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid #d8c1c1;
+    border-top: 1px solid var(--border-subtle);
 }
 
 .breakdown-section h3 {
     font-size: 18px;
     color: #4b2e83;
+    color: var(--text-heading);
     margin-bottom: 15px;
     font-weight: 600;
 }
@@ -1627,6 +1724,7 @@ textarea {
 
 .breakdown-card {
     background: #fbf9ff;
+    background: var(--reflection-bg);
     padding: 12px 15px;
     border-radius: 12px;
     display: flex;
@@ -1645,6 +1743,8 @@ textarea {
 .bd-details { display: flex; flex-direction: column; }
 .bd-count { font-weight: 700; font-size: 18px; color: #2d3748; }
 .bd-label { font-size: 12px; color: #718096; font-weight: 600; }
+.bd-count { font-weight: 700; font-size: 18px; color: var(--text-heading); }
+.bd-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
 /* Mood Calendar Modal */
 .mood-modal {
@@ -1664,6 +1764,7 @@ textarea {
 
 .modal-content {
     background-color: #fefefe;
+    background-color: var(--card-bg);
     margin: 0; 
     padding: 0;
     border-radius: 16px;
@@ -1684,6 +1785,7 @@ textarea {
 .modal-header {
     padding: 20px 25px;
     border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-subtle);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1691,16 +1793,20 @@ textarea {
 
 .modal-header h2 { margin: 0; font-size: 20px; color: #4b2e83; }
 .close-modal { font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; }
+.modal-header h2 { margin: 0; font-size: 20px; color: var(--text-heading); }
+.close-modal { font-size: 28px; font-weight: bold; color: var(--text-muted); cursor: pointer; }
 .close-modal:hover { color: #000; }
 
 .modal-body { padding: 25px; overflow-y: auto; }
 
 .modal-entry {
     background: #f9f9f9;
+    background: var(--reflection-bg);
     border-radius: 12px;
     padding: 15px;
     margin-bottom: 15px;
     border-left: 5px solid #ccc;
+    border-left: 5px solid var(--border-subtle);
 }
 
 .modal-entry-header {
@@ -1716,12 +1822,14 @@ textarea {
 
 .modal-entry-time {
     color: #888;
+    color: var(--text-muted);
     font-size: 0.9em;
 }
 
 .modal-entry-text {
     margin: 5px 0;
     color: #555;
+    color: var(--text-sub);
 }
 
 /* ====================AI FEEDBACK PAGE===================== */
@@ -1743,20 +1851,24 @@ textarea {
     font-weight: 700;
     margin-bottom: 6px;
     color: #1f2937;
+    color: var(--text-heading);
 }
 
 .ai-subtitle {
     font-size: 14px;
     color: #6b7280;
+    color: var(--text-muted);
 }
 
 .ai-card {
     background: #ffffff;
+    background: var(--card-bg);
     border-radius: 20px;
     padding: 30px;
     margin-bottom: 25px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
     border: 1px solid #f0f0f0;
+    border: 1px solid var(--border-subtle);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: default;
 }
@@ -1771,12 +1883,14 @@ textarea {
     font-weight: 600;
     margin-bottom: 12px;
     color: #111827;
+    color: var(--text-heading);
 }
 
 .ai-card p {
     font-size: 15px;
     line-height: 1.6;
     color: #374151;
+    color: var(--text-sub);
     margin-bottom: 10px;
 }
 
@@ -1789,6 +1903,7 @@ textarea {
 
 .reflection-box {
     background: #f8f9fa;
+    background: var(--reflection-bg);
     border-left: 4px solid #cbd5e0;
     padding: 15px 20px;
     border-radius: 0 12px 12px 0;
@@ -1800,6 +1915,7 @@ textarea {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: #718096;
+    color: var(--text-muted);
     margin-bottom: 6px;
     font-weight: 700;
 }
@@ -1807,6 +1923,7 @@ textarea {
 .reflection-box p {
     margin: 0;
     color: #2d3748;
+    color: var(--reflection-text);
     font-style: italic;
     white-space: pre-line; /* Allows newlines for Daily Summary */
 }
@@ -1826,6 +1943,7 @@ textarea {
     padding-left: 25px;
     margin-bottom: 12px;
     color: #4a5568;
+    color: var(--highlight-text);
 }
 
 .ai-card.highlight li::before {
@@ -1852,9 +1970,11 @@ textarea {
 
 .ai-card.suggestions li {
     background: #f0fff4;
+    background: var(--suggestion-bg);
     padding: 14px 18px;
     border-radius: 10px;
     color: #2f855a;
+    color: var(--suggestion-text);
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -1877,6 +1997,7 @@ textarea {
 .ai-card.encouragement {
     border-left: 5px solid #f39c12;
     background: #fffdf5;
+    background: var(--encouragement-bg);
 }
 
 .ai-card.encouragement h3 {
@@ -1887,6 +2008,7 @@ textarea {
     font-style: italic;
     font-size: 18px;
     color: #555;
+    color: var(--encouragement-text);
     font-weight: 500;
     text-align: center;
     margin: 10px 0;
@@ -1902,7 +2024,9 @@ textarea {
 
 .tab-btn {
     background: white;
+    background: var(--card-bg);
     border: 2px solid #e0d6ff;
+    border: 2px solid var(--input-border);
     color: #6f4bd8;
     padding: 10px 25px;
     border-radius: 25px;
@@ -1977,16 +2101,17 @@ textarea {
 
 .history-card {
     background: var(--card-bg); 
-    color: var(--text-main);    
+    color: var(--text-main-body);    
     border-radius: 12px;
     padding: 20px 25px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
     border-left: 6px solid #ccc; 
+    border-left: 6px solid var(--border-subtle); 
     /* Apply border variable to all sides for clear definition in dark mode */
-    border-top: 1px solid var(--border-color); 
-    border-right: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
+    border-top: 1px solid var(--topborder-color); 
+    border-right: 1px solid var(--topborder-color);
+    border-bottom: 1px solid var(--topborder-color);
     position: relative;
     cursor: default;
 }
@@ -2003,6 +2128,7 @@ textarea {
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .header-meta {
@@ -2026,10 +2152,12 @@ textarea {
     font-weight: 700;
     font-size: 1.2rem;
     color: #2d3436;
+    color: var(--text-heading);
 }
 
 .date-info {
     color: #b2bec3;
+    color: var(--text-muted);
     font-size: 0.85rem;
     font-weight: 500;
 }
@@ -2037,6 +2165,7 @@ textarea {
 .card-body {
     margin-bottom: 20px;
     color: #636e72;
+    color: var(--text-sub);
     line-height: 1.6;
 }
 
@@ -2046,6 +2175,7 @@ textarea {
 
 .card-body strong {
     color: #2d3436;
+    color: var(--text-heading);
     font-weight: 600;
 }
 
@@ -2060,6 +2190,7 @@ textarea {
     cursor: pointer;
     font-size: 16px;
     color: #b2bec3;
+    color: var(--text-muted);
     transition: color 0.3s;
     padding: 0;
 }
@@ -2198,6 +2329,7 @@ textarea {
 /* History Filters */
 .history-filters {
     background: white;
+    background: var(--card-bg);
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 25px;
@@ -2226,6 +2358,9 @@ textarea {
 .filter-input {
     padding: 10px;
     border: 1px solid #cbbff0;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-main-body);
     border-radius: 8px;
     font-size: 14px;
     min-width: 150px;
@@ -2278,7 +2413,7 @@ textarea {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
     position: relative;
     overflow: hidden;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--topborder-color);
 }
 
 .welcome-text h2 {
@@ -2339,7 +2474,7 @@ textarea {
     /* Use variable for background */
     background: var(--card-bg); 
     /* Use variable for text color */
-    color: var(--text-main);
+    color: var(--text-main-body);
     border-radius: 18px;
     padding: 25px;
     display: flex;
@@ -2350,7 +2485,7 @@ textarea {
     /* Add background-color to transition for smoothness */
     transition: all 0.3s ease, background-color 0.3s ease; 
     /* Use border variable (transparent in light, visible in dark) */
-    border: 1px solid var(--border-color); 
+    border: 1px solid var(--topborder-color); 
 }
 
 .dash-card:hover {
@@ -2415,6 +2550,7 @@ textarea {
 
 .stat-card {
     background: white;
+    background: var(--card-bg);
     padding: 25px;
     border-radius: 18px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.04);
@@ -2423,6 +2559,7 @@ textarea {
     gap: 20px;
     transition: transform 0.3s ease;
     border: 1px solid #f0f0f0;
+    border: 1px solid var(--border-subtle);
 }
 
 .stat-card:hover {
@@ -2452,6 +2589,7 @@ textarea {
     font-size: 13px;
     text-transform: uppercase;
     color: #888;
+    color: var(--text-muted);
     margin-bottom: 5px;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -2461,6 +2599,7 @@ textarea {
     font-size: 26px;
     font-weight: 800;
     color: #2d3436;
+    color: var(--text-heading);
     margin: 0;
 }
 
@@ -2473,15 +2612,18 @@ textarea {
 
 .chart-container {
     background: white;
+    background: var(--card-bg);
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.04);
     border: 1px solid #f0f0f0;
+    border: 1px solid var(--border-subtle);
 }
 
 .chart-container h2 {
     font-size: 20px;
     color: #4b2e83;
+    color: var(--text-heading);
     margin-bottom: 20px;
     font-weight: 700;
 }
@@ -2504,7 +2646,9 @@ textarea {
     padding: 10px 25px;
     border-radius: 25px;
     background: white;
+    background: var(--card-bg);
     border: 2px solid #e0d6ff;
+    border: 2px solid var(--input-border);
     color: #6f4bd8;
     text-decoration: none;
     font-weight: 600;
@@ -2529,12 +2673,14 @@ textarea {
     font-size: 14px;
     font-weight: 600;
     color: #4b2e83;
+    color: var(--text-heading);
 }
 
 .progress-bar-bg {
     width: 100%;
     height: 10px;
     background: #f0f0f0;
+    background: var(--border-subtle);
     border-radius: 5px;
     overflow: hidden;
 }
