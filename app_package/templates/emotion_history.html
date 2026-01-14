@@ -17,7 +17,9 @@
 
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo2"></div>
+            <div class="logo2">
+                <i class="fas fa-heart-pulse"></i>
+            </div>
             
             <nav>
             <ul class="menu">
@@ -231,12 +233,25 @@
     <script>
         // Smooth scroll to card if ID exists in URL hash
         window.addEventListener("DOMContentLoaded", function() {
+            
+            // Helper to add highlight animation
+            function highlightCard(element) {
+                element.classList.add('highlight-card');
+                // Remove class after animation ends so hover effects work normally again
+                setTimeout(() => {
+                    element.classList.remove('highlight-card');
+                }, 2000);
+            }
+
             // 1. Check if we just edited an entry (stored in sessionStorage)
             const editedLogId = sessionStorage.getItem('lastEditedLogId');
             if (editedLogId) {
                 const targetElement = document.getElementById('log-' + editedLogId);
                 if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                        highlightCard(targetElement);
+                    }, 150);
                 }
                 sessionStorage.removeItem('lastEditedLogId');
             }
@@ -247,8 +262,11 @@
                 const targetElement = document.getElementById(targetId);
                 
                 if (targetElement) {
-                    // Scroll the element to the center of the viewport immediately
-                    targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                    // Use timeout to override browser default scroll-to-top behavior
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                        highlightCard(targetElement);
+                    }, 150);
                 }
             }
 
