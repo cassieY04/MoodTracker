@@ -5,18 +5,18 @@ from datetime import datetime, timedelta, timezone
 
 emotion_choice = ['Happy', 'Excited', 'Neutral', 'Anxious', 'Sad', 'Angry', 'Stressed']
 EMOTION_MAP = {
-    'Happy': {'color': '#FFD700', 'emoji': '😊'},      
-    'Excited': {'color': "#FFA07A", 'emoji': '🤩'},     
+    'Happy': {'color': "#FFF700", 'emoji': '😊'},      
+    'Excited': {'color': "#FE63A9", 'emoji': '🤩'},     
     'Neutral': {'color': '#D3D3D3', 'emoji': '😐'},     
-    'Anxious': {'color': "#F58D16", 'emoji': '😟'},     
-    'Sad': {'color': '#000080', 'emoji': '😥'},         
-    'Angry': {'color': '#FF4500', 'emoji': '😡'},       
-    'Stressed': {'color': '#800080', 'emoji': '😩'},    
+    'Anxious': {'color': "#FFA500", 'emoji': '😟'},     
+    'Sad': {'color': "#87CEFA", 'emoji': '😥'},         
+    'Angry': {'color': "#FF0000", 'emoji': '😡'},       
+    'Stressed': {'color': "#CE0ACE", 'emoji': '😩'},    
 }
 
 def get_emotion_styling(emotion):
     """Returns color and emoji for a given emotion."""
-    return EMOTION_MAP.get(emotion, {'color': '#CCCCCC', 'emoji': '🤷'})
+    return EMOTION_MAP.get(emotion, {'color': "#EFD9D9", 'emoji': '🤷'})
 
 
 log_emotion_bp = Blueprint('log_emotion', __name__)
