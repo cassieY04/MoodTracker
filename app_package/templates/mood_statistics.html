@@ -208,9 +208,19 @@
             options: {
                 responsive: true,
                 scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '{% if period == "daily" %}Time{% elif period == "monthly" %}Date{% else %}Day{% endif %}'
+                        }
+                    },
                     y: {
                         beginAtZero: true,
                         max: 3.5,
+                        title: {
+                            display: true,
+                            text: 'Mood Level'
+                        },
                         ticks: {
                             callback: function(value) {
                                 if(value === 1) return 'Negative';

@@ -29,7 +29,7 @@ EMOTIONAL_PATTERN_RESULT = {
     'Stress-Dominant': {'title': 'Stress-Dominant', 'emoji': '😔'},
     'Mixed Emotion': {'title': 'Mixed Emotion', 'emoji': '🔀'}, 
     'Emotionally Balanced': {'title': 'Emotionally Balanced', 'emoji': '⚖️'},
-    'N/A': {'title': 'No Entries Yet', 'emoji': '❓'},
+    'N/A': {'title': 'No Entries', 'emoji': '✍'},
 }
 
 # 3. Calculation function (implements the rules for emotional pattern)

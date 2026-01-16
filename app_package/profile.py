@@ -3,7 +3,6 @@ from .users import UserManager
 from .validation import password_requirement, validate_email,validate_phone, validate_security_question, validate_security_answer 
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash
 import os
 import uuid
 
@@ -49,7 +48,7 @@ def profile(username):
         if 'delete' in request.form:
             delete_old_picture_file(user)
             UserManager.delete_user(username)
-            session.pop('username', None)
+            session.clear()
             flash("Your account has been successfully deleted.")
             return redirect(url_for("home.homepage"))
             
@@ -161,7 +160,7 @@ def profile(username):
             if question_error:
                 flash(question_error)
                 return redirect(url_for("profile.profile", username=username))
-        update_data["security_question"] = new_question
+            update_data["security_question"] = new_question
 
         if new_answer.strip():
             answer_error = validate_security_answer(new_answer)

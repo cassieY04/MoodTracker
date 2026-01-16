@@ -74,7 +74,6 @@
     --encouragement-bg: #2e2010;
     --encouragement-text: #e2e8f0;
 }
-/*i put base and dark mode later u adjust on ur own if u want*/
 
 html, body {
     margin: 0;
@@ -1758,10 +1757,8 @@ textarea {
 
 .bd-emoji { font-size: 24px; }
 .bd-details { display: flex; flex-direction: column; }
-.bd-count { font-weight: 700; font-size: 18px; color: #2d3748; }
-.bd-label { font-size: 12px; color: #718096; font-weight: 600; }
-.bd-count { font-weight: 700; font-size: 18px; color: var(--text-heading); }
-.bd-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+.bd-count { font-weight: 700; font-size: 18px; color: #2d3748; color: var(--text-heading); }
+.bd-label { font-size: 12px; color: #718096; color: var(--text-muted); font-weight: 600; }
 
 /* Mood Calendar Modal */
 .mood-modal {
@@ -1808,10 +1805,8 @@ textarea {
     align-items: center;
 }
 
-.modal-header h2 { margin: 0; font-size: 20px; color: #4b2e83; }
-.close-modal { font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; }
-.modal-header h2 { margin: 0; font-size: 20px; color: var(--text-heading); }
-.close-modal { font-size: 28px; font-weight: bold; color: var(--text-muted); cursor: pointer; }
+.modal-header h2 { margin: 0; font-size: 20px; color: #4b2e83; color: var(--text-heading); }
+.close-modal { font-size: 28px; font-weight: bold; color: #aaa; color: var(--text-muted); cursor: pointer; }
 .close-modal:hover { color: #000; }
 
 .modal-body { padding: 25px; overflow-y: auto; }
@@ -2352,7 +2347,11 @@ textarea {
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    /* Make the filter bar stick to the top on scroll */
+    position: sticky;
+    top: 15px;
+    z-index: 200;
 }
 
 .filter-form {
@@ -2820,4 +2819,145 @@ textarea {
 .highlight-card {
     animation: highlightPulse 2s ease-out;
     z-index: 10;
+}
+
+/* ==================== RESPONSIVE DESIGN ===================== */
+
+@media (max-width: 1024px) {
+    /* Profile Page Stacking */
+    .profile-container {
+        flex-direction: column;
+        padding: 0;
+        margin-top: 30px;
+    }
+    
+    .profile-sidebar {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+
+    /* Log Emotion Page Stacking */
+    .content-logemotion {
+        grid-template-columns: 1fr;
+    }
+    
+    .emotion-emoji-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    /* Hero Section */
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+    }
+    
+    .hero-text {
+        padding-top: 0;
+        margin-bottom: 40px;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .hero-image-container {
+        width: 100%;
+    }
+    
+    .hero-dashboard-img {
+        max-width: 100%;
+        transform: none; /* Remove 3D effect on mobile for readability */
+    }
+    
+    .hero-dashboard-img:hover {
+        transform: none;
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Layout Adjustments */
+    .main-section {
+        padding: 15px;
+    }
+    
+    /* Dashboard Grid */
+    .dash-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Topbar */
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .user-info {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    /* Section Blocks (Index) */
+    .section-container {
+        flex-direction: column;
+        text-align: center;
+        width: 90%;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Auth Cards */
+    .auth-card {
+        width: 90%;
+        padding: 25px;
+    }
+    
+    /* Profile Form */
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-grid .full-row {
+        grid-column: span 1;
+    }
+    
+    /* Calendar */
+    .calendar-header-nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .styled-calendar th {
+        padding: 5px;
+        font-size: 12px;
+    }
+    
+    .styled-calendar td {
+        height: 60px;
+        padding: 5px;
+    }
+    
+    .day-number {
+        font-size: 12px;
+    }
+    
+    .cal-emoji {
+        font-size: 16px;
+    }
+    
+    /* Stats Header */
+    .stats-header-cards {
+        grid-template-columns: 1fr;
+    }
 }

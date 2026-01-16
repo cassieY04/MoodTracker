@@ -72,22 +72,22 @@ function togglePassword(id) {
             <div class="form-grid">
                 <div>
                     <label>Username</label>
-                    <input type="text" name="username" value="{{ user.username }}" required></input>
+                    <input type="text" name="username" value="{{ user.username }}" required>
                 </div>
 
                 <div>
                     <label>Email</label>
-                    <input type="text" name="email" value="{{ user.email }}"></input>
+                    <input type="text" name="email" value="{{ user.email }}">
                 </div>
 
                 <div>
                     <label>Phone Number</label>
-                    <input type="text" name="phone" value="{{ user.phone }}"></input>
+                    <input type="text" name="phone" value="{{ user.phone }}">
                 </div>
 
                 <div class="password-wrapper">
                     <label>New Password</label>
-                    <input type="password" id="new_password" name="password"></input>
+                    <input type="password" id="new_password" name="password">
                     <span class="toggle-eye-profile" onclick="togglePassword('new_password')">👁</span>
                 </div>
 
@@ -98,17 +98,17 @@ function togglePassword(id) {
 
                 <div>
                     <label>Address</label>
-                    <input type="text" name="address" value="{{ user.address }}"></input>
+                    <input type="text" name="address" value="{{ user.address or '' }}">
                 </div>
 
                 <div>
                     <label>Birth Date</label>  <!-- Santania edited -->
-                    <input class="birthday" type="date" name="birthday" placeholder="YYYY-MM-DD" value="{{ user.birthday }}"></input>
+                    <input class="birthday" type="date" name="birthday" placeholder="YYYY-MM-DD" value="{{ user.birthday or '' }}">
                 </div>
 
                 <div>
                     <label>Age</label>
-                    <input type="text" value="{{ user.age }}" ></input>
+                    <input type="text" value="{{ user.age or '' }}" readonly>
                 </div>
 
                 <div>
@@ -137,7 +137,7 @@ function togglePassword(id) {
 
                 <div>
                     <label>Security Answer</label>
-                    <input type="text" name="security_answer"></input>
+                    <input type="text" name="security_answer">
                 </div>
             </div>
 

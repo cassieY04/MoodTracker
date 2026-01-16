@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 emotion_choice = ['Happy', 'Excited', 'Neutral', 'Anxious', 'Sad', 'Angry', 'Stressed']
 EMOTION_MAP = {
-    'Happy': {'color': "#FFF700", 'emoji': '😊'},      
+    'Happy': {'color': "#FCF300", 'emoji': '😊'},      
     'Excited': {'color': "#FE63A9", 'emoji': '🤩'},     
     'Neutral': {'color': '#D3D3D3', 'emoji': '😐'},     
     'Anxious': {'color': "#FFA500", 'emoji': '😟'},     
@@ -38,6 +38,10 @@ def emolog():
         selected_emotion = request.form.get('emotion')
         note = request.form.get('note', '').strip()
         thought = request.form.get('thought', '').strip()
+
+        if not selected_emotion:
+            flash("Please select an emotion to save your entry.", "warning")
+            return render_template("log_emotion.html", emotions=emotion_choice)
 
         msia_tz = timezone(timedelta(hours=8))
         current_msia_time = datetime.now(msia_tz).strftime("%Y-%m-%d %H:%M:%S")

@@ -1,7 +1,7 @@
-from flask import Blueprint, request, redirect, url_for, flash, session, render_template
+from flask import Blueprint, request, redirect, url_for, flash, session, render_template, current_app
 from .users import UserManager
 from .validation import password_requirement, validate_email, validate_phone, validate_security_question, validate_security_answer  
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -61,10 +61,8 @@ def register():
         error = password_requirement(password)
         if error:
             flash(error)
-            print(f"DEBUG: Password error: {error}")
             return redirect(url_for("auth.register"))
         
-        print("DEBUG: All validations passed!")
         try:
             UserManager.add_user(username, {
                 "fullname": fullname,
@@ -82,8 +80,6 @@ def register():
         return redirect(url_for("auth.login"))
 
     return render_template("register.html", security_questions=SECURITY_QUESTIONS)
-
-from flask import current_app
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
@@ -221,4 +217,3 @@ def logout():
     session.pop('username', None)
     session.pop('theme', None)
     return redirect(url_for("home.homepage"))
-

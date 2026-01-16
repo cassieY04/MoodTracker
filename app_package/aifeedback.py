@@ -4,11 +4,19 @@ import ast
 import random
 from datetime import datetime, timedelta
 from collections import Counter
-from Databases.emologdb import get_latest_emolog, get_emolog_by_id
+from Databases.emologdb import get_emolog_by_id
 
 
 ai_feedback_bp = Blueprint('ai_feedback', __name__)
+
+# Global Constants for Word Detection
+POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "amazing", "best", "fun", "joy", "blessed", "lucky"]
+NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated", "lonely", "pain", "sick", "cry"]
+
 # Helper function to detect context from text
+# NOTE: This is a simple substring search. It handles duplicates (e.g., "exammm") 
+# but does not handle misspellings (e.g., "exan"). For more advanced matching,
+# a fuzzy matching library like 'fuzzywuzzy' could be implemented.
 def detect_context(text):
     text = text.lower()
     context_map = {
@@ -104,6 +112,9 @@ def detect_context(text):
             "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "traffic", "jam", "late", "wait",
             "parking", "road", "accident"
         ],
+        "animal": [
+            "dog", "cat", "pet", "puppy", "kitten", "animal", "fish", "bird", "hamster", "rabbit"
+        ],
         "weather": [
             "rain", "hot", "sun", "weather", "storm", "wet", "humid", "cold", "gloom", "dark"
         ]
@@ -175,7 +186,22 @@ def get_encouragement(emotion, contexts):
 def generate_short_feedback(emotion, reason="", thought=""):
     emotion = emotion.lower()
     # Combine text for analysis
-    full_text = f"{reason} {thought}"
+    full_text = f"{reason} {thought}".lower()
+
+    # --- Mixed Emotion Check ---
+    # If a positive emotion is chosen but the text contains negative words, flag it.
+    if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
+        return "It seems you're feeling positive, but your notes mention some challenges. It's okay to have mixed feelings."
+
+    if emotion in ["sad", "angry", "stressed", "anxious"] and any(word in full_text for word in POSITIVE_WORDS):
+        return "It seems you're feeling down, but your notes mention some positives. It's okay to have mixed feelings."
+
+    if emotion == "neutral":
+        if any(word in full_text for word in POSITIVE_WORDS):
+             return "You're feeling neutral, but your notes mention some positive things. It sounds like a calm and good moment."
+        if any(word in full_text for word in NEGATIVE_WORDS):
+             return "You're feeling neutral despite some challenges mentioned. Staying balanced is a great strength."
+
     detected_contexts = detect_context(full_text)
 
     # 1. Check for specific keywords first (e.g. "tired")
@@ -247,6 +273,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
 
 def generate_full_feedback(emotion, reason="", thought=""):
     emotion = emotion.lower()
+    full_text = f"{reason} {thought}".lower()
     
     # Analyze separately to distinguish Situation (External) vs Thoughts (Internal)
     reason_contexts = detect_context(reason) if reason else []
@@ -261,15 +288,40 @@ def generate_full_feedback(emotion, reason="", thought=""):
     # Get encouragement based on emotion
     encouragement = get_encouragement(emotion, detected_contexts)
 
+    # --- Mixed Emotion Check ---
+    is_mixed_feeling_pos = emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS)
+    is_mixed_feeling_neg = emotion in ["sad", "angry", "stressed", "anxious"] and any(word in full_text for word in POSITIVE_WORDS)
+    is_mixed_feeling_neutral_pos = emotion == "neutral" and any(word in full_text for word in POSITIVE_WORDS)
+    is_mixed_feeling_neutral_neg = emotion == "neutral" and any(word in full_text for word in NEGATIVE_WORDS)
+
     # -------- ANALYSIS --------
-    if emotion in ["stressed", "anxious"]:
+    if is_mixed_feeling_pos:
+        analysis.append("You've logged a positive emotion, but your notes hint at some negative feelings. This is known as a 'mixed emotional state'.")
+        analysis.append("It's completely normal to feel happy about one thing while being worried or sad about another.")
+        suggestions.append("Acknowledge both feelings without judgment. They can coexist.")
+
+    elif is_mixed_feeling_neg:
+        analysis.append("You've logged a difficult emotion, but your notes contain positive words. This suggests a complex emotional state.")
+        analysis.append("It is possible to feel stressed or sad while still acknowledging good things happening around you.")
+        suggestions.append("Give yourself credit for noticing the positives despite how you feel.")
+
+    elif is_mixed_feeling_neutral_pos:
+        analysis.append("You've logged a neutral mood, but your notes contain positive words.")
+        analysis.append("This suggests a sense of calm appreciation or contentment rather than high-energy excitement.")
+        suggestions.append("Enjoy this peaceful state of mind.")
+
+    elif is_mixed_feeling_neutral_neg:
+        analysis.append("You've logged a neutral mood, but your notes mention negative aspects.")
+        analysis.append("This indicates resilience—you are acknowledging difficulties without letting them overwhelm your emotional balance.")
+        suggestions.append("Continue to observe these challenges with your current steady perspective.")
+
+    elif emotion in ["stressed", "anxious"]:
         analysis.append("Your emotional state suggests you may be experiencing pressure or overload.")
 
         if reason:
             analysis.append(f"You identified '{reason}' as a key factor.")
             if reason_contexts:
                 analysis.append(f"Specifically, the situation involves {', '.join(reason_contexts)}, which is a common source of pressure.")
-            
             else:
                 analysis.append("External stressors like this often contribute to a sense of being overwhelmed, regardless of the specific cause.")
 
@@ -278,7 +330,6 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             if "emotional_release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
-            
 
         if thought:
             if "uncertainty" in thought_contexts:
@@ -323,9 +374,6 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             if "emotional_release" in thought_contexts:
                 analysis.append("Thinking about crying indicates you are reaching a point of emotional overflow.")
-
-        if "fatigue" in detected_contexts:
-            suggestions.append("Prioritize getting a good night's sleep tonight.")
 
         suggestions.extend([
             "Allow yourself time to process these feelings",
@@ -404,24 +452,30 @@ def generate_full_feedback(emotion, reason="", thought=""):
 
     # -------- GENERAL SUGGESTIONS (Fallback & Context-Specific) --------
     if "social_media" in detected_contexts:
-        suggestions.append("Consider a 'digital detox' or setting app limits")
-        suggestions.append("Unfollow accounts that make you feel drained")
+        suggestions.append("Consider a short 'digital detox'")
+        suggestions.append("Unfollow accounts that drain your energy")
 
     if "self-esteem" in detected_contexts:
-        suggestions.append("Practice positive affirmations or write down 3 things you like about yourself")
-        suggestions.append("Remember that social media is a highlight reel, not reality")
+        suggestions.append("Write down 3 things you value about yourself")
+        suggestions.append("Remember: social media is a highlight reel, not reality")
 
     if "academic pressure" in detected_contexts or "work stress" in detected_contexts:
-        suggestions.append("Try the Pomodoro technique (25 min work, 5 min break)")
+        suggestions.append("Try the Pomodoro technique: 25m focus, 5m break")
         suggestions.append("Celebrate small wins, even just finishing one task")
 
     if "financial" in detected_contexts:
-        suggestions.append("Review your budget and identify one small change you can make")
+        suggestions.append("Identify one small change to your budget")
         suggestions.append("Try a 'no-spend' day challenge")
     
     if "health concerns" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed")
         suggestions.append("Stay hydrated and prioritize sleep")
+
+    if "animal" in detected_contexts:
+        suggestions.append("Spend some therapeutic time with your pet")
+
+    if "fatigue" in detected_contexts:
+        suggestions.append("Prioritize getting a good night's sleep")
         
     if "relationship issues" in detected_contexts:
         suggestions.append("Set healthy boundaries to protect your energy")
@@ -441,6 +495,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
     seen = set()
     suggestions = [x for x in suggestions if not (x in seen or seen.add(x))]
 
+    # Limit to 5 suggestions max to avoid overwhelming the user
+    suggestions = suggestions[:5]
+
     return {
         "emotion": emotion,
         "causes": analysis,
@@ -458,23 +515,37 @@ def generate_aggregated_feedback(logs, period_name="day"):
     logs.sort(key=lambda x: x['timestamp'])
     
     emotions = [l['emotion_name'] for l in logs]
-    unique_emotions = set(emotions)
     
-    # Check for mixed emotions
-    positives = {"Happy", "Excited"}
-    negatives = {"Sad", "Angry", "Anxious", "Stressed"}
-    has_pos = bool(unique_emotions & positives)
-    has_neg = bool(unique_emotions & negatives)
+    # --- NEW LOGIC: Mood Level Calculation (Aligns with Statistics Graph) ---
+    mood_scores = {
+        'Happy': 3, 'Excited': 3,
+        'Neutral': 2,
+        'Sad': 1, 'Anxious': 1, 'Stressed': 1, 'Angry': 1
+    }
     
-    main_emoji = "📝"
-    if has_pos and has_neg:
-        main_emotion = "Mixed Emotions"
-        main_emoji = "🔀"
+    scores = [mood_scores.get(e, 2) for e in emotions]
+    avg_score = sum(scores) / len(scores) if scores else 0
+    
+    main_emoji = "😐"
+    
+    # Thresholds: 1.0-1.66 (Neg), 1.67-2.33 (Neu), 2.34-3.0 (Pos)
+    if avg_score >= 2.34:
+        main_emotion = "Mostly Positive"
+        main_emoji = "😊"
+    elif avg_score <= 1.66:
+        main_emotion = "Mostly Negative"
+        main_emoji = "😔"
     else:
-        # Find most frequent emotion
-        most_common = Counter(emotions).most_common(1)[0][0]
-        main_emotion = f"Mostly {most_common}"
-        # We will let the template handle the emoji or pass a generic one
+        # It is in the Neutral range (approx 2.0). Check if it's stable Neutral or Mixed.
+        has_pos = any(s == 3 for s in scores)
+        has_neg = any(s == 1 for s in scores)
+        
+        if has_pos and has_neg:
+            main_emotion = "Mixed"
+            main_emoji = "🔀"
+        else:
+            main_emotion = "Mostly Neutral"
+            main_emoji = "😐"
 
     # Aggregate texts into a timeline format
     combined_reason = ""
@@ -502,27 +573,65 @@ def generate_aggregated_feedback(logs, period_name="day"):
     analysis = []
     suggestions = []
     
-    if main_emotion == "Mixed Emotions":
+    # --- NEW RULE: Check for Specific Emotion Spikes (e.g. Angry > 3) ---
+    angry_count = emotions.count('Angry')
+    if angry_count > 3:
+        analysis.append(f"⚠️ Alert: You've logged 'Angry' {angry_count} times this {period_name}.")
+        analysis.append("Frequent anger can indicate unmet needs or high stress levels.")
+        suggestions.append("Consider physical exercise to release built-up tension.")
+
+    if main_emotion == "Mixed":
         analysis.append(f"Your {period_name} was an emotional rollercoaster, shifting between highs and lows.")
         analysis.append("Fluctuations like this are normal during busy or eventful periods.")
         suggestions.append("Take a moment to decompress and process these events.")
-    elif has_neg:
-        analysis.append(f"It seems this {period_name} has been generally challenging for you.")
+    elif main_emotion == "Mostly Negative":
+        analysis.append(f"It seems this {period_name} has been generally challenging for you (Avg Mood: Low).")
         suggestions.append("Be gentle with yourself; rest is important.")
-    elif has_pos:
-        analysis.append(f"You've had a generally positive {period_name}!")
+    elif main_emotion == "Mostly Positive":
+        analysis.append(f"You've had a generally positive {period_name} (Avg Mood: High)!")
         suggestions.append("Reflect on what went well so you can maintain this momentum.")
     else:
-        analysis.append(f"Your {period_name} has been relatively stable.")
+        analysis.append(f"Your {period_name} has been relatively stable and balanced.")
 
     # Add context specific advice
-    if "academic pressure" in detected_contexts:
-        analysis.append("School work was a recurring theme throughout your day.")
+    if "academic pressure" in detected_contexts or "work stress" in detected_contexts:
+        analysis.append(f"Work or school pressure was a recurring theme this {period_name}.")
+        suggestions.append("Schedule downtime to prevent burnout.")
+
     if "relationship issues" in detected_contexts:
-        analysis.append("Social interactions played a big role in your day.")
+        analysis.append(f"Social interactions played a big role in your {period_name}.")
+        suggestions.append("Set boundaries if interactions feel draining.")
+
     if "fatigue" in detected_contexts:
         analysis.append("You mentioned being tired multiple times; you might be running on empty.")
-        suggestions.append("Prioritize sleep tonight above all else.")
+        suggestions.append("Prioritize sleep and rest above all else.")
+
+    if "financial" in detected_contexts:
+        suggestions.append("Focus on small, controllable financial steps.")
+
+    if "health concerns" in detected_contexts:
+        suggestions.append("Listen to your body and rest if needed.")
+
+    if "social_media" in detected_contexts:
+        suggestions.append("Consider a short digital detox.")
+
+    # Fallback suggestions if empty
+    if not suggestions:
+        if main_emotion == "Mostly Negative":
+             suggestions.append("Try a quick breathing exercise (4-7-8 technique).")
+        elif main_emotion == "Mixed":
+             suggestions.append("Journaling might help untangle mixed feelings.")
+        elif main_emotion == "Mostly Positive":
+             suggestions.append("Share your positive energy with others.")
+        else:
+             suggestions.append("Practice mindfulness to maintain balance.")
+
+    # Remove duplicates while preserving order
+    seen = set()
+    suggestions = [x for x in suggestions if not (x in seen or seen.add(x))]
+
+    # Limit to 5 suggestions max
+    suggestions = suggestions[:5]
 
     return {
         "emotion": main_emotion,

@@ -1,6 +1,5 @@
 from Databases.userdb import get_db
 import sqlite3
-from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 
@@ -61,7 +60,7 @@ class UserManager:
                 (username,)
             )
             user_row = cursor.fetchone()
-            return dict(user_row)if user_row else None 
+            return dict(user_row) if user_row else None 
         finally:
             db.close()
 
@@ -80,7 +79,7 @@ class UserManager:
         update_values = list(user_data.values()) + [username]
 
         try:
-            cursor = db.execute(F'update USERS set {update_fields} WHERE username =?',update_values)
+            cursor = db.execute(f'UPDATE users SET {update_fields} WHERE username = ?', update_values)
             db.commit()
             return cursor.rowcount > 0
         finally:

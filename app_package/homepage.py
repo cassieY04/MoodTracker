@@ -14,6 +14,12 @@ def dashboard():
         return redirect(url_for("auth.login"))
     
     username = session.get('username')
-    users = UserManager.get_user(username)
+    user = UserManager.get_user(username)
+    
+    # Safety check: If session exists but user is deleted from DB
+    if not user:
+        session.clear()
+        return redirect(url_for("auth.login"))
+        
     show_popup = session.pop("show_welcome_popup", False)
-    return render_template("dashboard.html", username=username, show_popup=show_popup, user=users)
+    return render_template("dashboard.html", username=username, show_popup=show_popup, user=user)

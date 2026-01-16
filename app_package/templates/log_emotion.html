@@ -104,7 +104,7 @@
                             <div class="emotion-emoji-grid">
                                 {%  for emo in emotions %}
                                 <label class="emoji-option" >
-                                    <input type="radio" name="emotion" value="{{ emo }}" required>
+                                    <input type="radio" name="emotion" value="{{ emo }}">
                                     <span class="emojiji">
                                         {% if emo == 'Happy'%}
                                         {{ '😊' }}
@@ -132,11 +132,11 @@
                         <div class="log-right">
 
                             <label for="note">What happened? (Situation):</label>
-                            <textarea name="note" id="note" rows="3" placeholder="Describe the event (e.g., 'Finished a big project' or 'My friend cancelled plans')."></textarea>
+                            <textarea name="note" id="note" rows="3" placeholder="Describe the event (e.g., 'Finished a big project' or 'My friend cancelled plans').">{{ request.form.get('note', '') }}</textarea>
 
                             <!--additional thought field-->
                             <label for="thought">What's on your mind? (Thoughts):</label>
-                            <textarea name="thought" id="thought" rows="3" placeholder="What are you telling yourself? (e.g., 'I did a great job' or 'I'm worried I might fail')."></textarea>
+                            <textarea name="thought" id="thought" rows="3" placeholder="What are you telling yourself? (e.g., 'I did a great job' or 'I'm worried I might fail').">{{ request.form.get('thought', '') }}</textarea>
 
 
                             <button type="submit" class="main-btn">Save Log</button>
@@ -144,12 +144,19 @@
                     </div>
                 </form> 
                     {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages and show_feedback %}
-                        <div class="feedback-box" id="feedback-box">
+                    {% if messages %}
+                        {% if show_feedback %}
+                            <div class="feedback-box" id="feedback-box">
+                                {% for category, message in messages %}
+                                    <p>{{ message }}</p>
+                                {% endfor %}
+                                <a href="{{ url_for('ai_feedback.ai_feedback', log_id=new_log_id) }}" class="ai_detail_link">View AI Feedback &rarr;</a>
+                            </div>
+                        {% else %}
                             {% for category, message in messages %}
-                                <p>{{ message }}</p>
+                                <div class="popup-msg" style="margin-top: 20px;">{{ message }}</div>
                             {% endfor %}
-                            <a href="{{ url_for('ai_feedback.ai_feedback', log_id=new_log_id) }}" class="ai_detail_link">View AI Feedback &rarr;</a>                        </div>
+                        {% endif %}
                     {% endif %}
                     {% endwith %}
             </div> 
@@ -160,8 +167,12 @@
                 <script>
                     window.addEventListener('load', function() {
                         const feedback = document.getElementById('feedback-box');
+                        const errorMsg = document.querySelector('.popup-msg');
+
                         if (feedback) {
                             feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } else if (errorMsg) {
+                            errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
                     });
                 </script>

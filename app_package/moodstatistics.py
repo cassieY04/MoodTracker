@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
 from .users import UserManager
 from collections import Counter
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import calendar
 from .logemotion import get_emotion_styling
 
@@ -23,7 +23,10 @@ def mood_statistics():
     
     # Filter logs based on period
     filtered_logs = []
-    now = datetime.now()
+    
+    # Use Malaysia Time (UTC+8) to match logemotion.py
+    msia_tz = timezone(timedelta(hours=8))
+    now = datetime.now(msia_tz).replace(tzinfo=None) # Make naive for string comparisons
     selected_date = now
     selected_month = now.strftime('%Y-%m')
     
@@ -241,8 +244,11 @@ def calculate_streak(logs):
         if ts:
             dates.add(ts.split(' ')[0])
     
-    today = datetime.now().date().strftime('%Y-%m-%d')
-    yesterday = (datetime.now() - timedelta(days=1)).date().strftime('%Y-%m-%d')
+    # Use Malaysia Time for streak calculation too
+    msia_tz = timezone(timedelta(hours=8))
+    now_msia = datetime.now(msia_tz)
+    today = now_msia.date().strftime('%Y-%m-%d')
+    yesterday = (now_msia - timedelta(days=1)).date().strftime('%Y-%m-%d')
     
     # Check if streak is active (logged today or yesterday)
     if today in dates:

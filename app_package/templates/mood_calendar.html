@@ -156,7 +156,7 @@
                         <h3>Monthly Breakdown</h3>
                         <div class="breakdown-grid">
                             {% for item in emotion_counts %}
-                            <div class="breakdown-card" style="border-left: 4px solid '{{ item.color }}';">
+                            <div class="breakdown-card" style="border-left: 4px solid {{ item.color }};">
                                 <span class="bd-emoji">{{ item.emoji }}</span>
                                 <div class="bd-details">
                                     <span class="bd-count">{{ item.count }}</span>

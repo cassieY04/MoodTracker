@@ -1,10 +1,12 @@
 import sqlite3
+import os
 
-DATABASE = 'user.db'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, 'user.db')
 
-def get_db(): #return a connection object to database
+def get_db():
     db = sqlite3.connect(
-        DATABASE,
+        DB_PATH,
         detect_types=sqlite3.PARSE_DECLTYPES
     )
 
@@ -34,16 +36,17 @@ def init_db():
                 theme TEXT DEFAULT 'light'
             )''')
 
-        try:
+        # Check for missing columns (Migration for existing databases)
+        cursor = db.execute("PRAGMA table_info(users)")
+        columns = [col['name'] for col in cursor.fetchall()]
+        
+        if 'theme' not in columns:
             db.execute('ALTER TABLE users ADD COLUMN theme TEXT DEFAULT "light"')
-        except sqlite3.OperationalError:
-            # If the column already exists, SQLite will throw an error, which we ignore
-            pass
         
         db.commit()
 
     except Exception as e:
-        print(f"Error creating table: {e}")
+        print(f"Error creating user table: {e}")
         db.rollback()
 
     finally:

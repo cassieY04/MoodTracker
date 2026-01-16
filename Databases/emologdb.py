@@ -1,9 +1,13 @@
 import sqlite3
+import os
 from datetime import datetime, timedelta, timezone
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, 'user.db')
 
 def get_db():
     db = sqlite3.connect(
-        'user.db',
+        DB_PATH,
         detect_types=sqlite3.PARSE_DECLTYPES
     )
     db.row_factory = sqlite3.Row
