@@ -32,7 +32,9 @@ def emolog():
     ai_short = None
     show_feedback = False
     selected_emotion = None
-    new_log_id = None
+    new_log_id = request.args.get('new_log_id')
+    if new_log_id:
+        show_feedback = True
     
     if request.method == 'POST':
         selected_emotion = request.form.get('emotion')
@@ -60,8 +62,8 @@ def emolog():
         )
 
         if new_log_id:
-            show_feedback = True
             flash("Emotion log saved successfully!", "success")
             flash(ai_short, "ai")
+            return redirect(url_for('log_emotion.emolog', new_log_id=new_log_id))
           
     return render_template("log_emotion.html", emotions=emotion_choice, aifeedback=ai_short, show_feedback=show_feedback, new_log_id=new_log_id)

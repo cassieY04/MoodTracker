@@ -28,6 +28,7 @@
     --icon-color: #6f4bd8;
     --empty-cell-bg: #fcfaff;
     --text-title: #1e0f43;
+    --popup-link: #7c4dff;
     
     /* AI Feedback Specifics */
     --reflection-bg: #f8f9fa;
@@ -36,7 +37,7 @@
     --suggestion-bg: #f0fff4;
     --suggestion-text: #2f855a;
     --encouragement-bg: #fffdf5;
-    --encouragement-text: #555555;
+    --encouragement-text: #7b7979;
 }
 
 [data-theme="dark"] {
@@ -69,6 +70,7 @@
     --icon-color: #a86ee2;
     --empty-cell-bg: #331f50;
     --text-title: #e4fffb;
+    --popup-link: #d869fa;
     
     /* AI Feedback Specifics - Dark Mode */
     --reflection-bg: #3f3261;
@@ -77,7 +79,7 @@
     --suggestion-bg: #0d2e21;
     --suggestion-text: #f9fefb;
     --encouragement-bg: #2e2010;
-    --encouragement-text: #e2e8f0;
+    --encouragement-text: #fdfdfd;
 }
 
 html, body {
@@ -1223,34 +1225,36 @@ textarea {
     background: #9b75ed;
 }
 
-/* Dark & Sharp Design for Edit/Delete Modals */
-#editModal .popup-box,
-#deleteModal .popup-box,
-#deleteAccountModal .popup-box {
+[data-theme="dark"] #editModal .popup-box,
+[data-theme="dark"] #deleteModal .popup-box,
+[data-theme="dark"] #deleteAccountModal .popup-box {
     background: #2a1a4a;
     color: #ffffff;
     box-shadow: 0 15px 40px rgba(0,0,0,0.4);
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-#editModal h2,
-#deleteModal h2,
-#deleteAccountModal h2 {
+[data-theme="dark"] #editModal h2,
+[data-theme="dark"] #deleteModal h2,
+[data-theme="dark"] #deleteAccountModal h2 {
     color: #ffffff;
 }
 
-#editModal label {
+[data-theme="dark"] #editModal label,
+[data-theme="dark"] #deleteAccountModal label {
     color: #e0d6ff;
 }
 
-#editModal .modal-select,
-#editModal .modal-textarea {
+[data-theme="dark"] #editModal .modal-select,
+[data-theme="dark"] #editModal .modal-textarea {
     background: #ffffff;
     color: #333;
     border: 1px solid #ccc;
 }
 
-#deleteModal .delete-modal-text {
+[data-theme="dark"] #deleteModal .delete-modal-text,
+[data-theme="dark"] #deleteAccountModal .delete-modal-text,
+[data-theme="dark"] #deleteAccountModal p {
     color: #e0d6ff;
 }
 
@@ -1549,7 +1553,7 @@ textarea {
     display: block;
     margin-top: 10px;
     font-size: 14px;
-    color: #7c4dff;
+    color: var(--popup-link);
     text-decoration: none;
     font-weight: 600;
     cursor: pointer;
@@ -1917,7 +1921,6 @@ textarea {
 .ai-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(111, 75, 216, 0.1);
-    border-color: #e0d6ff;
 }
 
 .ai-card h3 {
@@ -2772,7 +2775,7 @@ textarea {
 
 .feedback-intro-text {
     margin-bottom: 10px;
-    color: #555;
+    color: var(--suggestion-text);
 }
 
 .ai-picker-container {
