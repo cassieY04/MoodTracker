@@ -88,6 +88,7 @@ html, body {
     height: 100%;
     width: 100%;
     cursor: default;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 body.body {
@@ -394,7 +395,7 @@ body.body {
     align-items: center;
     height: 100vh;
     font-size: 14px;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .auth-body-register {
@@ -404,7 +405,7 @@ body.body {
     align-items: flex-start;
     height: 100vh;
     font-size: 14px;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .auth-card {
@@ -559,7 +560,7 @@ body.body {
   width: fit-content;
   font-weight: 600;
   font-size: 15px;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   animation: fadeOut 10s forwards;
 }
 
@@ -695,7 +696,7 @@ body.body {
 
 .header-title {
     color:rgba(125,95,196,240);
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     font-weight: 500;
     padding-top: 5px;
 }
@@ -718,7 +719,7 @@ body.body {
     gap: 10px;              
     text-decoration: none;
     color: var(--profile-btn-dashboard);       
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .profile-username-dashboard {
@@ -804,7 +805,7 @@ body.body {
     padding: 30px;
     border-radius: 16px;
     text-align: center;
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     border: 1px solid #e0d6ff;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -838,7 +839,7 @@ body.body {
 
 .profile-body {
     background: var(--bg-profile-body);
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     transition: background 0.3s ease;
 }
 
@@ -1101,7 +1102,7 @@ textarea {
     text-align: center;
     width: 90%;
     box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .form-group {
@@ -1201,7 +1202,7 @@ textarea {
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 16px;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .edit-cancel-btn:hover {
@@ -1218,7 +1219,7 @@ textarea {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .edit-save-btn:hover {
@@ -1275,7 +1276,7 @@ textarea {
     grid-template-columns: 300px 1fr;
     gap: 30px;
     margin-top: 20px;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .emotion-log-form{
@@ -1528,7 +1529,7 @@ textarea {
     color: var(--text-main-body);
     outline: none;
     resize: vertical;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 .emotion-log-form textarea:focus {
     border-color: #9c6bff;
@@ -1574,7 +1575,7 @@ textarea {
     font-size: 15px;
     margin: 18px auto;
     width: fit-content;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     animation: fadeOut 12s forwards;
 }
 
@@ -1599,7 +1600,7 @@ textarea {
     max-width: 1000px;
     margin: 20px auto;
     padding: 0 20px;
-    font-family: Arial,sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .calendar-card-container {
@@ -1883,7 +1884,7 @@ textarea {
     max-width: 1100px;
     margin: 0 auto;
     padding: 30px;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     }
 
 .ai-header {
@@ -2128,7 +2129,7 @@ textarea {
     padding: 30px;
     max-width: 1100px;
     margin: 0 auto;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .history-list {
@@ -2406,7 +2407,7 @@ textarea {
     border-radius: 8px;
     font-size: 14px;
     min-width: 150px;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .filter-btn {
@@ -2589,7 +2590,7 @@ textarea {
     max-width: 1100px;
     margin: 0 auto;
     padding: 30px;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .stats-header-cards {
