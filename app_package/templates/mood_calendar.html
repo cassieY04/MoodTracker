@@ -15,62 +15,19 @@
 <body>
     <div class="layout">
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo2">
-                <i class="fas fa-heart-pulse"></i>
-            </div>
+            <div class="logo2"><i class="fas fa-heart-pulse"></i></div>
             
             <nav>
             <ul class="menu">
-                <li>
-                    <a href="/dashboard" >
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/log_emotion">
-                        <i class="fas fa-pencil-alt"></i>
-                        <span>Log Emotion</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/mood_calendar">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>Mood Calendar</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/mood_statistics">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Mood Statistics</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/ai_feedback">
-                        <i class="fas fa-star"></i>
-                        <span>AI Feedback</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/emotionhistory">
-                        <i class="fas fa-history"></i>
-                        <span>Emotion History</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                        <span>Theme</span>
-                    </a>
-                </li>
+                <li><a href="/dashboard" ><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                <li><a href="/log_emotion"><i class="fas fa-pencil-alt"></i><span>Log Emotion</span></a></li>
+                <li class="active"><a href="/mood_calendar"><i class="far fa-calendar-alt"></i><span>Mood Calendar</span></a></li>
+                <li><a href="/mood_statistics"><i class="fas fa-chart-bar"></i><span>Mood Statistics</span></a></li>
+                <li><a href="/ai_feedback"><i class="fas fa-star"></i><span>AI Feedback</span></a></li>
+                <li><a href="/emotionhistory"><i class="fas fa-history"></i><span>Emotion History</span></a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                <li><a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar"><i id="theme-icon" class="fas fa-moon"></i><span>Theme</span></a></li>
             </ul>
             </nav>
             
@@ -88,14 +45,12 @@
             <div class="calendar-wrapper">
                 <div class="calendar-card-container">
                     
-                    <!-- Month Navigation -->
                     <div class="calendar-header-nav">
                         <a href="{{ url_for('mood_calendar.mood_calendar', year=prev_year, month=prev_month) }}" class="nav-btn"><i class="fas fa-chevron-left"></i></a>
                         <h2>{{ month_name }} {{ year }}</h2>
                         <a href="{{ url_for('mood_calendar.mood_calendar', year=next_year, month=next_month) }}" class="nav-btn"><i class="fas fa-chevron-right"></i></a>
                     </div>
 
-                    <!-- Calendar Table -->
                     <div class="table-responsive">
                         <table class="styled-calendar">
                             <thead>
@@ -195,7 +150,6 @@
             const dayData = MOOD_DATA[dayKey];
             if (!dayData || !dayData.entries) return;
 
-            // Set Title
             document.getElementById('modal-date-title').innerText = `Logs for ${dayKey} {{ month_name }}`;
             
             const container = document.getElementById('modal-entries-container');

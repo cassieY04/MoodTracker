@@ -15,7 +15,6 @@
 </head>
 <body>
     <div class="layout">
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="logo2">
                 <i class="fas fa-heart-pulse"></i>
@@ -43,7 +42,6 @@
             </header>
 
             <div class="stats-page">
-                <!-- Greeting -->
                 <div class="stats-header-card">
                     <div class="stats-header-text">
                         <h2>Here are your mood statistic, {{ session.username }}!</h2>
@@ -54,7 +52,6 @@
                     </div>
                 </div>
 
-                <!-- Period Tabs -->
                 <div class="stats-tabs">
                     <a href="?period=daily" class="stats-tab-btn {% if period == 'daily' %}active{% endif %}">Daily</a>
                     <a href="?period=weekly" class="stats-tab-btn {% if period == 'weekly' %}active{% endif %}">Weekly</a>
@@ -82,7 +79,6 @@
                 </div>
                 {% endif %}
 
-                <!-- Summary Cards -->
                 <div class="stats-header-cards">
                     <div class="stat-card">
                         <div class="stat-icon-box total">
@@ -167,9 +163,18 @@
         const lineLabels = {{ line_labels | tojson }};
         const lineData = {{ line_data | tojson }};
 
+        // Helper to get CSS variable values
+        function getCssVar(name) {
+            return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        }
+
+        // Initial Theme Colors
+        let textColor = getCssVar('--text-sub');
+        let gridColor = getCssVar('--border-subtle');
+
         // 2. Mood Distribution Chart (Pie)
         const ctxPie = document.getElementById('moodPieChart').getContext('2d');
-        new Chart(ctxPie, {
+        const moodPieChart = new Chart(ctxPie, {
             type: 'doughnut',
             data: {
                 labels: pieLabels,
@@ -182,14 +187,17 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: 'bottom' }
+                    legend: { 
+                        position: 'bottom',
+                        labels: { color: textColor }
+                    }
                 }
             }
         });
 
         // 3. Mood Trends Chart (Line)
         const ctxLine = document.getElementById('moodLineChart').getContext('2d');
-        new Chart(ctxLine, {
+        const moodLineChart = new Chart(ctxLine, {
             type: 'line',
             data: {
                 labels: lineLabels,
@@ -198,7 +206,7 @@
                     data: lineData,
                     borderColor: '#6f4bd8',
                     backgroundColor: 'rgba(111, 75, 216, 0.1)',
-                    tension: 0.4, // Smooth curves
+                    tension: 0.4, 
                     fill: true,
                     pointBackgroundColor: '#fff',
                     pointBorderColor: '#6f4bd8',
@@ -209,25 +217,31 @@
                 responsive: true,
                 scales: {
                     x: {
+                        ticks: { color: textColor },
+                        grid: { color: gridColor },
                         title: {
                             display: true,
-                            text: '{% if period == "daily" %}Time{% elif period == "monthly" %}Date{% else %}Day{% endif %}'
+                            text: '{% if period == "daily" %}Time{% elif period == "monthly" %}Date{% else %}Day{% endif %}',
+                            color: textColor
                         }
                     },
                     y: {
                         beginAtZero: true,
                         max: 3.5,
-                        title: {
-                            display: true,
-                            text: 'Mood Level'
-                        },
-                        ticks: {
+                        ticks: { 
+                            color: textColor,
                             callback: function(value) {
                                 if(value === 1) return 'Negative';
                                 if(value === 2) return 'Neutral';
                                 if(value === 3) return 'Positive';
                                 return '';
                             }
+                        },
+                        grid: { color: gridColor },
+                        title: {
+                            display: true,
+                            text: 'Mood Level',
+                            color: textColor
                         }
                     }
                 },
@@ -237,6 +251,32 @@
                 }
             }
         });
+
+        // 4. Listen for Theme Changes to update Chart Colors
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                    const newTextColor = getCssVar('--text-sub');
+                    const newGridColor = getCssVar('--border-subtle');
+
+                    // Update Line Chart
+                    moodLineChart.options.scales.x.ticks.color = newTextColor;
+                    moodLineChart.options.scales.x.grid.color = newGridColor;
+                    moodLineChart.options.scales.x.title.color = newTextColor;
+
+                    moodLineChart.options.scales.y.ticks.color = newTextColor;
+                    moodLineChart.options.scales.y.grid.color = newGridColor;
+                    moodLineChart.options.scales.y.title.color = newTextColor;
+                    moodLineChart.update();
+
+                    // Update Pie Chart 
+                    moodPieChart.options.plugins.legend.labels.color = newTextColor;
+                    moodPieChart.update();
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, { attributes: true });
     </script>
 </body>
 </html>

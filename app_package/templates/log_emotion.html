@@ -16,62 +16,19 @@
 <body>
     <div class="layout">
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo2">
-                <i class="fas fa-heart-pulse"></i>
-            </div>
+            <div class="logo2"><i class="fas fa-heart-pulse"></i></div>
             
             <nav>
             <ul class="menu">
-                <li>
-                    <a href="/dashboard" >
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/log_emotion">
-                        <i class="fas fa-pencil-alt"></i>
-                        <span>Log Emotion</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/mood_calendar">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>Mood Calendar</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/mood_statistics">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Mood Statistics</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/ai_feedback">
-                        <i class="fas fa-star"></i>
-                        <span>AI Feedback</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/emotionhistory">
-                        <i class="fas fa-history"></i>
-                        <span>Emotion History</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                        <span>Theme</span>
-                    </a>
-                </li>
+                <li><a href="/dashboard" ><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                <li class="active"><a href="/log_emotion"><i class="fas fa-pencil-alt"></i><span>Log Emotion</span></a></li>
+                <li><a href="/mood_calendar"><i class="far fa-calendar-alt"></i><span>Mood Calendar</span></a></li>
+                <li><a href="/mood_statistics"><i class="fas fa-chart-bar"></i><span>Mood Statistics</span></a></li>
+                <li><a href="/ai_feedback"><i class="fas fa-star"></i><span>AI Feedback</span></a></li>
+                <li><a href="/emotionhistory"><i class="fas fa-history"></i><span>Emotion History</span></a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                <li><a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar"><i id="theme-icon" class="fas fa-moon"></i><span>Theme</span></a></li>
             </ul>
             </nav>
             
@@ -134,7 +91,6 @@
                             <label for="note">What happened? (Situation):</label>
                             <textarea name="note" id="note" rows="3" placeholder="Describe the event (e.g., 'Finished a big project' or 'My friend cancelled plans').">{{ request.form.get('note', '') }}</textarea>
 
-                            <!--additional thought field-->
                             <label for="thought">What's on your mind? (Thoughts):</label>
                             <textarea name="thought" id="thought" rows="3" placeholder="What are you telling yourself? (e.g., 'I did a great job' or 'I'm worried I might fail').">{{ request.form.get('thought', '') }}</textarea>
 

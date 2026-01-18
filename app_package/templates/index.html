@@ -14,7 +14,6 @@
 
 <body class="body">
 
-    <!-- HEADER -->
     <header class="top-header">
         <div class="logo-container">
             <i class="fas fa-heart-pulse logo-icon"></i>
@@ -26,7 +25,6 @@
         </div>
     </header>
 
-    <!-- HERO SECTION -->
     <section class="hero">
         <div class="hero-text">
             <h1>Your Personal Companion<br>for Emotional Well-being</h1>
@@ -49,17 +47,14 @@
         </div>
 
         <div class="hero-image-container">
-            <!-- TIP: Take a screenshot of your actual dashboard and save it as 'dashboard_preview.png' in your static folder -->
             <img src="{{ url_for('static', filename='dashboard_preview.png') }}" 
                  alt="MoodTracker Dashboard Preview" 
                  class="hero-dashboard-img">
         </div>
     </section>
 
-    <!-- DIVIDER -->
-    <div class="section-line"></div>
+    <section class="section-block"><div class="section-line"></div></section>
 
-    <!-- 1-point -->
     <section class="section-block">
         <div class="section-container">
 
@@ -77,7 +72,6 @@
         </div>
     </section>
 
-    <!-- 2-point -->
     <section class="section-block">
         <div class="section-container">
 
@@ -95,7 +89,6 @@
         </div>
     </section>
 
-    <!-- 3-point -->
     <section class="section-block">
         <div class="section-container">
 
@@ -112,16 +105,13 @@
         </div>
     </section>
 
-    <!-- DIVIDER -->
-    <div class="section-line"></div>
+    <section class="section-block"><div class="section-line"></div></section>
 
-    <!-- FEATURES SECTION -->
     <section class="features-section" id="features">
         <h2 class="features-title">What You Can Do With MoodTracker</h2>
 
         <div class="feature-grid">
 
-            <!-- Daily Emotion Log -->
             <div class="feature-card">
                 <h3>Daily Emotion Log</h3>
                 <p>• Select your current emotion<br>
@@ -130,7 +120,6 @@
                 • All logs stored securely in database</p>
             </div>  
 
-            <!-- Emotion Notes History -->
             <div class="feature-card">
                 <h3>Emotion Notes History</h3>
                 <p>• View all past emotions, notes & dates<br>
@@ -138,7 +127,6 @@
                 • Automatically retrieves saved history</p>
             </div>
 
-            <!-- Mood Calendar -->
             <div class="feature-card">
                 <h3>Mood Calendar</h3>
                 <p>• Monthly calendar display<br>
@@ -147,7 +135,6 @@
                 • Shortcut to Mood Statistics Summary</p>
             </div>
 
-            <!-- AI Feedback Page -->
             <div class="feature-card">
                 <h3>AI Feedback</h3>
                 <p>• Weekly trend analysis<br>
@@ -156,28 +143,23 @@
                 • Helps users understand emotional patterns</p>
             </div>
 
-            <!-- Mood Statistics -->
             <div class="feature-card">
                 <h3>Mood Statistics</h3>
                 <p>• Summaries for week/month<br>
                 • Colored bar charts<br>
-                • Emotion counts & percentages<br>
-                • Quick link to AI Feedback</p>
+                • Emotion counts & percentages</p>
             </div>
 
-            <!-- Profile Settings -->
             <div class="feature-card">
                 <h3>Profile Settings</h3>
                 <p>• Update profile information<br>
                 • Delete account option<br>
-                • Light/Dark mode toggle<br>
                 • Log out securely</p>
             </div>
 
         </div>
     </section>
 
-    <!-- FINAL CTA SECTION -->
     <section class="final-cta">
         <h2>Ready to Start Tracking Your Mood?</h2>
         <a href="/register" class="start-btn down">Create Your Account</a>

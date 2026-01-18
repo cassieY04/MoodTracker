@@ -13,7 +13,7 @@
 </head>
 
 <body>
-        <!-- POPUP -->
+
     {% if show_popup %}
     <div class="popup-overlay" id="welcomePopup">
         <div class="popup-card welcome-popup">
@@ -53,64 +53,22 @@
         </div>
     </div>
     {% endif %}
+
     <div class="layout">
 
-        <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo2">
-                <i class="fas fa-heart-pulse"></i>
-            </div>
+            <div class="logo2"><i class="fas fa-heart-pulse"></i></div>
             
             <nav>
             <ul class="menu">
-                <li class="active">
-                    <a href="/dashboard" >
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/log_emotion">
-                        <i class="fas fa-pencil-alt"></i>
-                        <span>Log Emotion</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/mood_calendar">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>Mood Calendar</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/mood_statistics">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Mood Statistics</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/ai_feedback">
-                        <i class="fas fa-star"></i>
-                        <span>AI Feedback</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/emotionhistory">
-                        <i class="fas fa-history"></i>
-                        <span>Emotion History</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                        <span>Theme</span>
-                    </a>
-                </li>
+                <li class="active"><a href="/dashboard" ><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                <li><a href="/log_emotion"><i class="fas fa-pencil-alt"></i><span>Log Emotion</span></a></li>
+                <li><a href="/mood_calendar"><i class="far fa-calendar-alt"></i><span>Mood Calendar</span></a></li>
+                <li><a href="/mood_statistics"><i class="fas fa-chart-bar"></i><span>Mood Statistics</span></a></li>
+                <li><a href="/ai_feedback"><i class="fas fa-star"></i><span>AI Feedback</span></a></li>
+                <li><a href="/emotionhistory"><i class="fas fa-history"></i><span>Emotion History</span></a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                <li><a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar"><i id="theme-icon" class="fas fa-moon"></i><span>Theme</span></a></li>
             </ul>
             </nav>
             
@@ -126,9 +84,7 @@
 
                 <div class=" user-info">
                     <a href="/profile/{{ username }}" class="profile-btn-dashboard">
-                        <!-- Username text -->
                         <span class="profile-username-dashboard">{{ user.username }}</span>
-                        <!-- Profile picture (same as profile page) -->
                         {% if user.profile_picture %}
                             <img src="{{ user.profile_picture}}" 
                                 alt="Profile picture" 
@@ -142,10 +98,9 @@
 
             <div class="dashboard-content">
                 
-                <!-- Welcome Banner -->
                 <div class="welcome-card">
                     <div class="welcome-text">
-                        <h2>Welcome back, {{ session.username }}! 👋</h2>
+                        <h2 >Welcome back, {{ session.username }}! <div class="popup-emoji">👋</div></h2>
                         <p>Take a moment to check in with yourself. <br>How are you feeling right now?</p>
                         <a href="/log_emotion" class="action-btn">Log Emotion</a>
                     </div>
@@ -154,7 +109,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Access Grid -->
                 <h3 class="section-label">Your Wellness Toolkit</h3>
                 <div class="dash-grid">
                     

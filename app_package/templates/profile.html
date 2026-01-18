@@ -12,157 +12,154 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<script>
-function togglePassword(id) {
-  const input = document.getElementById(id);
-  input.type = input.type === "password" ? "text" : "password";
-}
-</script>
+    <script>
+    function togglePassword(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === "password" ? "text" : "password";
+    }
+    </script>
 
 <body class="profile-body">
 
-<div class="profile-container">
+    <div class="profile-container">
 
-    <!-- LEFT: PROFILE PICTURE -->
-    <div class="profile-sidebar">
-        <div class="profile-pic-box">
-            {% if user.profile_picture %}
-                <img src="{{ user.profile_picture }}" class="profile-pic">
-            {% else %}
-                <div class="default-pic">👤</div>
-            {% endif %}
-        </div>
-
-        <div class="profile-fullname">
-            {% if user.fullname %}
-                {{ user.fullname }}
-            {% else %}
-                {{ user.username }}
-            {% endif %}
-        </div>
-
-        <form method="POST" enctype="multipart/form-data">
-            <input class="pic-btn" type="file" name="profile_picture" accept="image/*" required>
-            <button type="submit" class="small-btn" name="upload_profile_picture" value="Upload Picture">Upload Picture</button>        
-        </form>
-
-        <form method="POST">
-            <button name="delete_profile_picture" class="danger-btn-deletepropic">Delete Picture</button>
-        </form>
-    </div>
-
-
-    <!-- RIGHT: PROFILE FORM -->
-    <div class="profile-card">
-
-        <h2>My Profile</h2>
-
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="flash-box">
-              {% for msg in messages %}
-                <p>{{ msg }}</p>
-              {% endfor %}
+        <div class="profile-sidebar">
+            <div class="profile-pic-box">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture }}" class="profile-pic">
+                {% else %}
+                    <div class="default-pic">👤</div>
+                {% endif %}
             </div>
-          {% endif %}
-        {% endwith %}
 
-        <form method="POST">
+            <div class="profile-fullname">
+                {% if user.fullname %}
+                    {{ user.fullname }}
+                {% else %}
+                    {{ user.username }}
+                {% endif %}
+            </div>
 
-            <div class="form-grid">
-                <div>
-                    <label>Username</label>
-                    <input type="text" name="username" value="{{ user.username }}" required>
+            <form method="POST" enctype="multipart/form-data">
+                <input class="pic-btn" type="file" name="profile_picture" accept="image/*" required>
+                <button type="submit" class="small-btn" name="upload_profile_picture" value="Upload Picture">Upload Picture</button>        
+            </form>
+
+            <form method="POST">
+                <button name="delete_profile_picture" class="danger-btn-deletepropic">Delete Picture</button>
+            </form>
+        </div>
+
+        <div class="profile-card">
+
+            <h2>My Profile</h2>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-box">
+                {% for msg in messages %}
+                    <p>{{ msg }}</p>
+                {% endfor %}
                 </div>
+            {% endif %}
+            {% endwith %}
 
-                <div>
-                    <label>Email</label>
-                    <input type="text" name="email" value="{{ user.email }}">
-                </div>
+            <form method="POST">
 
-                <div>
-                    <label>Phone Number</label>
-                    <input type="text" name="phone" value="{{ user.phone }}">
-                </div>
+                <div class="form-grid">
+                    <div>
+                        <label>Username</label>
+                        <input type="text" name="username" value="{{ user.username }}" required>
+                    </div>
 
-                <div class="password-wrapper">
-                    <label>New Password</label>
-                    <input type="password" id="new_password" name="password">
-                    <span class="toggle-eye-profile" onclick="togglePassword('new_password')">👁</span>
-                </div>
+                    <div>
+                        <label>Email</label>
+                        <input type="text" name="email" value="{{ user.email }}">
+                    </div>
 
-                <div>
-                    <label>Bio</label>
-                    <textarea type="text" name="bio">{{ user.bio }}</textarea>
-                </div>
+                    <div>
+                        <label>Phone Number</label>
+                        <input type="text" name="phone" value="{{ user.phone }}">
+                    </div>
 
-                <div>
-                    <label>Address</label>
-                    <input type="text" name="address" value="{{ user.address or '' }}">
-                </div>
+                    <div class="password-wrapper">
+                        <label>New Password</label>
+                        <input type="password" id="new_password" name="password">
+                        <span class="toggle-eye-profile" onclick="togglePassword('new_password')">👁</span>
+                    </div>
 
-                <div>
-                    <label>Birth Date</label>  <!-- Santania edited -->
-                    <input class="birthday" type="date" name="birthday" placeholder="YYYY-MM-DD" value="{{ user.birthday or '' }}">
-                </div>
+                    <div>
+                        <label>Bio</label>
+                        <textarea type="text" name="bio">{{ user.bio }}</textarea>
+                    </div>
 
-                <div>
-                    <label>Age</label>
-                    <input type="text" value="{{ user.age or '' }}" readonly>
-                </div>
+                    <div>
+                        <label>Address</label>
+                        <input type="text" name="address" value="{{ user.address or '' }}">
+                    </div>
 
-                <div>
-                    <label>Security Question</label>
-                    <select name="security_question" class="cursor" >
-                        <option value="">Select a question</option>
-                        {% for q in security_questions %}
-                            <option value="{{ q }}" {% if user.security_question == q %}selected{% endif %}>
-                                {{ q }}
+                    <div>
+                        <label>Birth Date</label>  <!-- Santania edited -->
+                        <input class="birthday" type="date" name="birthday" placeholder="YYYY-MM-DD" value="{{ user.birthday or '' }}">
+                    </div>
+
+                    <div>
+                        <label>Age</label>
+                        <input type="text" value="{{ user.age or '' }}" readonly>
+                    </div>
+
+                    <div>
+                        <label>Security Question</label>
+                        <select name="security_question" class="cursor" >
+                            <option value="">Select a question</option>
+                            {% for q in security_questions %}
+                                <option value="{{ q }}" {% if user.security_question == q %}selected{% endif %}>
+                                    {{ q }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Gender</label>
+                        <select name="gender" class="cursor" >
+                            <option value="">Select</option>
+                            <option value="Male" {% if user.gender=="Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if user.gender=="Female" %}selected{% endif %}>Female</option>
+                            <option value="Others/Prefer not to say" {% if user.gender=="Others/Prefer not to say" %}selected{% endif %}>
+                                Others / Prefer not to say
                             </option>
-                        {% endfor %}
-                    </select>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Security Answer</label>
+                        <input type="text" name="security_answer">
+                    </div>
                 </div>
 
-                <div>
-                    <label>Gender</label>
-                    <select name="gender" class="cursor" >
-                        <option value="">Select</option>
-                        <option value="Male" {% if user.gender=="Male" %}selected{% endif %}>Male</option>
-                        <option value="Female" {% if user.gender=="Female" %}selected{% endif %}>Female</option>
-                        <option value="Others/Prefer not to say" {% if user.gender=="Others/Prefer not to say" %}selected{% endif %}>
-                            Others / Prefer not to say
-                        </option>
-                    </select>
-                </div>
+                <button type="submit" class="main-btn">Update Profile</button>
+            </form>
 
-                <div>
-                    <label>Security Answer</label>
-                    <input type="text" name="security_answer">
-                </div>
+            <form method="POST" id="delete-form">
+                <input type="hidden" name="delete" value="1">
+                <button 
+                    type="button"
+                    name="delete" 
+                    class="danger-btn-profile" 
+                    id="delete-btn">
+                    Delete My Account
+                </button>
+            </form>
+
+            <div class="profile-links">
+                <a href="{{ url_for('home.dashboard') }}"><i class="fas fa-arrow-left"></i> <i class="fas fa-home fa-lg"></i></a>
+                <a href="/logout">Logout</a>
             </div>
 
-            <button type="submit" class="main-btn">Update Profile</button>
-        </form>
-
-        <form method="POST" id="delete-form">
-            <input type="hidden" name="delete" value="1">
-            <button 
-                type="button"
-                name="delete" 
-                class="danger-btn-profile" 
-                id="delete-btn">
-                Delete My Account
-            </button>
-        </form>
-
-        <div class="profile-links">
-            <a href="{{ url_for('home.dashboard') }}"><i class="fas fa-arrow-left"></i> <i class="fas fa-home fa-lg"></i></a>
-            <a href="/logout">Logout</a>
         </div>
-
     </div>
-</div>
-<!--Delete Account Confirmation Modal-->
+<!--Delete Account pop up-->
     <div class="popup-overlay" id="delete-modal" style="display: none;">
         <div class="popup-box small-popup">
             <h2>Confirm Account Deletion</h2>
@@ -174,28 +171,28 @@ function togglePassword(id) {
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const modal = document.getElementById('delete-modal');
-        const openBtn = document.getElementById('delete-btn');
-        const cancel = document.getElementById('cancel-delete');
-        const confirm = document.getElementById('confirm-delete');
-        const form = document.getElementById('delete-form');
-        
-        if(!modal || !openBtn) return;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('delete-modal');
+            const openBtn = document.getElementById('delete-btn');
+            const cancel = document.getElementById('cancel-delete');
+            const confirm = document.getElementById('confirm-delete');
+            const form = document.getElementById('delete-form');
+            
+            if(!modal || !openBtn) return;
 
-        openBtn.addEventListener("click", function(){
-            modal.style.display = "flex";
-        });
+            openBtn.addEventListener("click", function(){
+                modal.style.display = "flex";
+            });
 
-        cancel.addEventListener("click", function(){
-            modal.style.display = "none";
-        });
+            cancel.addEventListener("click", function(){
+                modal.style.display = "none";
+            });
 
-        confirm.addEventListener("click", function(){
-            form.submit();
+            confirm.addEventListener("click", function(){
+                form.submit();
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

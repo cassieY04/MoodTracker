@@ -1,10 +1,12 @@
 :root {
     --bg-main-body: #f7f2ff;       
     --card-bg: #ffffff;
+    --cardpro-bg: #ffffff;
     --text-main-body: #4b2e83;     
     --sidebar-bg: linear-gradient(180deg, #a64dff, #6f43f3);
     --topheader-bg: #ffffff;
     --topborder-color: #e0d6ff;
+    --section-label: #4b2e83;
     --bg-main-section: linear-gradient(150deg, #f3eaff, #d9c8f8);
     --bg-profile-body:#f4ecff;
     --prosidebar-bg:#7f5bd9;
@@ -13,19 +15,19 @@
     --header-title:#000000;
     --profile-btn-dashboard:#2c136b;
     --emotion-emoji-grid: #ffffff;
-
-    
-    /* New Semantic Variables for Components */
     --text-heading: #4b2e83;
     --text-sub: #555555;
     --text-muted: #718096;
+    --textcard: #718096;
     --border-subtle: #f0f0f0;
     --input-bg: #ffffff;
     --input-border: #c9a9ff;
-    --hover-light: #f8f5ff;
+    --hover-light: #e7e0f6;
     --active-light: #f0eaff;
     --icon-bg: #f3eaff;
     --icon-color: #6f4bd8;
+    --empty-cell-bg: #fcfaff;
+    --text-title: #1e0f43;
     
     /* AI Feedback Specifics */
     --reflection-bg: #f8f9fa;
@@ -38,39 +40,42 @@
 }
 
 [data-theme="dark"] {
-    --bg-main-body: #0f0b15;       /* Deep purple-black, comfortable for eyes */
-    --card-bg: #1a1625;            /* Dark slate purple surface */
-    --text-main-body: #e0d9f0;     /* Soft lavender-white text */
-    --sidebar-bg: linear-gradient(180deg, #2a1647, #190f2b); /* Dark purple gradient */
-    --topheader-bg: #1a1625;
-    --topborder-color: #2d2438;
-    --bg-main-section: #0f0b15;    /* Matches body */
-    --bg-profile-body: #0f0b15;    /* Matches body */
-    --prosidebar-bg: #1a1625;      /* Dark slate purple */
+    --bg-main-body: #432f5c;       
+    --card-bg: #252035;   
+    --cardpro-bg: #1d0e2c;             
+    --text-main-body: #efecf6;    
+    --sidebar-bg: linear-gradient(180deg, #391b65, #190f2b); 
+    --topheader-bg: #282239;
+    --topborder-color: rgba(255, 255, 255, 0.374);
+    --section-label: #d1cce0;
+    --bg-main-section: #160e21;    
+    --bg-profile-body: #241637;    
+    --prosidebar-bg: #1a1625;      
     --log-right: #1a1625;          
     --log-left: #1a1625;
     --header-title:#ffffff;  
     --profile-btn-dashboard:#ffffff;
     --emotion-emoji-grid: #2d2438;
-    
-    /* New Semantic Variables for Components - Dark Mode Overrides */
     --text-heading: #f0e6ff;
-    --text-sub: #b0a8c0;
-    --text-muted: #7a728a;
-    --border-subtle: #2d2438;
-    --input-bg: #241e33;
-    --input-border: #4a3b69;
-    --hover-light: #2f2640;
+    --text-sub: #eae6f3;
+    --text-muted: #f9f6fe;
+    --textcard: #cfc9db;
+    --border-subtle: rgba(255, 255, 255, 0.15);
+    --input-bg: #362d4c;
+    --input-border: rgba(255, 255, 255, 0.395);
+    --hover-light: #544a68;
     --active-light: #3a2f52;
-    --icon-bg: #2a1647;
-    --icon-color: #a64dff;
+    --icon-bg: #3b1d68;
+    --icon-color: #a86ee2;
+    --empty-cell-bg: #331f50;
+    --text-title: #e4fffb;
     
     /* AI Feedback Specifics - Dark Mode */
-    --reflection-bg: #1a1625;
+    --reflection-bg: #3f3261;
     --reflection-text: #d1cce0;
     --highlight-text: #d1cce0;
     --suggestion-bg: #0d2e21;
-    --suggestion-text: #68d391;
+    --suggestion-text: #f9fefb;
     --encouragement-bg: #2e2010;
     --encouragement-text: #e2e8f0;
 }
@@ -163,6 +168,7 @@ body.body {
 
 .hero {
     display: flex;
+    background: #f7f2ff;
     justify-content: space-between;
     align-items: center;
     padding: 70px 40px;   
@@ -249,7 +255,7 @@ body.body {
     border-radius: 8px;
     font-size: 18px;
     transition: 0.3s ease;
-    text-decoration: none; /* edit out the underline */
+    text-decoration: none; 
 }
 
 .explore-btn:hover {
@@ -262,14 +268,15 @@ body.body {
     border: none;
     height: 2px;
     background: #af8afa;
+    color: #8158d8;
     width: 80%;
     margin: 40px auto;
     border-radius: 2px;
 }
 
 .section-block {
-    background: #f5eeff;
-    padding: 50px 0;
+    background: #f7f2ff;
+    padding: 30px 0;
 }
 
 .section-container {
@@ -311,7 +318,7 @@ body.body {
 
 .features-section {
     width: 100%;
-    background: #f4edff;
+    background: #f7f2ff;
     padding: 60px 0;
     text-align: center;
 }
@@ -638,8 +645,8 @@ body.body {
 
 .menu li:hover,
 .menu li.active {
-    background: rgba(253, 189, 189, 0.44);
-    
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
 }
 
 .menu a{
@@ -660,8 +667,6 @@ body.body {
     font-size: 20px;
 }
 
-
-/*MAIN SECTION */
 .main-section {
     flex: 1;
     background: var(--bg-main-section); 
@@ -672,7 +677,6 @@ body.body {
     transition: background 0.3s ease;
 }
 
-/*TOP BAR */
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -688,7 +692,10 @@ body.body {
 }
 
 .header-title {
-    color:rgba(118,99,186,255);
+    color:rgba(125,95,196,240);
+    font-family: Arial, sans-serif;
+    font-weight: 500;
+    padding-top: 5px;
 }
 
 .header-title h1{
@@ -706,9 +713,9 @@ body.body {
 .profile-btn-dashboard {
     display: flex;
     align-items: center;
-    gap: 10px;               /* space between name and picture */
+    gap: 10px;              
     text-decoration: none;
-    color: var(--profile-btn-dashboard);          /* same purple as rest of UI, adjust if needed */
+    color: var(--profile-btn-dashboard);       
     font-family: Arial, sans-serif;
 }
 
@@ -731,12 +738,11 @@ body.body {
     overflow: hidden;
 }
 
-/* When using <img> for real photo */
 .profile-pic-dashboard img,
 .profile-pic-dashboard {
     object-fit: cover;
 }
-/* Optional: special style for the default icon div */
+
 .default-icon {
     font-size: 20px;
 }
@@ -797,7 +803,7 @@ body.body {
     border-radius: 16px;
     text-align: center;
     font-family: Arial,sans-serif;
-    border: 1px solid var(--topborder-color);
+    border: 1px solid #e0d6ff;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -915,12 +921,12 @@ body.body {
 
 .profile-card {
     flex: 1;
-    background: var(--card-bg); 
+    background: var(--cardpro-bg); 
     color: var(--text-main-body);   
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--topborder-color);
 }
 
 .profile-card h2 {
@@ -930,7 +936,7 @@ body.body {
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 22px 28px;   /* vertical + horizontal spacing */
+    gap: 22px 28px;   
 }
 
 .form-grid > div {
@@ -965,7 +971,6 @@ textarea {
     cursor: pointer;
 }
 
-/* Force last rows nicely aligned */
 .form-grid .full-row {
     grid-column: span 2;
 }
@@ -988,12 +993,13 @@ textarea {
     margin-top: 8px;
     padding: 8px 12px;
     border-radius: 8px;
-    border: none;
+    border: 1px solid #ffffff;
     background: white;
     color: #7f5bd9;
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
 .small-btn:hover {
     background: #f0e6ff;
     color: #6a47c9;
@@ -1167,7 +1173,6 @@ textarea {
     background: #cf3f31;
 }
 
-/* Cleaned up styles from HTML */
 .history-flash-msg {
     position: fixed;
     top: 40px;
@@ -1188,9 +1193,9 @@ textarea {
     padding: 10px 18px;
     border-radius: 10px;
     border: none;
-    background: #7f5bd9;
+    background: #6f4bd8;
     color: #ffffff;
-    font-weight: 200;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 16px;
@@ -1198,7 +1203,8 @@ textarea {
 }
 
 .edit-cancel-btn:hover {
-    background: #6a47c9;
+    background: #9b75ed;
+    color: white;
 }
 
 .edit-save-btn {
@@ -1208,12 +1214,55 @@ textarea {
     border-radius: 8px;
     border: none;
     font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
     font-family: Arial, sans-serif;
 }
 
 .edit-save-btn:hover {
-    background: #5a39b8;
+    background: #9b75ed;
+}
+
+/* Dark & Sharp Design for Edit/Delete Modals */
+#editModal .popup-box,
+#deleteModal .popup-box,
+#deleteAccountModal .popup-box {
+    background: #2a1a4a;
+    color: #ffffff;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+#editModal h2,
+#deleteModal h2,
+#deleteAccountModal h2 {
+    color: #ffffff;
+}
+
+#editModal label {
+    color: #e0d6ff;
+}
+
+#editModal .modal-select,
+#editModal .modal-textarea {
+    background: #ffffff;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+#deleteModal .delete-modal-text {
+    color: #e0d6ff;
+}
+
+#deleteModal .secondary-btn,
+#deleteAccountModal .secondary-btn {
+    background: #6f4bd8;
+    color: #ffffff;
+}
+
+#deleteModal .secondary-btn:hover,
+#deleteAccountModal .secondary-btn:hover {
+    background: #9b75ed;
 }
 
 /* -------Log Emotion Page--------- */
@@ -1236,6 +1285,7 @@ textarea {
     align-items: center;
     flex-wrap: wrap;
     background: var(--card-bg);
+    border: 1px solid var(--topborder-color);
     border-radius: 10px;
     padding: 20px 20px;
     padding-top: 10px;
@@ -1280,6 +1330,7 @@ textarea {
     background: var(--icon-bg);
     color: var(--icon-color);
     border-radius: 50%;
+    border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1323,6 +1374,7 @@ textarea {
     background: var(--icon-bg);
     color: var(--icon-color);
     border-radius: 50%;
+    border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1330,7 +1382,6 @@ textarea {
 }
 
 .stats-header-card {
-    background: white;
     background: var(--card-bg);
     border-radius: 18px;
     padding: 30px;
@@ -1345,7 +1396,6 @@ textarea {
 
 .stats-header-text h2 {
     margin: 0 0 8px 0;
-    color: #4b2e83;
     color: var(--text-heading);
     font-size: 26px;
     font-weight: 700;
@@ -1353,7 +1403,6 @@ textarea {
 
 .stats-header-text p {
     margin: 0;
-    color: #718096;
     color: var(--text-muted);
     font-size: 16px;
 }
@@ -1361,11 +1410,10 @@ textarea {
 .stats-header-icon {
     width: 60px;
     height: 60px;
-    background: #f3eaff;
-    color: #6f4bd8;
     background: var(--icon-bg);
     color: var(--icon-color);
     border-radius: 50%;
+    border: 2px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1409,19 +1457,18 @@ textarea {
     align-items: center;
     justify-content: center;
     padding: 15px 10px;
-    height: 80px; /* Fixed height for uniformity */
+    height: 80px; 
     border-radius: 16px;
     position: relative;
     background: var(--emotion-emoji-grid);
     transition: all 0.2s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    border: 2px solid transparent; /* Reserve space for border */
+    border: 2px solid transparent; 
 }
 
 .emoji-option:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(129, 88, 216, 0.15);
-    background: #f8f5ff;
     background: var(--hover-light);
 }
 
@@ -1454,7 +1501,6 @@ textarea {
 
 .emoji-option:has(input:checked) {
     border-color: #8158d8;
-    background: #f0eaff;
     background: var(--active-light);
     box-shadow: 0 4px 12px rgba(129, 88, 216, 0.2);
 }
@@ -1535,7 +1581,7 @@ textarea {
 }
 
 [data-theme="dark"] .feedback-box {
-    background: #004d40;
+    background: #045d4e;
     color: #e0f2f1;
 }
 
@@ -1553,13 +1599,11 @@ textarea {
 }
 
 .calendar-card-container {
-    background: #ffffff;
     background: var(--card-bg);
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
-    border: 1px solid var(--border-subtle);
+    border: 2px solid var(--border-subtle);
 }
 
 .calendar-header-nav {
@@ -1568,12 +1612,10 @@ textarea {
     align-items: center;
     margin-bottom: 25px;
     padding-bottom: 15px;
-    border-bottom: 2px solid rgb(194, 166, 240);
     border-bottom: 2px solid var(--input-border);
 }
 
 .calendar-header-nav h2 {
-    color: #4b2e83;
     color: var(--text-heading);
     font-size: 24px;
     font-weight: 700;
@@ -1607,7 +1649,6 @@ textarea {
 
 .styled-calendar th {
     padding: 15px;
-    color: #6f4bd8;
     color: var(--text-heading);
     font-weight: 700;
     text-transform: uppercase;
@@ -1619,15 +1660,12 @@ textarea {
 .styled-calendar td {
     height: 100px;
     vertical-align: top;
-    border-top: 1px solid #bdaed4;
     border-top: 1px solid var(--border-subtle);
     padding: 10px;
     transition: background 0.2s;
 }
 
 .styled-calendar td.day-cell:hover {
-    background: #faf8ff;
-    background: #eaddff;
     background: var(--hover-light);
     border-radius: 12px;
 }
@@ -1682,7 +1720,6 @@ textarea {
 .calendar-footer {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 2px solid #a18dc2;
     border-top: 2px solid var(--input-border);
     display: flex;
     gap: 40px;
@@ -1712,21 +1749,18 @@ textarea {
 }
 
 .empty-cell {
-    background: #fcfaff;
-    background: var(--bg-main-body);
+    background: var(--empty-cell-bg);
 }
 
 /* Mood Breakdown Section */
 .breakdown-section {
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 1px solid #d8c1c1;
-    border-top: 1px solid var(--border-subtle);
+    border-top: 2px solid var(--border-subtle);
 }
 
 .breakdown-section h3 {
     font-size: 18px;
-    color: #4b2e83;
     color: var(--text-heading);
     margin-bottom: 15px;
     font-weight: 600;
@@ -1739,7 +1773,6 @@ textarea {
 }
 
 .breakdown-card {
-    background: #fbf9ff;
     background: var(--reflection-bg);
     padding: 12px 15px;
     border-radius: 12px;
@@ -1752,13 +1785,13 @@ textarea {
 
 .breakdown-card:hover {
     transform: translateY(-2px);
-    background: #f4eeff;
+    background: var(--hover-light);
 }
 
 .bd-emoji { font-size: 24px; }
 .bd-details { display: flex; flex-direction: column; }
-.bd-count { font-weight: 700; font-size: 18px; color: #2d3748; color: var(--text-heading); }
-.bd-label { font-size: 12px; color: #718096; color: var(--text-muted); font-weight: 600; }
+.bd-count { font-weight: 700; font-size: 18px; color: var(--text-heading); }
+.bd-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
 /* Mood Calendar Modal */
 .mood-modal {
@@ -1777,7 +1810,6 @@ textarea {
 }
 
 .modal-content {
-    background-color: #fefefe;
     background-color: var(--card-bg);
     margin: 0; 
     padding: 0;
@@ -1798,26 +1830,24 @@ textarea {
 
 .modal-header {
     padding: 20px 25px;
-    border-bottom: 1px solid #eee;
     border-bottom: 1px solid var(--border-subtle);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.modal-header h2 { margin: 0; font-size: 20px; color: #4b2e83; color: var(--text-heading); }
-.close-modal { font-size: 28px; font-weight: bold; color: #aaa; color: var(--text-muted); cursor: pointer; }
+.modal-header h2 { margin: 0; font-size: 20px; color: var(--text-heading); }
+.close-modal { font-size: 28px; font-weight: bold; color: var(--text-muted); cursor: pointer; }
 .close-modal:hover { color: #000; }
 
 .modal-body { padding: 25px; overflow-y: auto; }
 
+
 .modal-entry {
-    background: #f9f9f9;
     background: var(--reflection-bg);
     border-radius: 12px;
     padding: 15px;
     margin-bottom: 15px;
-    border-left: 5px solid #ccc;
     border-left: 5px solid var(--border-subtle);
 }
 
@@ -1830,17 +1860,16 @@ textarea {
 .modal-entry-title {
     font-size: 1.1em;
     font-weight: bold;
+    color: var(--text-title);
 }
 
 .modal-entry-time {
-    color: #888;
     color: var(--text-muted);
     font-size: 0.9em;
 }
 
 .modal-entry-text {
     margin: 5px 0;
-    color: #555;
     color: var(--text-sub);
 }
 
@@ -1873,21 +1902,22 @@ textarea {
 }
 
 .ai-card {
-    background: #ffffff;
     background: var(--card-bg);
     border-radius: 20px;
     padding: 30px;
     margin-bottom: 25px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-    border: 1px solid #f0f0f0;
     border: 1px solid var(--border-subtle);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     cursor: default;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border-left: 6px solid #6f4bd8;
+    animation: fadeIn 0.8s ease-out;
 }
 
 .ai-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(111, 75, 216, 0.1);
+    border-color: #e0d6ff;
 }
 
 .ai-card h3 {
@@ -1914,7 +1944,6 @@ textarea {
 }
 
 .reflection-box {
-    background: #f8f9fa;
     background: var(--reflection-bg);
     border-left: 4px solid #cbd5e0;
     padding: 15px 20px;
@@ -1926,7 +1955,6 @@ textarea {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #718096;
     color: var(--text-muted);
     margin-bottom: 6px;
     font-weight: 700;
@@ -1934,7 +1962,6 @@ textarea {
 
 .reflection-box p {
     margin: 0;
-    color: #2d3748;
     color: var(--reflection-text);
     font-style: italic;
     white-space: pre-line; /* Allows newlines for Daily Summary */
@@ -1948,14 +1975,19 @@ textarea {
 .ai-card.highlight ul {
     list-style: none;
     padding: 0;
+    display: grid;
 }
 
 .ai-card.highlight li {
-    position: relative;
-    padding-left: 25px;
     margin-bottom: 12px;
-    color: #4a5568;
     color: var(--highlight-text);
+    background: var(--icon-bg);
+    padding: 14px 18px;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-weight: 500;
 }
 
 .ai-card.highlight li::before {
@@ -1963,9 +1995,8 @@ textarea {
     color: #8158d8;
     font-weight: bold;
     font-size: 20px;
-    position: absolute;
-    left: 0;
-    top: -2px;
+    line-height: 1;
+    margin-top: 2px;
 }
 
 /* Suggestions Styling */
@@ -1981,21 +2012,15 @@ textarea {
 }
 
 .ai-card.suggestions li {
-    background: #f0fff4;
     background: var(--suggestion-bg);
     padding: 14px 18px;
     border-radius: 10px;
-    color: #2f855a;
     color: var(--suggestion-text);
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 12px;
     transition: background 0.2s;
-}
-
-.ai-card.suggestions li:hover {
-    background: #dcffe4;
 }
 
 .ai-card.suggestions li::before {
@@ -2008,7 +2033,6 @@ textarea {
 /* Encouragement Styling */
 .ai-card.encouragement {
     border-left: 5px solid #f39c12;
-    background: #fffdf5;
     background: var(--encouragement-bg);
 }
 
@@ -2019,7 +2043,6 @@ textarea {
 .ai-card.encouragement p {
     font-style: italic;
     font-size: 18px;
-    color: #555;
     color: var(--encouragement-text);
     font-weight: 500;
     text-align: center;
@@ -2116,11 +2139,9 @@ textarea {
     color: var(--text-main-body);    
     border-radius: 12px;
     padding: 20px 25px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-    border-left: 6px solid #ccc; 
     border-left: 6px solid var(--border-subtle); 
-    /* Apply border variable to all sides for clear definition in dark mode */
     border-top: 1px solid var(--topborder-color); 
     border-right: 1px solid var(--topborder-color);
     border-bottom: 1px solid var(--topborder-color);
@@ -2130,7 +2151,8 @@ textarea {
 
 .history-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 25px rgba(111, 75, 216, 0.1);
+    border-color: #e0d6ff;
 }
 
 .card-header {
@@ -2348,8 +2370,8 @@ textarea {
     border-radius: 12px;
     margin-bottom: 25px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    /* Make the filter bar stick to the top on scroll */
-    position: sticky;
+    border: 1px solid var(--input-border);
+    position: sticky;    
     top: 15px;
     z-index: 200;
 }
@@ -2370,14 +2392,12 @@ textarea {
 .filter-group label {
     font-size: 14px;
     font-weight: 600;
-    color: #4b2e83;
     color: var(--text-heading);
 }
 
 .filter-input {
     padding: 10px;
-    border: 1px solid #cbbff0;
-    border: 1px solid var(--input-border);
+    border: px solid var(--input-border);
     background: var(--input-bg);
     color: var(--text-main-body);
     border-radius: 8px;
@@ -2418,17 +2438,13 @@ textarea {
 
 /* Welcome Banner */
 .welcome-card {
-    /* OPTION: If you want it to stay purple in both modes, leave it. 
-       If you want it to turn dark in Dark Mode, use the variable below: */
     background: var(--sidebar-bg); 
     border-radius: 20px;
     padding: 25px;
-    color: white; /* Keep white text for contrast on dark/purple backgrounds */
-    display: flex;
+    color: white; 
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
-    /* Adjust shadow to be darker/subtler for dark mode */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); 
     position: relative;
     overflow: hidden;
@@ -2471,12 +2487,28 @@ textarea {
     position: absolute;
     right: 40px;
     bottom: -20px;
+    animation-name: pulse;
+    animation-duration: 1s; /* Duration of one pulse cycle */
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8); /* Original size */
+  }
+  50% {
+    transform: scale(1.0); /* Scales up to 120% */
+  }
+  100% {
+    transform: scale(0.8); 
+  }
 }
 
 /* Section Label */
 .section-label {
     font-size: 20px;
-    color: #4b2e83;
+    color: var(--section-label);
     margin-bottom: 20px;
     font-weight: 700;
     padding-left: 5px;
@@ -2490,9 +2522,7 @@ textarea {
 }
 
 .dash-card {
-    /* Use variable for background */
     background: var(--card-bg); 
-    /* Use variable for text color */
     color: var(--text-main-body);
     border-radius: 18px;
     padding: 25px;
@@ -2501,9 +2531,7 @@ textarea {
     gap: 20px;
     text-decoration: none;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    /* Add background-color to transition for smoothness */
     transition: all 0.3s ease, background-color 0.3s ease; 
-    /* Use border variable (transparent in light, visible in dark) */
     border: 1px solid var(--topborder-color); 
 }
 
@@ -2539,7 +2567,7 @@ textarea {
 
 .card-info p {
     font-size: 14px;
-    color: #718096;
+    color: var(--textcard);
     line-height: 1.4;
 }
 
@@ -2569,7 +2597,6 @@ textarea {
 }
 
 .stat-card {
-    background: white;
     background: var(--card-bg);
     padding: 25px;
     border-radius: 18px;
@@ -2578,7 +2605,6 @@ textarea {
     align-items: center;
     gap: 20px;
     transition: transform 0.3s ease;
-    border: 1px solid #f0f0f0;
     border: 1px solid var(--border-subtle);
 }
 
@@ -2608,7 +2634,6 @@ textarea {
 .stat-details h3 {
     font-size: 13px;
     text-transform: uppercase;
-    color: #888;
     color: var(--text-muted);
     margin-bottom: 5px;
     font-weight: 700;
@@ -2618,7 +2643,6 @@ textarea {
 .stat-details p {
     font-size: 26px;
     font-weight: 800;
-    color: #2d3436;
     color: var(--text-heading);
     margin: 0;
 }
@@ -2636,13 +2660,11 @@ textarea {
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-    border: 1px solid #f0f0f0;
     border: 1px solid var(--border-subtle);
 }
 
 .chart-container h2 {
     font-size: 20px;
-    color: #4b2e83;
     color: var(--text-heading);
     margin-bottom: 20px;
     font-weight: 700;
@@ -2667,7 +2689,6 @@ textarea {
     border-radius: 25px;
     background: white;
     background: var(--card-bg);
-    border: 2px solid #e0d6ff;
     border: 2px solid var(--input-border);
     color: #6f4bd8;
     text-decoration: none;
@@ -2692,14 +2713,12 @@ textarea {
     margin-bottom: 5px;
     font-size: 14px;
     font-weight: 600;
-    color: #4b2e83;
     color: var(--text-heading);
 }
 
 .progress-bar-bg {
     width: 100%;
     height: 10px;
-    background: #f0f0f0;
     background: var(--border-subtle);
     border-radius: 5px;
     overflow: hidden;
@@ -2821,10 +2840,9 @@ textarea {
     z-index: 10;
 }
 
-/* ==================== RESPONSIVE DESIGN ===================== */
+/* ==================== Layout for phone/ minimize screen sizes ===================== */
 
 @media (max-width: 1024px) {
-    /* Profile Page Stacking */
     .profile-container {
         flex-direction: column;
         padding: 0;
@@ -2837,7 +2855,6 @@ textarea {
         margin-bottom: 20px;
     }
 
-    /* Log Emotion Page Stacking */
     .content-logemotion {
         grid-template-columns: 1fr;
     }
@@ -2848,7 +2865,6 @@ textarea {
 }
 
 @media (max-width: 900px) {
-    /* Hero Section */
     .hero {
         flex-direction: column;
         text-align: center;
@@ -2870,31 +2886,27 @@ textarea {
     
     .hero-dashboard-img {
         max-width: 100%;
-        transform: none; /* Remove 3D effect on mobile for readability */
+        transform: none; 
     }
     
     .hero-dashboard-img:hover {
         transform: none;
     }
 
-    /* Feature Grid */
     .feature-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    /* Layout Adjustments */
     .main-section {
         padding: 15px;
     }
     
-    /* Dashboard Grid */
     .dash-grid {
         grid-template-columns: 1fr;
     }
     
-    /* Topbar */
     .topbar {
         flex-direction: column;
         align-items: flex-start;
@@ -2906,7 +2918,6 @@ textarea {
         justify-content: flex-end;
     }
 
-    /* Section Blocks (Index) */
     .section-container {
         flex-direction: column;
         text-align: center;
@@ -2917,13 +2928,11 @@ textarea {
         grid-template-columns: 1fr;
     }
     
-    /* Auth Cards */
     .auth-card {
         width: 90%;
         padding: 25px;
     }
     
-    /* Profile Form */
     .form-grid {
         grid-template-columns: 1fr;
     }
@@ -2932,7 +2941,6 @@ textarea {
         grid-column: span 1;
     }
     
-    /* Calendar */
     .calendar-header-nav {
         flex-direction: column;
         gap: 10px;
@@ -2956,7 +2964,6 @@ textarea {
         font-size: 16px;
     }
     
-    /* Stats Header */
     .stats-header-cards {
         grid-template-columns: 1fr;
     }
