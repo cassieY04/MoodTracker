@@ -226,37 +226,37 @@ def generate_short_feedback(emotion, reason="", thought=""):
     detected_contexts = detect_context(full_text)
 
     # 1. Check for specific keywords first (e.g. "tired")
-    if "fatigue" in detected_contexts:
-        if emotion in ["happy", "excited"]:
-            return "It is great that you are happy, but you seem tired as well. Remember to get some rest."
-        return "You seem tired. Remember that rest is productive too."
-    
-    if "academic pressure" in detected_contexts:
-        if emotion in ["happy", "excited"]:
-            return "It is impressive that you are staying positive despite the academic pressure!"
-        return "School can be tough. Take it one assignment at a time."
-
-    if "loneliness" in detected_contexts:
-        return "Feeling alone is tough. Try to reach out to someone you trust today."
-        
-    if "emotional_release" in detected_contexts:
-        return "Crying is a healthy way to release built-up emotion. It's okay to let it out."
-
-    if "positive_events" in detected_contexts:
-        if emotion in ["sad", "angry", "stressed", "anxious"]:
-             return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
-        
     if "technology" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
         elif emotion in ["angry", "stressed", "sad", "anxious"]:
             return "Tech issues are the worst. Take a step back, maybe a 5-minute break will help clear the 'bug' in your mind too."
 
-    if "achievement_success" in detected_contexts:
+    elif "academic pressure" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It is impressive that you are staying positive despite the academic pressure!"
+        return "School can be tough. Take it one assignment at a time."
+
+    elif "fatigue" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It is great that you are happy, but you seem tired as well. Remember to get some rest."
+        return "You seem tired. Remember that rest is productive too."
+
+    elif "loneliness" in detected_contexts:
+        return "Feeling alone is tough. Try to reach out to someone you trust today."
+        
+    elif "emotional_release" in detected_contexts:
+        return "Crying is a healthy way to release built-up emotion. It's okay to let it out."
+
+    elif "achievement_success" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "You crushed it! Make sure to treat yourself for this win today."
         else:
             return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
+
+    elif "positive_events" in detected_contexts:
+        if emotion in ["sad", "angry", "stressed", "anxious"]:
+             return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
         
     # 2.5 If no specific context but text is present, reflect it back
     if not detected_contexts and (reason or thought):
