@@ -4,11 +4,18 @@
     <script src="{{ url_for('static', filename='theme.js') }}"></script>
     <meta charset="UTF-8">
     <title>Forgot Password</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body class="auth-body">
-
+    <div class="nav-header">
+        <a href="{{ url_for('home.homepage') }}" class="logo-link">
+            <i class="fas fa-heart-pulse logo-icon"></i>
+            <span>MoodTracker</span>
+        </a>
+    </div>
+    
     <div class="auth-card">
         <h2>Forgot Password</h2>
         <p>Enter your username or email to continue.</p>

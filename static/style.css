@@ -2844,6 +2844,34 @@ textarea {
     z-index: 10;
 }
 
+/* Navigation Header for Login/Register */
+.nav-header {
+    position: absolute;
+    top: 30px;
+    right: 50px;
+    z-index: 100;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #5d3fd3;
+    font-weight: bold;
+    font-size: 24px;
+    transition: transform 0.2s;
+}
+
+.logo-link:hover {
+    transform: scale(1.05); /* Slight pop on hover */
+    color: #4b2fb3;
+}
+
+.logo-link i {
+    font-size: 28px;
+}
+
 /* ==================== Layout for phone/ minimize screen sizes ===================== */
 
 @media (max-width: 1024px) {
