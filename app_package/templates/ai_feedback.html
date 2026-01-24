@@ -176,7 +176,7 @@
 
                 {% endif %}
 
-                {% if view_type == 'single' %}
+                {% if view_type == 'single' and not request.args.get('from_new') %}
                 <div class="ai-footer">
                     <a href="{{ url_for('emotion_history.emotion_history') }}#log-{{ log_id }}">← Back to Emotion History</a>
                 </div>
