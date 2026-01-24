@@ -2844,11 +2844,11 @@ textarea {
     z-index: 10;
 }
 
-/* Navigation Header for Login/Register */
+/* Navigation button to welcoming page */
 .nav-header {
-    position: absolute;
+    position: fixed;
     top: 30px;
-    right: 50px;
+    left: 50px;
     z-index: 100;
 }
 
