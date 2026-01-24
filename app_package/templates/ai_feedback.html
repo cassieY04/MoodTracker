@@ -3,7 +3,8 @@
     <section class="ai-card">
         <h3>🎭 Mood Level</h3>
         <div class="feedback-emoji-large">
-            {{ data.emoji }} {{ data.emotion|capitalize }}
+            <img src="{{ url_for('static', filename='emotions/' + data.icon) }}" alt="{{ data.emotion }}" style="width: 45px; height: 45px; vertical-align: middle; margin-right: 10px;">
+            <span style="vertical-align: middle;">{{ data.emotion|capitalize }}</span>
         </div>
         {% if data.timestamp %}
         <div class="feedback-timestamp">

@@ -527,14 +527,17 @@ def generate_aggregated_feedback(logs, period_name="day"):
     avg_score = sum(scores) / len(scores) if scores else 0
     
     main_emoji = "😐"
+    main_icon = "neutral.png"
     
     # Thresholds: 1.0-1.66 (Neg), 1.67-2.33 (Neu), 2.34-3.0 (Pos)
     if avg_score >= 2.34:
         main_emotion = "Mostly Positive"
         main_emoji = "😊"
+        main_icon = "happy.png"
     elif avg_score <= 1.66:
         main_emotion = "Mostly Negative"
         main_emoji = "😔"
+        main_icon = "sad.png"
     else:
         # It is in the Neutral range (approx 2.0). Check if it's stable Neutral or Mixed.
         has_pos = any(s == 3 for s in scores)
@@ -543,9 +546,11 @@ def generate_aggregated_feedback(logs, period_name="day"):
         if has_pos and has_neg:
             main_emotion = "Mixed"
             main_emoji = "🔀"
+            main_icon = "mixed.png"
         else:
             main_emotion = "Mostly Neutral"
             main_emoji = "😐"
+            main_icon = "neutral.png"
 
     # Aggregate texts into a timeline format
     combined_reason = ""
@@ -636,6 +641,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     return {
         "emotion": main_emotion,
         "emoji": main_emoji,
+        "icon": main_icon,
         "causes": analysis,
         "suggestions": suggestions,
         "encouragement": get_encouragement("neutral", detected_contexts),
@@ -797,6 +803,7 @@ def ai_feedback(log_id=None):
         single_data = full
         single_data['emotion'] = emotion_display
         single_data['emoji'] = style["emoji"]
+        single_data['icon'] = style.get("icon")
         single_data['timestamp'] = log_data.get("timestamp")
 
     return render_template(

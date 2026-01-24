@@ -63,21 +63,7 @@
                                 <label class="emoji-option" >
                                     <input type="radio" name="emotion" value="{{ emo }}">
                                     <span class="emojiji">
-                                        {% if emo == 'Happy'%}
-                                        {{ '😊' }}
-                                        {% elif emo == 'Excited'%}
-                                        {{ '🤩' }}
-                                        {% elif emo == 'Neutral'%}
-                                        {{ '😐' }}
-                                        {% elif emo == 'Anxious'%}
-                                        {{ '😟' }}
-                                        {% elif emo == 'Sad'%}
-                                        {{ '😥' }}
-                                        {% elif emo == 'Angry'%}
-                                        {{ '😡' }}
-                                        {% elif emo == 'Stressed'%}
-                                        {{ '😩' }}
-                                        {% endif %}
+                                        <img src="{{ url_for('static', filename='emotions/' + emotion_map[emo]['icon']) }}" alt="{{ emo }}" style="width: 40px; height: 40px;">
                                     </span>                                     
                                     <span class="text-emoji">{{ emo }}</span>
 

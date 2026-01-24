@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 import calendar
 from Databases.emologdb import get_db
-from .logemotion import EMOTION_MAP # Assumed to contain your emotion dictionary
+from .logemotion import EMOTION_MAP # Assumed to contain emotion dictionary
 
 mood_calendar_bp = Blueprint('mood_calendar', __name__)
 
@@ -13,23 +13,23 @@ EMOTION_CATEGORIES = {
     'Happy': 'Positive', 
     'Excited': 'Positive', 
     
-    # NEGATIVE / STRESS (Anxious, Sad, Angry, Stressed)
-    'Anxious': 'Negative', 
+    # NEGATIVE (Sad / Angry / Stressed / Anxious)
+   'Anxious': 'Negative', 
     'Sad': 'Negative', 
     'Angry': 'Negative', 
     'Stressed': 'Negative',
     
-    # NEUTRAL (Only relies on the existing 'Neutral' emotion log)
+    # NEUTRAL
     'Neutral': 'Neutral', 
 }
 
 # 2. Define the final output titles and emojis (4 Outcomes + N/A)
 EMOTIONAL_PATTERN_RESULT = {
-    'Mostly Positive': {'title': 'Mostly Positive', 'emoji': '😊'},
-    'Stress-Dominant': {'title': 'Stress-Dominant', 'emoji': '😔'},
-    'Mixed Emotion': {'title': 'Mixed Emotion', 'emoji': '🔀'}, 
-    'Emotionally Balanced': {'title': 'Emotionally Balanced', 'emoji': '⚖️'},
-    'N/A': {'title': 'No Entries', 'emoji': '✍'},
+    'Mostly Positive': {'title': 'Mostly Positive', 'emoji': '😊', 'icon': 'positive.png'},
+    'Stress-Dominant': {'title': 'Stress-Dominant', 'emoji': '😔', 'icon': 'negative.png'},
+    'Mixed Emotion': {'title': 'Mixed Emotion', 'emoji': '🔀', 'icon': 'mixedemo.png'}, 
+    'Emotionally Balanced': {'title': 'Emotionally Balanced', 'emoji': '⚖️', 'icon': 'balanced.png'},
+    'N/A': {'title': 'No Entries', 'emoji': '✍', 'icon': 'entry.png'},
 }
 
 # 3. Calculation function (implements the rules for emotional pattern)
@@ -122,7 +122,7 @@ def get_monthly_mood_data(username, year, month):
         for row in results:
             day_key = row['day']
             emotion = row['emotion_name']
-            style = EMOTION_MAP.get(emotion, {'color': '#CCCCCC', 'emoji': '🤷'})
+            style = EMOTION_MAP.get(emotion, {'color': '#CCCCCC', 'emoji': '🤷', 'icon': 'default.png'})
             
             entry = {
                 'emotion': emotion,
@@ -130,7 +130,8 @@ def get_monthly_mood_data(username, year, month):
                 'thought': row['thought'],
                 'timestamp': row['timestamp'],
                 'time': row['time_str'],
-                'emoji': style['emoji']
+                'emoji': style['emoji'],
+                'icon': style.get('icon')
             }
             
             if day_key not in mood_data:
@@ -168,12 +169,13 @@ def get_monthly_emotion_counts(username, year, month):
         counts = []
         for row in results:
             emotion = row['emotion_name']
-            style = EMOTION_MAP.get(emotion, {'color': '#CCCCCC', 'emoji': '🤷'})
+            style = EMOTION_MAP.get(emotion, {'color': '#CCCCCC', 'emoji': '🤷', 'icon': 'default.png'})
             counts.append({
                 'emotion': emotion,
                 'count': row['count'],
                 'emoji': style['emoji'],
-                'color': style['color']
+                'color': style['color'],
+                'icon': style.get('icon')
             })
             
         return counts
