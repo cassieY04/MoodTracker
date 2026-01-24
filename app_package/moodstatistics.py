@@ -127,7 +127,8 @@ def mood_statistics():
             'count': count,
             'percent': round(percent, 1),
             'color': style['color'],
-            'emoji': style['emoji']
+            'emoji': style['emoji'],
+            'icon': style.get('icon')
         })
     # Sort by count descending
     breakdown.sort(key=lambda x: x['count'], reverse=True)

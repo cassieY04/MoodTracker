@@ -57,5 +57,6 @@ def emotion_history():
         style = get_emotion_styling(log['emotion_name'])
         log['emoji'] = style['emoji']
         log['color'] = style['color']
+        log['icon'] = style.get('icon')
         
     return render_template("emotion_history.html", logs=logs)

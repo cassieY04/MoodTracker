@@ -71,11 +71,10 @@
                                                         {% set entries = mood_data[day_key]['entries'] %}
                                                         {% set display_entries = entries[-3:] if entries|length > 3 else entries %}
                                                         {% for entry in display_entries|reverse %}
-                                                            <span class="cal-emoji" 
+                                                            <img src="{{ url_for('static', filename='emotions/' + entry.icon) }}" class="cal-emoji" 
                                                                   title="{{ entry.emotion }} at {{ entry.time }}"
-                                                                  onclick="openDayModal('{{ day_key }}')">
-                                                                {{ entry.emoji }}
-                                                            </span>
+                                                                  onclick="openDayModal('{{ day_key }}')"
+                                                                  style="width: 24px; height: 24px;">
                                                         {% endfor %}
                                                         {% if entries|length > 3 %}
                                                             <span class="cal-more-btn" onclick="openDayModal('{{ day_key }}')">
@@ -101,7 +100,7 @@
                         </div>
                         <div class="summary-item">
                             <span class="sum-label">Emotional Pattern</span>
-                            <span class="sum-value">{{ mood_summary.emotional_pattern.emoji }} {{ mood_summary.emotional_pattern.title }}</span>
+                            <span class="sum-value"><img src="{{ url_for('static', filename='emotions/' + mood_summary.emotional_pattern.icon) }}" alt="{{ mood_summary.emotional_pattern.title }}" style="width: 28px; height: 28px; vertical-align: middle; margin-right: 5px;"> {{ mood_summary.emotional_pattern.title }}</span>
                         </div>
                     </div>
 
@@ -112,7 +111,7 @@
                         <div class="breakdown-grid">
                             {% for item in emotion_counts %}
                             <div class="breakdown-card" style="border-left: 4px solid {{ item.color }};">
-                                <span class="bd-emoji">{{ item.emoji }}</span>
+                                <img src="{{ url_for('static', filename='emotions/' + item.icon) }}" alt="{{ item.emotion }}" style="width: 30px; height: 30px;">
                                 <div class="bd-details">
                                     <span class="bd-count">{{ item.count }}</span>
                                     <span class="bd-label">{{ item.emotion }}</span>
@@ -145,6 +144,7 @@
     <script>
         // Pass the Python dictionary to JavaScript
         const MOOD_DATA = {{ mood_data | tojson }};
+        const STATIC_EMOTION_URL = "{{ url_for('static', filename='emotions/') }}";
 
         function openDayModal(dayKey) {
             const dayData = MOOD_DATA[dayKey];
@@ -161,7 +161,7 @@
                 
                 entryDiv.innerHTML = `
                     <div class="modal-entry-header">
-                        <strong class="modal-entry-title">${entry.emoji} ${entry.emotion}</strong>
+                        <strong class="modal-entry-title"><img src="${STATIC_EMOTION_URL}${entry.icon}" style="width:24px;height:24px;vertical-align:middle;margin-right:5px;"> ${entry.emotion}</strong>
                         <span class="modal-entry-time">${entry.time}</span>
                     </div>
                     ${entry.note ? `<p class="modal-entry-text"><strong>Reason:</strong> ${entry.note}</p>` : ''}

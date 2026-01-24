@@ -5,18 +5,18 @@ from datetime import datetime, timedelta, timezone
 
 emotion_choice = ['Happy', 'Excited', 'Neutral', 'Anxious', 'Sad', 'Angry', 'Stressed']
 EMOTION_MAP = {
-    'Happy': {'color': "#FCF300", 'emoji': '😊'},      
-    'Excited': {'color': "#FE63A9", 'emoji': '🤩'},     
-    'Neutral': {'color': '#D3D3D3', 'emoji': '😐'},     
-    'Anxious': {'color': "#FFA500", 'emoji': '😟'},     
-    'Sad': {'color': "#87CEFA", 'emoji': '😥'},         
-    'Angry': {'color': "#FF0000", 'emoji': '😡'},       
-    'Stressed': {'color': "#CE0ACE", 'emoji': '😩'},    
+    'Happy': {'color': "#FCF300", 'emoji': '😊', 'icon': 'happy.png'},
+    'Excited': {'color': "#FE63A9", 'emoji': '🤩', 'icon': 'excited.png'},
+    'Neutral': {'color': '#D3D3D3', 'emoji': '😐', 'icon': 'neutral.png'},
+    'Anxious': {'color': "#FFA500", 'emoji': '😟', 'icon': 'anxious.png'},
+    'Sad': {'color': "#87CEFA", 'emoji': '😥', 'icon': 'sad.png'},
+    'Angry': {'color': "#FF0000", 'emoji': '😡', 'icon': 'angry.png'},
+    'Stressed': {'color': "#CE0ACE", 'emoji': '😩', 'icon': 'stressed.png'},
 }
 
 def get_emotion_styling(emotion):
     """Returns color and emoji for a given emotion."""
-    return EMOTION_MAP.get(emotion, {'color': "#EFD9D9", 'emoji': '🤷'})
+    return EMOTION_MAP.get(emotion, {'color': "#EFD9D9", 'emoji': '🤷', 'icon': 'default.png'})
 
 
 log_emotion_bp = Blueprint('log_emotion', __name__)
@@ -66,4 +66,4 @@ def emolog():
             flash(ai_short, "ai")
             return redirect(url_for('log_emotion.emolog', new_log_id=new_log_id))
           
-    return render_template("log_emotion.html", emotions=emotion_choice, aifeedback=ai_short, show_feedback=show_feedback, new_log_id=new_log_id)
+    return render_template("log_emotion.html", emotions=emotion_choice, emotion_map=EMOTION_MAP, aifeedback=ai_short, show_feedback=show_feedback, new_log_id=new_log_id)

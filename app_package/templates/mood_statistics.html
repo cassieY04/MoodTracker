@@ -137,7 +137,7 @@
                             {% for item in breakdown %}
                             <div class="breakdown-item">
                                 <div class="breakdown-header">
-                                    <span>{{ item.emoji }} {{ item.name }}</span>
+                                    <span><img src="{{ url_for('static', filename='emotions/' + item.icon) }}" alt="{{ item.name }}" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;"> {{ item.name }}</span>
                                     <span>{{ item.count }} ({{ item.percent }}%)</span>
                                 </div>
                                 <div class="progress-bar-bg">
