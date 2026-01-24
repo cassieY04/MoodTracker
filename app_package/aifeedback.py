@@ -33,7 +33,7 @@ def detect_context(text):
             "tired", "sleep", "exhausted", "burnt out", "insomnia", "nap", "drained", "fatigue",
             "all-nighter", "sleepy", "zombie", "caffeine", "coffee", "energy drink", "no sleep", "awake",
             "burnout", "overworked", "collapse", "rest", "bed", "pillow", "woke up",
-            "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish"
+            "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish", "yawning", "snooze"
         ],
         "relationship issues": [
             "friend", "family", "partner", "argument", "fight", "conflict", "breakup", "toxic", "parents",
@@ -41,7 +41,8 @@ def detect_context(text):
             "squad", "peer", "social", "reject", "dumped", "cheated", "ex", "boyfriend", "girlfriend", "bf", "gf",
             "tea", "ick", "trust", "lie", "betray", "jealous", "envy", "date", "dating", "marriage", "divorce",
             "gaslight", "love bomb", "boundaries", "clingy", "distant", "misunderstanding", "attachment style", 
-            "codependent", "third wheel", "friendzone", "catfish", "talking stage", "soft launch"
+            "codependent", "third wheel", "friendzone", "catfish", "talking stage", "soft launch", "lonely", "miss them", 
+            "bff", "best friend", "love", "hate", "compromise", "apologize", "forgive"
         ],
         "health concerns": [
             "sick", "pain", "doctor", "ill", "headache", "hurt", "health", "body",
@@ -76,16 +77,18 @@ def detect_context(text):
             "left out", "excluded", "no friends", "homesick", "empty", "silence"
         ],
         "uncertainty": [
-            "future", "confused", "lost", "unsure", "what if", "decision",
-            "career path", "choice", "doubt", "worry", "scared", "change", "risk", "maybe", "plan"
+            "future", "career", "plans", "worried", "anxious", "what if", "unknown", "direction", "lost",
+            "confused", "choice", "decision", "adulting", "graduation", "internship", "applications",
+            "rejection", "waiting", "hopeful", "dream", "goal"
         ],
         "hobbies": [
-            "game", "music", "read", "sport", "art", "draw", "code", "movie",
+            "game", "music", "read", "sport", "art", "draw", "code", "movie", "world of warcraft",
             "gaming", "valorant", "league", "netflix", "binge", "gym", "workout", "spotify", "concert",
             "travel", "food", "eat", "football", "basketball", "badminton", "hiking", "swim", "dance",
-            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano",
+            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano", "shopping",
             "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
-            "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama"
+            "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama",
+            "podcast", "vlog", "photography", "blog", "diy", "craft", "knitting", "gardening", "poca", "photocard"
         ],
         "positive_events": [
             "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won", "success", "bonus", "award",
@@ -100,17 +103,29 @@ def detect_context(text):
         "social_media": [
             "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "story", "post", "like", "comment",
             "follower", "viral", "trend", "feed", "scroll", "screen", "phone", "notification", "dm", "message",
-            "reply", "block", "unfollow",
+            "reply", "block", "unfollow", "xhs", "igtv", "live", "stream", "subscribe", "youtube",
             "doomscrolling", "fomo", "influencer", "reel", "algorithm", "screen time", "cyberbully", "troll",
-            "cancel", "cancelled", "ratio", "clout", "aesthetic"
+            "cancel", "cancelled", "ratio", "clout", "aesthetic", "highlight reel", "netizens"
         ],
         "technology": [
             "wifi", "internet", "lag", "slow", "crash", "bug", "error", "laptop", "pc", "computer", "battery",
-            "charge", "broken", "screen", "mouse", "keyboard"
+            "charge", "broken", "screen", "mouse", "keyboard", "software", "update", "blue screen", "frozen",
+            "coding", "programming", "server", "hosting", "deploy", "git", "database", "backend", "frontend",
+            "submission failed", "lost data", "corrupted", "loading", "ping"
         ],
         "transport": [
             "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "traffic", "jam", "late", "wait",
             "parking", "road", "accident"
+        ],
+        "daily_hustle": [
+            "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", "laundry",
+            "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", "organized",
+            "journaling", "meditating", "hydration", "water"
+        ],
+        "achievement_success": [
+            "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", "celebrate",
+            "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", "proud",
+            "improvement", "progress", "growth", "finally", "done"
         ],
         "animal": [
             "dog", "cat", "pet", "puppy", "kitten", "animal", "fish", "bird", "hamster", "rabbit"
@@ -133,14 +148,16 @@ def get_encouragement(emotion, contexts):
             "Savor this feeling. You deserve every bit of this happiness.",
             "Happiness looks good on you! Keep this momentum going.",
             "Love this for you! Keep that main character energy going.",
-            "You're glowing today! Soak up every moment."
+            "You're glowing today! Soak up every moment.",
+            "Manifesting more days like this for you!"
         ],
         "excited": [
             "Ride this wave of energy! You are capable of amazing things.",
             "Your enthusiasm is your superpower today.",
             "Go for it! The world is ready for your energy.",
             "This energy is unmatched! Use it to fuel your passions.",
-            "Let's go! Big things are happening for you."
+            "Let's go! Big things are happening for you.",
+            "The hype is real! Make the most of this spark."
         ],
         "neutral": [
             "Peace is power. Enjoy the calm in the chaos.",
@@ -154,28 +171,32 @@ def get_encouragement(emotion, contexts):
             "It's okay not to be okay. Be gentle with yourself today.",
             "Stars can't shine without darkness. You will get through this.",
             "It’s okay to rot in bed for a bit if you need to. Your feelings are valid.",
-            "Sending you a virtual hug. Take all the time you need to heal."
+            "Sending you a virtual hug. Take all the time you need to heal.",
+            "Even a rainy day serves a purpose. Let yourself feel."
         ],
         "anxious": [
             "You are stronger than your anxiety. One breath at a time.",
             "Don't believe everything you think. You are safe right now.",
             "Focus on what you can control, and let go of what you can't.",
             "Remember to unclench your jaw and drop your shoulders. You got this.",
-            "Your anxiety is lying to you. You are more capable than you know."
+            "Your anxiety is lying to you. You are more capable than you know.",
+            "Rooting yourself in the now. You are here, you are breathing."
         ],
         "stressed": [
             "You have survived 100% of your bad days. You've got this.",
             "Rest is not a reward; it's a necessity. Take a break.",
             "One step at a time. You don't have to solve everything today.",
             "Deep breaths. You don't need to carry the weight of the world.",
-            "It's okay to say no and protect your peace."
+            "It's okay to say no and protect your peace.",
+            "Progress is still progress, even if it's slow."
         ],
         "angry": [
             "Your feelings are valid, but don't let them consume you.",
             "Take a deep breath. You are in control, not your anger.",
             "Channel this energy into something that serves you, not hurts you.",
             "It's okay to be mad. Just don't let it ruin your peace.",
-            "Frustration is natural. Let it out safely, then let it go."
+            "Frustration is natural. Let it out safely, then let it go.",
+            "Anger is just passion with nowhere to go. Breathe through it."
         ]
     }
     
@@ -224,7 +245,19 @@ def generate_short_feedback(emotion, reason="", thought=""):
     if "positive_events" in detected_contexts:
         if emotion in ["sad", "angry", "stressed", "anxious"]:
              return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
+        
+    if "technology" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
+        elif emotion in ["angry", "stressed", "sad", "anxious"]:
+            return "Tech issues are the worst. Take a step back, maybe a 5-minute break will help clear the 'bug' in your mind too."
 
+    if "achievement_success" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "You crushed it! Make sure to treat yourself for this win today."
+        else:
+            return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
+        
     # 2.5 If no specific context but text is present, reflect it back
     if not detected_contexts and (reason or thought):
         # Smart Fallback: Use the emotion to frame the response even if we don't recognize the words
@@ -324,16 +357,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append(f"Specifically, the situation involves {', '.join(reason_contexts)}, which is a common source of pressure.")
             else:
                 analysis.append("External stressors like this often contribute to a sense of being overwhelmed, regardless of the specific cause.")
-
+            
+            # situation-based on some keywords
             if "positive_events" in reason_contexts:
                 analysis.append("Even positive life changes (eustress) can be physically and mentally draining.")
-            
-            if "emotional_release" in reason_contexts:
+            elif "emotional_release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
+            elif "technology" in reason_contexts:
+                analysis.append("Technical glitches or system crashes are frustrating because they disrupt your flow and sense of control.")            
+            elif "academic pressure" in reason_contexts:
+                analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
+            elif "work stress" in reason_contexts:
+                analysis.append("Professional responsibilities or workplace dynamics seem to be weighing on your energy.")
 
         if thought:
             if "uncertainty" in thought_contexts:
                 analysis.append("Your thoughts are focused on the unknown, which fuels anxiety.")
+            if "self-esteem" in thought_contexts:
+                analysis.append("Your thoughts show a high level of self-expectation, which can intensify your feeling of being overwhelmed.")
             else:
                 analysis.append("Your thoughts indicate self-expectation or worry, which can intensify stress.")
 
@@ -351,25 +392,29 @@ def generate_full_feedback(emotion, reason="", thought=""):
         analysis.append("Feeling sad may be linked to emotional fatigue or unmet emotional needs.")
 
         if reason:
-             analysis.append(f"The situation regarding '{reason}' seems to be weighing heavily on you.")
-             if "relationship issues" in reason_contexts:
-                 analysis.append("Interpersonal conflicts can be draining; try to protect your peace.")
-             elif "loneliness" in reason_contexts:
-                 analysis.append("Isolation can amplify sadness; connection is often the antidote.")
-                 suggestions.append("Reach out to a friend or family member, even just for a quick chat")
-             elif "positive_events" in reason_contexts:
-                 analysis.append("It is valid to feel sad even during happy events. This is often called 'paradoxical emotion'.")
-             elif not reason_contexts:
-                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
-             elif "emotional_release" in reason_contexts:
-                 analysis.append("Crying is often a necessary release valve for overwhelming feelings; it helps reset your nervous system.")
+            analysis.append(f"The situation regarding '{reason}' seems to be weighing heavily on you.")
+            if "relationship issues" in reason_contexts:
+                analysis.append("Interpersonal conflicts can be draining; try to protect your peace.")
+            elif "loneliness" in reason_contexts:
+                analysis.append("Isolation can amplify sadness; connection is often the antidote.")
+                suggestions.append("Reach out to a friend or family member, even just for a quick chat")
+            elif "positive_events" in reason_contexts:
+                analysis.append("It is valid to feel sad even during happy events. This is often called 'paradoxical emotion'.")
+            elif "technology" in reason_contexts:
+                analysis.append("It’s valid to feel sad or defeated when tools you rely on fail you during important tasks.")
+            elif not reason_contexts:
+                analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
+
+            if "emotional_release" in reason_contexts:
+                analysis.append("Crying is often a necessary release valve for overwhelming feelings; it helps reset your nervous system.")
 
         if thought:
             if "self-esteem" in thought_contexts:
                 analysis.append("Your internal monologue seems critical of yourself, which deepens the sadness.")
             elif "loneliness" in thought_contexts:
                 analysis.append("You are telling yourself that you are alone, but this feeling is temporary.")
-            else:
+   
+            if not any(ctx in thought_contexts for ctx in ["uncertainty", "self-esteem"]):
                 analysis.append("Your thoughts suggest self-doubt or emotional disappointment.")
             
             if "emotional_release" in thought_contexts:
@@ -386,9 +431,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is great that '{reason}' is bringing you joy.")
+            if "technology" in reason_contexts:
+                analysis.append("Staying positive despite technical hurdles is a sign of high resilience.")
+            elif "achievement_success" in reason_contexts:
+                analysis.append("You've clearly hit a milestone; acknowledging these wins builds long-term confidence.")
+            elif "relationship issues" in reason_contexts:
+                analysis.append("Resolving social friction or enjoying a good interaction is a great emotional boost.")
+            elif "hobbies" in reason_contexts:
+                analysis.append("Engaging in things you love is essential for your mental 'recharge'.")
+
             if not reason_contexts:
                 analysis.append("Identifying these personal sources of happiness helps you build resilience.")
 
+        if thought:
+            if "self-esteem" in thought_contexts:
+                analysis.append("Your thoughts reflect a healthy sense of self-worth right now.")
+            elif "positive_events" in thought_contexts:
+                analysis.append("You are actively focusing on the good, which helps strengthen your mental well-being.")
+        
         suggestions.extend([
             "Take note of what contributed to this feeling",
             "Try to repeat or maintain these positive habits"
@@ -399,9 +459,22 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is wonderful that '{reason}' has sparked this enthusiasm.")
+            if "academic pressure" in reason_contexts or "work stress" in reason_contexts:
+                analysis.append("You're turning a challenge into a motivation—this is a powerful 'flow state'.")
+            elif "social_media" in reason_contexts:
+                analysis.append("Positive digital interactions can be a great way to feel connected to your community.")
+            elif "future_uncertainty" in reason_contexts:
+                analysis.append("You're viewing the unknown as an opportunity rather than a threat. Keep that perspective!")
+            
             if not reason_contexts:
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
         
+        if thought:
+            if "emotional_release" in thought_contexts:
+                analysis.append("Your excitement is so strong it feels overwhelming; remember to breathe and stay grounded.")
+            else:
+                analysis.append("Your thoughts are racing with possibilities. This creative energy is a great asset.")
+
         suggestions.extend([
             "Channel this energy into a creative project",
             "Share your good news with a friend",
@@ -412,10 +485,23 @@ def generate_full_feedback(emotion, reason="", thought=""):
         analysis.append("A neutral mood signifies stability and a lack of overwhelming emotion.")
         
         if reason:
-             analysis.append(f"Your note about '{reason}' suggests a grounded perspective.")
-             if not reason_contexts:
+            analysis.append(f"Your note about '{reason}' suggests a grounded perspective.")
+            if "fatigue" in reason_contexts:
+                analysis.append("You might be feeling 'flat' because you're physically drained. Neutrality here is your body's way of resting.")
+            elif "technology" in reason_contexts:
+                analysis.append("Handling tech issues with a neutral head is the most efficient way to problem-solve.")
+            elif "academic pressure" in reason_contexts:
+                analysis.append("Being objective about your workload helps you prioritize without getting paralyzed by stress.")
+            
+            if not reason_contexts:
                  analysis.append("Taking a step back to view things neutrally is a valuable skill.")
-             
+
+        if thought:
+            if "uncertainty" in thought_contexts:
+                analysis.append("You're observing the future without immediate fear, which is a very high level of mindfulness.")
+            elif "self-esteem" in thought_contexts:
+                analysis.append("You are viewing yourself and your progress realistically today, without being too hard on yourself.")    
+
         suggestions.extend([
             "Use this clarity to plan your week",
             "Practice mindfulness to maintain this balance",
@@ -429,13 +515,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"It is understandable that '{reason}' would cause frustration.")
         
         if reason_contexts:
-             analysis.append(f"It seems {', '.join(reason_contexts)} might be triggering this reaction.")
+            analysis.append(f"It seems {', '.join(reason_contexts)} might be triggering this reaction.")
              
         elif not reason_contexts:
-             analysis.append("Even if the trigger seems specific, anger often points to a need for change or boundaries.")
-
-        if "emotional_release" in detected_contexts:
-             analysis.append("Sometimes anger can manifest as tears (angry crying) when we feel powerless or overwhelmed.")
+            analysis.append("Even if the trigger seems specific, anger often points to a need for change or boundaries.")
 
         suggestions.extend([
             "Take a few deep breaths before reacting",
@@ -446,7 +529,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
     else:
         analysis.append(f"You are currently feeling {emotion}, which is a valid emotional response.")
         if reason:
-             analysis.append(f"Acknowledging that '{reason}' is affecting you is the first step to managing it.")
+            analysis.append(f"Acknowledging that '{reason}' is affecting you is the first step to managing it.")
              
         suggestions.append("Continue observing your emotions and reflecting on them")
 
@@ -481,15 +564,37 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Set healthy boundaries to protect your energy")
         suggestions.append("Communicate your needs clearly using 'I' statements")
     
+    if "technology" in detected_contexts:
+        suggestions.extend([
+            "Step away from the screen for 15 minutes",
+            "Try a 'Rubber Duck' debugging session (explain the problem out loud)",
+            "Restart your device and take a water break while it boots"
+        ])
+
+    if "uncertainty" in detected_contexts:
+        suggestions.extend([
+            "Write down 3 things that are definitely true right now",
+            "Draft a 'Best Case Scenario' to balance out the worries",
+            "Talk to a mentor or senior about your path"
+        ])
+
+    if "achievement_success" in detected_contexts:
+        suggestions.extend([
+            "Treat yourself to your favorite drink or meal",
+            "Take a screenshot of this success to look back on during hard days",
+            "Take the rest of the day off if your schedule allows"
+        ])
+
     # Ensure suggestions list is never empty
     if not suggestions:
         if emotion in ["stressed", "anxious", "angry"]:
-             suggestions.append("Practice deep breathing exercises (4-7-8 technique)")
-             suggestions.append("Take a 10-minute walk to clear your head")
+            suggestions.append("Practice deep breathing exercises (4-7-8 technique)")
+            suggestions.append("Take a 10-minute walk to clear your head")
+            suggestions.append("Listen to a song that matches your current 'vibe' to process the feeling")
         elif emotion in ["sad", "neutral"]:
-             suggestions.append("Do one small thing that usually brings you joy")
+            suggestions.append("Do one small thing that usually brings you joy")
         elif emotion in ["happy", "excited"]:
-             suggestions.append("Share your positive energy with someone else")
+            suggestions.append("Share your positive energy with someone else")
 
     # Remove duplicates while preserving order
     seen = set()
