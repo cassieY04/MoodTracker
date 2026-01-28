@@ -92,17 +92,17 @@ def detect_context(text):
             "podcast", "vlog", "photography", "blog", "diy", "craft", "knitting", "gardening", "poca",
             "photocard", "drawing"
         ],
-        "positive_events": [
+        "positive events": [
             "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won", "success", "bonus", "award",
             "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", "fun", "happy",
             "slay", "ate", "gift", "present", "surprise", "lucky", "blessed",
             "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", "w", "win"
         ],
-        "emotional_release": [
+        "emotional release": [
             "cry", "crying", "tears", "sob", "weep", "bawling", "break down", "teary",
             "scream", "yell", "vent", "rant", "explode", "meltdown"
         ],
-        "social_media": [
+        "social media": [
             "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "story", "post", "like", "comment",
             "follower", "viral", "trend", "feed", "scroll", "screen", "phone", "notification", "dm", "message",
             "reply", "block", "unfollow", "xhs", "igtv", "live", "stream", "subscribe", "youtube",
@@ -115,7 +115,7 @@ def detect_context(text):
             "coding", "programming", "server", "hosting", "deploy", "git", "database", "backend", "frontend",
             "vsc", "visual studio code", "system", "os", "operating system"
         ],
-        "technical_difficulties": [
+        "technical difficulties": [
             "bug", "error", "crash", "lag", "slow", "frozen", "update failed", "broken", "blue screen",
             "black screen", "glitch", "disconnect", "disconnecting", "network issue", "server down", "high ping",
             "lost data", "corrupted", "unable to submit", "submission failed", "stuck", "freeze", "unresponsive",
@@ -130,7 +130,7 @@ def detect_context(text):
             "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", "organized",
             "journaling", "meditating", "hydration", "water"
         ],
-        "achievement_success": [
+        "achievement success": [
             "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", "celebrate",
             "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", "proud",
             "improvement", "progress", "growth", "finally", "done"
@@ -235,7 +235,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
     detected_contexts = detect_context(full_text)
 
     # 1. Check for specific keywords first (e.g. "tired")
-    if "technology" in detected_contexts and "technical_difficulties" in detected_contexts:
+    if "technology" in detected_contexts and "technical difficulties" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
         elif emotion in ["angry", "stressed", "sad", "anxious"]:
@@ -260,16 +260,16 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "loneliness" in detected_contexts:
         return "Feeling alone is tough. Try to reach out to someone you trust today."
         
-    elif "emotional_release" in detected_contexts:
+    elif "emotional release" in detected_contexts:
         return "Crying is a healthy way to release built-up emotion. It's okay to let it out."
 
-    elif "achievement_success" in detected_contexts:
+    elif "achievement success" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "You crushed it! Make sure to treat yourself for this win today."
         else:
             return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
 
-    elif "positive_events" in detected_contexts:
+    elif "positive events" in detected_contexts:
         if emotion in ["sad", "angry", "stressed", "anxious"]:
              return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
         
@@ -373,11 +373,11 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("External stressors like this often contribute to a sense of being overwhelmed, regardless of the specific cause.")
             
             # situation-based on some keywords
-            if "positive_events" in reason_contexts:
+            if "positive events" in reason_contexts:
                 analysis.append("Even positive life changes (eustress) can be physically and mentally draining.")
-            elif "emotional_release" in reason_contexts:
+            elif "emotional release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
-            elif "technology" in reason_contexts and "technical_difficulties" in reason_contexts:
+            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
                 analysis.append("Technical glitches or system crashes are frustrating because they disrupt your flow and sense of control.")            
             elif "academic pressure" in reason_contexts:
                 analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
@@ -412,9 +412,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "loneliness" in reason_contexts:
                 analysis.append("Isolation can amplify sadness; connection is often the antidote.")
                 suggestions.append("Reach out to a friend or family member, even just for a quick chat")
-            elif "positive_events" in reason_contexts:
+            elif "positive events" in reason_contexts:
                 analysis.append("It is valid to feel sad even during happy events. This is often called 'paradoxical emotion'.")
-            elif "technology" in reason_contexts and "technical_difficulties" in reason_contexts:
+            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
                 analysis.append("It’s valid to feel sad or defeated when tools you rely on fail you during important tasks.")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in activities you love is important; consider revisiting these to lift your mood.")
@@ -424,7 +424,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if not reason_contexts:
                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
 
-            if "emotional_release" in reason_contexts:
+            if "emotional release" in reason_contexts:
                 analysis.append("Crying is often a necessary release valve for overwhelming feelings; it helps reset your nervous system.")
 
         if thought:
@@ -436,7 +436,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if not any(ctx in thought_contexts for ctx in ["uncertainty", "self-esteem"]):
                 analysis.append("Your thoughts suggest self-doubt or emotional disappointment.")
             
-            if "emotional_release" in thought_contexts:
+            if "emotional release" in thought_contexts:
                 analysis.append("Thinking about crying indicates you are reaching a point of emotional overflow.")
 
         suggestions.extend([
@@ -450,9 +450,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is great that '{reason}' is bringing you joy.")
-            if "technology" in reason_contexts and "technical_difficulties" in reason_contexts:
+            if "technology" in reason_contexts and "technical difficulties" in reason_contexts:
                 analysis.append("Staying positive despite technical hurdles is a sign of high resilience.")
-            elif "achievement_success" in reason_contexts:
+            elif "achievement success" in reason_contexts:
                 analysis.append("You've clearly hit a milestone; acknowledging these wins builds long-term confidence.")
             elif "relationship issues" in reason_contexts:
                 analysis.append("Resolving social friction or enjoying a good interaction is a great emotional boost.")
@@ -467,7 +467,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         if thought:
             if "self-esteem" in thought_contexts:
                 analysis.append("Your thoughts reflect a healthy sense of self-worth right now.")
-            elif "positive_events" in thought_contexts:
+            elif "positive events" in thought_contexts:
                 analysis.append("You are actively focusing on the good, which helps strengthen your mental well-being.")
         
         suggestions.extend([
@@ -482,9 +482,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"It is wonderful that '{reason}' has sparked this enthusiasm.")
             if "academic pressure" in reason_contexts or "work stress" in reason_contexts:
                 analysis.append("You're turning a challenge into a motivation—this is a powerful 'flow state'.")
-            elif "social_media" in reason_contexts:
+            elif "social media" in reason_contexts:
                 analysis.append("Positive digital interactions can be a great way to feel connected to your community.")
-            elif "future_uncertainty" in reason_contexts:
+            elif "future uncertainty" in reason_contexts:
                 analysis.append("You're viewing the unknown as an opportunity rather than a threat. Keep that perspective!")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in your passions is fueling this excitement, which is fantastic for your mental health.")
@@ -495,7 +495,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
         
         if thought:
-            if "emotional_release" in thought_contexts:
+            if "emotional release" in thought_contexts:
                 analysis.append("Your excitement is so strong it feels overwhelming; remember to breathe and stay grounded.")
             else:
                 analysis.append("Your thoughts are racing with possibilities. This creative energy is a great asset.")
@@ -513,7 +513,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"Your note about '{reason}' suggests a grounded perspective.")
             if "fatigue" in reason_contexts:
                 analysis.append("You might be feeling 'flat' because you're physically drained. Neutrality here is your body's way of resting.")
-            elif "technology" in reason_contexts and "technical_difficulties" in reason_contexts:
+            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
                 analysis.append("Handling tech issues with a neutral head is the most efficient way to problem-solve.")
             elif "academic pressure" in reason_contexts:
                 analysis.append("Being objective about your workload helps you prioritize without getting paralyzed by stress.")
@@ -559,7 +559,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Continue observing your emotions and reflecting on them")
 
     # -------- GENERAL SUGGESTIONS (Fallback & Context-Specific) --------
-    if "social_media" in detected_contexts:
+    if "social media" in detected_contexts:
         suggestions.append("Consider a short 'digital detox'")
         suggestions.append("Unfollow accounts that drain your energy")
 
@@ -589,7 +589,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Set healthy boundaries to protect your energy")
         suggestions.append("Communicate your needs clearly using 'I' statements")
     
-    if "technology" in detected_contexts and "technical_difficulties" in detected_contexts:
+    if "technology" in detected_contexts and "technical difficulties" in detected_contexts:
         suggestions.extend([
             "Step away from the screen for 15 minutes",
             "Try a 'Rubber Duck' debugging session (explain the problem out loud)",
@@ -603,7 +603,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             "Talk to a mentor or senior about your path"
         ])
 
-    if "achievement_success" in detected_contexts:
+    if "achievement success" in detected_contexts:
         suggestions.extend([
             "Treat yourself to your favorite drink or meal",
             "Take a screenshot of this success to look back on during hard days",
@@ -747,7 +747,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     if "health concerns" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed.")
 
-    if "social_media" in detected_contexts:
+    if "social media" in detected_contexts:
         suggestions.append("Consider a short digital detox.")
 
     # Fallback suggestions if empty
