@@ -245,7 +245,13 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["happy", "excited"]:
             return "It is impressive that you are staying positive despite the academic pressure!"
         return "School can be tough. Take it one assignment at a time."
-
+    
+    elif "pet" in detected_contexts:
+            if emotion in ["happy", "excited"]:
+                return "Pets bring so much joy! Enjoy the time with your furry friend."
+            else:
+                return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
+        
     elif "fatigue" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It is great that you are happy, but you seem tired as well. Remember to get some rest."
@@ -266,12 +272,6 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "positive_events" in detected_contexts:
         if emotion in ["sad", "angry", "stressed", "anxious"]:
              return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
-        
-    elif "pet" in detected_contexts:
-        if emotion in ["happy", "excited"]:
-            return "Pets bring so much joy! Enjoy the time with your furry friend."
-        else:
-            return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
         
     # 2.5 If no specific context but text is present, reflect it back
     if not detected_contexts and (reason or thought):
