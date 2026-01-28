@@ -19,7 +19,124 @@ NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terr
 # a fuzzy matching library like 'fuzzywuzzy' could be implemented.
 def detect_context(text):
     text = text.lower()
-    
+    context_map = {
+        "academic pressure": [
+            "exam", "study", "assignment", "deadline", "test", "school", "grade", "gpa", "class",
+            "quiz", "midterm", "final", "thesis", "fyp", "project", "presentation", "lecture", "tutorial",
+            "lab", "semester", "submission", "due", "fail", "pass", "resit", "repeat", "transcript",
+            "scholarship", "tuition", "fees", "enrollment", "coursework", "syllabus", "lecturer", "professor",
+            "tutor", "dean", "campus", "university", "college", "uni", "degree", "diploma", "group project",
+            "capstone", "internship", "practicum", "viva", "research", "paper", "essay",
+            "procrastinate", "cramming", "burnout", "dropout", "academic validation", "study group", "library"
+        ],
+        "fatigue": [
+            "tired", "sleep", "exhausted", "burnt out", "insomnia", "nap", "drained", "fatigue",
+            "all-nighter", "sleepy", "zombie", "caffeine", "coffee", "energy drink", "no sleep", "awake",
+            "burnout", "overworked", "collapse", "rest", "bed", "pillow", "woke up",
+            "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish", "yawning", "snooze"
+        ],
+        "relationship issues": [
+            "friend", "family", "partner", "argument", "fight", "conflict", "breakup", "toxic", "parents",
+            "crush", "ghosted", "situationship", "roommate", "housemate", "drama", "gossip", "red flag", "bestie",
+            "squad", "peer", "social", "reject", "dumped", "cheated", "ex", "boyfriend", "girlfriend", "bf", "gf",
+            "tea", "ick", "trust", "lie", "betray", "jealous", "envy", "date", "dating", "marriage", "divorce",
+            "gaslight", "love bomb", "boundaries", "clingy", "distant", "misunderstanding", "attachment style", 
+            "codependent", "third wheel", "friendzone", "catfish", "talking stage", "soft launch", "lonely", "miss them", 
+            "bff", "best friend", "love", "hate", "compromise", "apologize", "forgive"
+        ],
+        "health concerns": [
+            "sick", "pain", "doctor", "ill", "headache", "hurt", "health", "body",
+            "fever", "flu", "cold", "stomach", "migraine", "dizzy", "nausea", "vomit", "medicine", "pill",
+            "period", "cramps", "injury", "broken", "bleed", "hospital", "clinic", "weight", "diet", "skin",
+            "acne", "pimple", "hair"
+        ],
+        "work stress": [
+            "job", "boss", "work", "salary", "meeting", "career", "colleague", "project",
+            "internship", "part-time", "shift", "manager", "customer", "rude", "overtime", "ot", "client",
+            "interview", "resume", "cv", "fired", "hired", "promotion", "raise", "colleague", "coworker",
+            "office", "business",
+            "micromanage", "toxic workplace", "kpi", "workload", "underpaid", "hustle", "grind", "corporate", 
+            "9 to 5", "slack", "teams", "zoom fatigue", "commute", "unemployed", "job hunt"
+        ],
+        "financial": [
+            "money", "cost", "expensive", "debt", "pay", "broke", "bill", "rent",
+            "loan", "allowance", "budget", "save", "spend", "price", "cash", "wallet",
+            "bank", "transfer", "shopping", "buy", "purchase", "afford", "cheap",
+            "inflation", "groceries", "savings", "investment", "crypto", "stocks", "salary", "wage", 
+            "poverty", "rich", "poor", "splurge", "treat myself", "retail therapy"
+        ],
+        "self-esteem": [
+            "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "confidence",
+            "cringe", "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb", "flop",
+            "mistake", "guilt", "shame", "embarrassed", "regret", "fault",
+            "body image", "skinny", "acne", "looks", "appearance", "unlovable", "not enough", "validation",
+            "glow up", "mid", "basic", "try hard", "people pleaser"
+        ],
+        "loneliness": [
+            "lonely", "alone", "isolated", "nobody", "ignored", "miss", "lonliness", "friendless",
+            "left out", "excluded", "no friends", "homesick", "empty", "silence", "quiet", "abandoned",
+            "unseen", "unheard"
+        ],
+        "uncertainty": [
+            "future", "career", "plans", "worried", "anxious", "what if", "unknown", "direction", "lost",
+            "confused", "choice", "decision", "adulting", "graduation", "internship", "applications",
+            "rejection", "waiting", "hopeful", "dream", "goal"
+        ],
+        "hobbies": [
+            "game", "music", "read", "sport", "art", "draw", "code", "movie", "world of warcraft",
+            "gaming", "valorant", "league", "netflix", "binge", "gym", "workout", "spotify", "concert",
+            "travel", "food", "eat", "football", "basketball", "badminton", "hiking", "swim", "dance",
+            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano", "shopping",
+            "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
+            "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama",
+            "podcast", "vlog", "photography", "blog", "diy", "craft", "knitting", "gardening", "poca",
+            "photocard", "drawing"
+        ],
+        "positive_events": [
+            "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won", "success", "bonus", "award",
+            "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", "fun", "happy",
+            "slay", "ate", "gift", "present", "surprise", "lucky", "blessed",
+            "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", "w", "win"
+        ],
+        "emotional_release": [
+            "cry", "crying", "tears", "sob", "weep", "bawling", "break down", "teary",
+            "scream", "yell", "vent", "rant", "explode", "meltdown"
+        ],
+        "social_media": [
+            "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "story", "post", "like", "comment",
+            "follower", "viral", "trend", "feed", "scroll", "screen", "phone", "notification", "dm", "message",
+            "reply", "block", "unfollow", "xhs", "igtv", "live", "stream", "subscribe", "youtube",
+            "doomscrolling", "fomo", "influencer", "reel", "algorithm", "screen time", "cyberbully", "troll",
+            "cancel", "cancelled", "ratio", "clout", "aesthetic", "highlight reel", "netizens"
+        ],
+        "technology": [
+            "wifi", "internet", "lag", "slow", "crash", "bug", "error", "laptop", "pc", "computer", "battery",
+            "charge", "broken", "screen", "mouse", "keyboard", "software", "update", "blue screen", "frozen",
+            "coding", "programming", "server", "hosting", "deploy", "git", "database", "backend", "frontend",
+            "submission failed", "lost data", "corrupted", "loading", "ping"
+        ],
+        "transport": [
+            "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "traffic", "jam", "late", "wait",
+            "parking", "road", "accident"
+        ],
+        "daily_hustle": [
+            "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", "laundry",
+            "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", "organized",
+            "journaling", "meditating", "hydration", "water"
+        ],
+        "achievement_success": [
+            "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", "celebrate",
+            "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", "proud",
+            "improvement", "progress", "growth", "finally", "done"
+        ],
+        "pet": [
+            "dog", "cat", "pet", "puppy", "kitten", "fish", "bird", "hamster", "rabbit", "paws", "furry",
+            "purr", "bark", "tortoise", "guinea pig", "lizard", "snake", "bird", "parrot", "hedgehog"
+        ],
+        "weather": [
+            "rain", "hot", "sun", "weather", "storm", "wet", "humid", "cold", "gloom", "dark"
+        ]
+    }
     detected = []
     for category, keywords in context_map.items():
         if any(word in text for word in keywords):
@@ -144,6 +261,12 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["sad", "angry", "stressed", "anxious"]:
              return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
         
+    elif "pet" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "Pets bring so much joy! Enjoy the time with your furry friend."
+        else:
+            return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
+        
     # 2.5 If no specific context but text is present, reflect it back
     if not detected_contexts and (reason or thought):
         # Smart Fallback: Use the emotion to frame the response even if we don't recognize the words
@@ -160,7 +283,6 @@ def generate_short_feedback(emotion, reason="", thought=""):
         return f"It sounds like {target} is impacting you. Feeling {emotion} is valid."
 
     # 2. Then check emotion categories
-
     if emotion in ["stressed", "anxious"]:
         if reason or thought:
             return (
