@@ -2284,7 +2284,7 @@ textarea {
 }
 
 .popup-header-banner {
-    background: linear-gradient(135deg, #9b75ed 0%, #6f4bd8 100%);
+    background: var(--sidebar-bg);
     padding: 30px 25px;
     text-align: center;
     color: white;
