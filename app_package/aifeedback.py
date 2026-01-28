@@ -125,7 +125,7 @@ def detect_context(text):
             "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "traffic", "jam", "late", "wait",
             "parking", "road", "accident"
         ],
-        "daily_hustle": [
+        "daily hustle": [
             "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", "laundry",
             "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", "organized",
             "journaling", "meditating", "hydration", "water"
@@ -150,7 +150,7 @@ def detect_context(text):
     return detected
 
 def get_encouragement(emotion, contexts):
-    """Returns a motivational message based on emotion."""
+    """Returns a motivational message based on emotion"""
     messages = {
         "happy": [
             "Keep shining! Your positivity is a gift to those around you.",
@@ -273,6 +273,12 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["sad", "angry", "stressed", "anxious"]:
              return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
         
+    elif "daily hustle" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "Amidst the busy hustle, it's great to see you're finding moments of joy!"
+        else:
+            return "The daily grind can be exhausting. Remember to take breaks and care for yourself."
+        
     # 2.5 If no specific context but text is present, reflect it back
     if not detected_contexts and (reason or thought):
         # Smart Fallback: Use the emotion to frame the response even if we don't recognize the words
@@ -375,6 +381,8 @@ def generate_full_feedback(emotion, reason="", thought=""):
             # situation-based on some keywords
             if "positive events" in reason_contexts:
                 analysis.append("Even positive life changes (eustress) can be physically and mentally draining.")
+            elif "pet" in reason_contexts:
+                analysis.append("Caring for a pet can add responsibilities, which might be contributing to your stress.")
             elif "emotional release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
             elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
@@ -383,6 +391,8 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
             elif "work stress" in reason_contexts:
                 analysis.append("Professional responsibilities or workplace dynamics seem to be weighing on your energy.")
+            elif "achievement success" in reason_contexts:
+                analysis.append("Even after achieving success, the pressure to maintain or exceed that level can be stressful.")
 
         if thought:
             if "uncertainty" in thought_contexts:
@@ -409,6 +419,8 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"The situation regarding '{reason}' seems to be weighing heavily on you.")
             if "relationship issues" in reason_contexts:
                 analysis.append("Interpersonal conflicts can be draining; try to protect your peace.")
+            elif "pet" in reason_contexts:
+                analysis.append("Pets can be a great comfort during tough times. Maybe spend some time with them today.")
             elif "loneliness" in reason_contexts:
                 analysis.append("Isolation can amplify sadness; connection is often the antidote.")
                 suggestions.append("Reach out to a friend or family member, even just for a quick chat")
@@ -418,8 +430,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("It’s valid to feel sad or defeated when tools you rely on fail you during important tasks.")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in activities you love is important; consider revisiting these to lift your mood.")
-            elif "pet" in reason_contexts:
-                analysis.append("Pets can be a great comfort during tough times. Maybe spend some time with them today.")
+            elif "academic pressure" in reason_contexts:
+                analysis.append("Academic challenges can feel overwhelming and impact your emotional well-being.")
+            elif "achievemtent success" in reason_contexts:
+                analysis.append("Sometimes after a big achievement, a sense of emptiness or sadness can follow.")
 
             if not reason_contexts:
                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
@@ -482,14 +496,16 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"It is wonderful that '{reason}' has sparked this enthusiasm.")
             if "academic pressure" in reason_contexts or "work stress" in reason_contexts:
                 analysis.append("You're turning a challenge into a motivation—this is a powerful 'flow state'.")
+            elif "pet" in reason_contexts:
+                analysis.append("Pets often bring joy and excitement; it's wonderful you're experiencing that bond.")
             elif "social media" in reason_contexts:
                 analysis.append("Positive digital interactions can be a great way to feel connected to your community.")
             elif "future uncertainty" in reason_contexts:
                 analysis.append("You're viewing the unknown as an opportunity rather than a threat. Keep that perspective!")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in your passions is fueling this excitement, which is fantastic for your mental health.")
-            elif "pet" in reason_contexts:
-                analysis.append("Pets often bring joy and excitement; it's wonderful you're experiencing that bond.")
+            elif "achievement success" in reason_contexts:
+                analysis.append("Success is a great motivator; riding this wave can lead to even more accomplishments.")
             
             if not reason_contexts:
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
@@ -517,6 +533,8 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Handling tech issues with a neutral head is the most efficient way to problem-solve.")
             elif "academic pressure" in reason_contexts:
                 analysis.append("Being objective about your workload helps you prioritize without getting paralyzed by stress.")
+            elif "achievement success" in reason_contexts:
+                analysis.append("You are celebrating success without getting carried away, which is a sign of emotional maturity.")
             
             if not reason_contexts:
                  analysis.append("Taking a step back to view things neutrally is a valuable skill.")
