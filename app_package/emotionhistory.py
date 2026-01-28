@@ -52,7 +52,6 @@ def emotion_history():
 
         return redirect(url_for('emotion_history.emotion_history'))
     
-    # Enhance logs with emoji and color for the UI
     for log in logs:
         style = get_emotion_styling(log['emotion_name'])
         log['emoji'] = style['emoji']
