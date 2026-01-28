@@ -410,7 +410,12 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("It is valid to feel sad even during happy events. This is often called 'paradoxical emotion'.")
             elif "technology" in reason_contexts:
                 analysis.append("It’s valid to feel sad or defeated when tools you rely on fail you during important tasks.")
-            elif not reason_contexts:
+            elif "hobbies" in reason_contexts:
+                analysis.append("Engaging in activities you love is important; consider revisiting these to lift your mood.")
+            elif "pet" in reason_contexts:
+                analysis.append("Pets can be a great comfort during tough times. Maybe spend some time with them today.")
+
+            if not reason_contexts:
                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
 
             if "emotional_release" in reason_contexts:
@@ -447,6 +452,8 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Resolving social friction or enjoying a good interaction is a great emotional boost.")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in things you love is essential for your mental 'recharge'.")
+            elif "pet" in reason_contexts:
+                analysis.append("Spending time with your pet is a scientifically proven way to lower stress and boost mood.")
 
             if not reason_contexts:
                 analysis.append("Identifying these personal sources of happiness helps you build resilience.")
@@ -473,6 +480,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Positive digital interactions can be a great way to feel connected to your community.")
             elif "future_uncertainty" in reason_contexts:
                 analysis.append("You're viewing the unknown as an opportunity rather than a threat. Keep that perspective!")
+            elif "hobbies" in reason_contexts:
+                analysis.append("Engaging in your passions is fueling this excitement, which is fantastic for your mental health.")
+            elif "pet" in reason_contexts:
+                analysis.append("Pets often bring joy and excitement; it's wonderful you're experiencing that bond.")
             
             if not reason_contexts:
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
@@ -562,7 +573,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Listen to your body and rest if needed")
         suggestions.append("Stay hydrated and prioritize sleep")
 
-    if "animal" in detected_contexts:
+    if "pet" in detected_contexts:
         suggestions.append("Spend some therapeutic time with your pet")
 
     if "fatigue" in detected_contexts:
