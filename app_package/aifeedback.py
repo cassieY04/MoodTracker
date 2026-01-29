@@ -721,7 +721,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             suggestions.append("Listen to a song that matches your current 'vibe' to process the feeling")
         elif emotion in ["sad", "neutral"]:
             suggestions.append("Do one small thing that usually brings you joy")
-        elif emotion in ["happy", "excited"]:
+        else:
             suggestions.append("Share your positive energy with someone else")
 
     # Remove duplicates while preserving order
