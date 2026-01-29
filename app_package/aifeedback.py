@@ -423,6 +423,14 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Professional responsibilities or workplace dynamics seem to be weighing on your energy.")
             elif "achievement success" in reason_contexts:
                 analysis.append("Even after achieving success, the pressure to maintain or exceed that level can be stressful.")
+            elif "relationship postive" in reason_contexts:
+                analysis.append("Sometimes, even positive social interactions can lead to overstimulation and stress.")
+            elif "relationship issues" in reason_contexts:
+                analysis.append("Interpersonal conflicts can be a significant source of emotional strain.")
+            elif "relationship general" in reason_contexts:
+                analysis.append("Social dynamics, even in general interactions, can contribute to stress levels.")
+            elif "financial" in reason_contexts:
+                analysis.append("Monetary concerns are a common and impactful source of stress for many people.")
 
         if thought:
             if "uncertainty" in thought_contexts:
@@ -464,6 +472,14 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Academic challenges can feel overwhelming and impact your emotional well-being.")
             elif "achievemtent success" in reason_contexts:
                 analysis.append("Sometimes after a big achievement, a sense of emptiness or sadness can follow.")
+            elif "relationship positive" in reason_contexts:
+                analysis.append("Even positive social interactions can sometimes stir up unexpected sadness.")
+            elif "relationship issues" in reason_contexts:
+                analysis.append("Conflicts or misunderstandings with loved ones can deeply affect your emotional state.")
+            elif "relationship general" in reason_contexts:
+                analysis.append("Social dynamics, even in general interactions, can influence your mood.")
+            elif "financial" in reason_contexts:
+                analysis.append("Worries about money can weigh heavily on your mind and contribute to feelings of sadness.")
 
             if not reason_contexts:
                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
@@ -506,6 +522,12 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Spending time with your pet is a scientifically proven way to lower stress and boost mood.")
             elif "relationship positive" in reason_contexts:
                 analysis.append("Positive social connections are a key pillar of happiness and well-being.")
+            elif "relationship issues" in reason_contexts:
+                analysis.append("Overcoming relationship challenges can lead to personal growth and happiness.")
+            elif "relationship general" in reason_contexts:
+                analysis.append("Social interactions, even casual ones, can significantly impact your mood.")
+            elif "financial" in reason_contexts:
+                analysis.append("Financial stability or positive developments can greatly enhance your sense of security and happiness.")
 
             if not reason_contexts:
                 analysis.append("Identifying these personal sources of happiness helps you build resilience.")
@@ -540,8 +562,12 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Success is a great motivator; riding this wave can lead to even more accomplishments.")
             elif "relationship positive" in reason_contexts:
                 analysis.append("Positive social interactions are a great source of excitement and joy.")
+            elif "relationship issues" in reason_contexts:
+                analysis.append("Resolving relationship challenges can lead to renewed excitement about social connections.")
             elif "relationship general" in reason_contexts:
                 analysis.append("Social connections often bring unexpected joy and excitement.")
+            elif "financial" in reason_contexts:
+                analysis.append("Positive financial developments can lead to a sense of freedom and excitement about the future.")
             
             if not reason_contexts:
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
@@ -571,6 +597,14 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Being objective about your workload helps you prioritize without getting paralyzed by stress.")
             elif "achievement success" in reason_contexts:
                 analysis.append("You are celebrating success without getting carried away, which is a sign of emotional maturity.")
+            elif "relationship positive" in reason_contexts:
+                analysis.append("It's ok to feel neutral after a great interaction. You are appreciating social connections in a balanced way.")
+            elif "relationship issues" in reason_contexts:
+                analysis.append("Maintaining neutrality during relationship conflicts helps you stay clear-headed.")
+            elif "relationship general" in reason_contexts:
+                analysis.append("A balanced view of social dynamics is a healthy approach.")
+            elif "financial" in reason_contexts:
+                analysis.append("A neutral stance on financial matters allows for clear decision-making without emotional bias.")
             
             if not reason_contexts:
                  analysis.append("Taking a step back to view things neutrally is a valuable skill.")
@@ -613,10 +647,6 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Continue observing your emotions and reflecting on them")
 
     # -------- GENERAL SUGGESTIONS (Fallback & Context-Specific) --------
-    if "social media" in detected_contexts:
-        suggestions.append("Consider a short 'digital detox'")
-        suggestions.append("Unfollow accounts that drain your energy")
-
     if "self-esteem" in detected_contexts:
         suggestions.append("Write down 3 things you value about yourself")
         suggestions.append("Remember: social media is a highlight reel, not reality")
@@ -628,6 +658,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
     if "financial" in detected_contexts:
         suggestions.append("Identify one small change to your budget")
         suggestions.append("Try a 'no-spend' day challenge")
+    
+    if "social media" in detected_contexts:
+        suggestions.append("Consider a short 'digital detox'")
+        suggestions.append("Unfollow accounts that drain your energy")
     
     if "health concerns" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed")
