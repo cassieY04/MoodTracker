@@ -786,7 +786,6 @@ body.body {
 }
 
 /*  Welcome Pop Up  */
-
 .popup-overlay {
     position: fixed;
     background: rgba(0,0,0,0.6);
@@ -835,7 +834,7 @@ body.body {
     background: #5a39b8;
 }
 
-/* =============== PROFILE PAGE============ */
+/* ========================= PROFILE PAGE========================= */
 
 .profile-body {
     background: var(--bg-profile-body);
@@ -1270,7 +1269,7 @@ textarea {
     background: #9b75ed;
 }
 
-/* -------Log Emotion Page--------- */
+/* -----------------------------Log Emotion Page-------------------------------------- */
 .content-logemotion{
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -1594,7 +1593,7 @@ textarea {
     margin: 10px 0;
     font-size: 16px;
 }
-/* -----------Mood Calendar Page----------- */
+/* --------------------------------------Mood Calendar Page------------------------------------ */
 
 .calendar-wrapper {
     max-width: 1000px;
@@ -1757,7 +1756,6 @@ textarea {
     background: var(--empty-cell-bg);
 }
 
-/* Mood Breakdown Section */
 .breakdown-section {
     margin-top: 30px;
     padding-top: 20px;
@@ -1878,7 +1876,7 @@ textarea {
     color: var(--text-sub);
 }
 
-/* ====================AI FEEDBACK PAGE===================== */
+/* ============================================AI FEEDBACK PAGE========================================== */
 
 .ai-feedback-page {
     max-width: 1100px;
@@ -1940,7 +1938,6 @@ textarea {
     margin-bottom: 10px;
 }
 
-/* Reflection Styling */
 .reflection-grid {
     display: flex;
     flex-direction: column;
@@ -1968,10 +1965,9 @@ textarea {
     margin: 0;
     color: var(--reflection-text);
     font-style: italic;
-    white-space: pre-line; /* Allows newlines for Daily Summary */
+    white-space: pre-line; 
 }
 
-/* Analysis Styling */
 .ai-card.highlight {
     border-left: 5px solid #8158d8;
 }
@@ -2003,7 +1999,6 @@ textarea {
     margin-top: 2px;
 }
 
-/* Suggestions Styling */
 .ai-card.suggestions {
     border-left: 5px solid #48bb78;
 }
@@ -2034,7 +2029,6 @@ textarea {
     color: #48bb78;
 }
 
-/* Encouragement Styling */
 .ai-card.encouragement {
     border-left: 5px solid #f39c12;
     background: var(--encouragement-bg);
@@ -2124,7 +2118,7 @@ textarea {
   }
 }
 
-/* ==================== EMOTION HISTORY PAGE ===================== */
+/* =================================== EMOTION HISTORY PAGE ========================================= */
 .history-content {
     padding: 30px;
     max-width: 1100px;
@@ -2266,8 +2260,6 @@ textarea {
     text-decoration: none;
     font-weight: bold;
 }
-
-/* ==================== DASHBOARD PAGE ===================== */
 
 .dashboard-content {
     max-width: 1100px;
@@ -2585,7 +2577,7 @@ textarea {
     color: #6f4bd8;
 }
 
-/* ==================== MOOD STATISTICS PAGE ===================== */
+/* =================================== MOOD STATISTICS PAGE ========================================= */
 .stats-page {
     max-width: 1100px;
     margin: 0 auto;
@@ -2680,7 +2672,6 @@ textarea {
     }
 }
 
-/* Statistics Tabs */
 .stats-tabs {
     display: flex;
     justify-content: center;
@@ -2706,7 +2697,6 @@ textarea {
     border-color: #6f4bd8;
 }
 
-/* Breakdown Bars */
 .breakdown-item {
     margin-bottom: 15px;
 }
@@ -2756,7 +2746,7 @@ textarea {
     background: #5a39b8;
 }
 
-/* ==================== REFACTORED INLINE STYLES ===================== */
+/* ================================== REFACTORED INLINE STYLES =================================== */
 
 /* AI Feedback Specific */
 .feedback-emoji-large {
@@ -2872,7 +2862,7 @@ textarea {
     font-size: 28px;
 }
 
-/* ==================== Layout for phone/ minimize screen sizes ===================== */
+/* ======================================= Layout for phone/ minimize screen sizes ================================ */
 
 @media (max-width: 1024px) {
     .profile-container {

@@ -18,7 +18,6 @@ def mood_statistics():
     month_param = request.args.get('month')
     week_param = request.args.get('week')
 
-    # Fetch all logs
     all_logs = UserManager.get_emotion_logs(username)
     
     # Filter logs based on period
@@ -150,7 +149,6 @@ def mood_statistics():
     line_data = []
 
     if period == 'daily':
-        # Chronological order for today
         sorted_logs = sorted(filtered_logs, key=lambda x: x['timestamp'])
         for log in sorted_logs:
             time_str = log['timestamp'].split(' ')[1][:5] # HH:MM
@@ -158,7 +156,6 @@ def mood_statistics():
             line_data.append(mood_scores.get(log.get('emotion_name'), 2))
             
     elif period == 'monthly':
-        # Daily averages for the month
         dt_month = datetime.strptime(selected_month, '%Y-%m')
         num_days = calendar.monthrange(dt_month.year, dt_month.month)[1]
         days_data = {day: [] for day in range(1, num_days + 1)}
@@ -238,7 +235,6 @@ def calculate_streak(logs):
     if not logs:
         return 0
     
-    # Get unique dates logged
     dates = set()
     for log in logs:
         ts = log.get('timestamp')

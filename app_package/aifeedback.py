@@ -16,7 +16,6 @@ NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terr
 # Helper function to detect context from text
 # NOTE: This is a simple substring search. It handles duplicates (e.g., "exammm") 
 # but does not handle misspellings (e.g., "exan"). For more advanced matching,
-# a fuzzy matching library like 'fuzzywuzzy' could be implemented.
 def detect_context(text):
     text = text.lower()
     context_map = {
@@ -221,7 +220,6 @@ def get_encouragement(emotion, contexts):
 
 def generate_short_feedback(emotion, reason="", thought=""):
     emotion = emotion.lower()
-    # Combine text for analysis
     full_text = f"{reason} {thought}".lower()
 
     detected_contexts = detect_context(full_text)
@@ -847,8 +845,6 @@ def ai_feedback(log_id=None):
         now = datetime.now()
         
         # --- 1. Daily Logs ---
-        
-        # Check for date parameter
         date_param = request.args.get('date')
         target_date = now
         if date_param:
@@ -907,7 +903,6 @@ def ai_feedback(log_id=None):
         monthly_logs = [l for l in all_logs if l['timestamp'].startswith(selected_month_str)]
         if monthly_logs:
             monthly_data = generate_aggregated_feedback(monthly_logs, "month")
-            # Format nice month name
             dt_m = datetime.strptime(selected_month_str, '%Y-%m')
             monthly_data['timestamp'] = f"Monthly Summary - {dt_m.strftime('%B %Y')}"
         

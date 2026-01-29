@@ -9,17 +9,12 @@ mood_calendar_bp = Blueprint('mood_calendar', __name__)
 
 # 1. Define how your emotions map to the three main categories
 EMOTION_CATEGORIES = {
-    # POSITIVE (Happy / Excited)
     'Happy': 'Positive', 
     'Excited': 'Positive', 
-    
-    # NEGATIVE (Sad / Angry / Stressed / Anxious)
-   'Anxious': 'Negative', 
+    'Anxious': 'Negative', 
     'Sad': 'Negative', 
     'Angry': 'Negative', 
     'Stressed': 'Negative',
-    
-    # NEUTRAL
     'Neutral': 'Neutral', 
 }
 
@@ -41,7 +36,6 @@ def calculate_emotional_pattern(emotion_counts, total_entries):
     if total_entries == 0:
         return EMOTIONAL_PATTERN_RESULT['N/A']
     
-    # Initialize category counts
     category_counts = {
         'Positive': 0,
         'Negative': 0,
@@ -66,7 +60,6 @@ def calculate_emotional_pattern(emotion_counts, total_entries):
     max_count = max(category_counts['Positive'], category_counts['Negative'], category_counts['Neutral'])
     
     # --- Apply Decision Rules (New Order) ---
-    
     # Rule 1: Mostly Positive (Positive > 50%)
     if positive_pct > 0.5:
         return EMOTIONAL_PATTERN_RESULT['Mostly Positive']
@@ -86,8 +79,6 @@ def calculate_emotional_pattern(emotion_counts, total_entries):
     # This is the final fallback, triggered only when no single category dominates AND 
     # Neutral is NOT the largest category. This implies true balance.
     return EMOTIONAL_PATTERN_RESULT['Emotionally Balanced'] 
-
-# =======================================================
 
 
 def get_monthly_mood_data(username, year, month):
@@ -219,7 +210,6 @@ def mood_calendar(year=None, month=None):
         next_month = 1
         next_year += 1
         
-    # Get data
     mood_data = get_monthly_mood_data(username, year, month)
     emotion_counts = get_monthly_emotion_counts(username, year, month)
     

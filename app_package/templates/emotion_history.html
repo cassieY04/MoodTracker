@@ -16,60 +16,18 @@
     <div class="layout">
 
         <div class="sidebar">
-            <div class="logo2">
-                <i class="fas fa-heart-pulse"></i>
-            </div>
+            <div class="logo2"><i class="fas fa-heart-pulse"></i></div>
             
             <nav>
             <ul class="menu">
-                <li>
-                    <a href="/dashboard" >
-                        <i class="fa fa-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/log_emotion">
-                        <i class="fas fa-pencil-alt"></i>
-                        <span>Log Emotion</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/mood_calendar">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>Mood Calendar</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/mood_statistics">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Mood Statistics</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/ai_feedback">
-                        <i class="fas fa-star"></i>
-                        <span>AI Feedback</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/emotionhistory">
-                        <i class="fas fa-history"></i>
-                        <span>Emotion History</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/logout">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                        <span>Theme</span>
-                    </a>
-                </li>
+                <li><a href="/dashboard" ><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                <li><a href="/log_emotion"><i class="fas fa-pencil-alt"></i><span>Log Emotion</span></a></li>
+                <li><a href="/mood_calendar"><i class="far fa-calendar-alt"></i><span>Mood Calendar</span></a></li>
+                <li><a href="/mood_statistics"><i class="fas fa-chart-bar"></i><span>Mood Statistics</span></a></li>
+                <li><a href="/ai_feedback"><i class="fas fa-star"></i><span>AI Feedback</span></a></li>
+                <li class="active"><a href="/emotionhistory"><i class="fas fa-history"></i><span>Emotion History</span></a></li>
+                <li><a href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                <li><a href="javascript:void(0)" id="theme-toggle" class="theme-btn-sidebar"><i id="theme-icon" class="fas fa-moon"></i><span>Theme</span></a></li>
             </ul>
             </nav>
             
@@ -213,7 +171,6 @@
         </div>
     </div>
 
-    <!-- Delete pop up -->
     <div id="deleteModal" class="popup-overlay" style="display: none;">
         <div class="popup-box small-popup">
             <h2>Delete Entry</h2>
@@ -294,7 +251,6 @@
         }
 
         function closeEditModal() {
-            // Hide the modal again
             document.getElementById('editModal').style.display = "none";
         }
 
@@ -307,7 +263,7 @@
             document.getElementById('deleteModal').style.display = "none";
         }
 
-        // Close if user clicks outside the white box
+        // Close if user clicks outside the modal
         window.onclick = function(event) {
             const editModal = document.getElementById('editModal');
             const deleteModal = document.getElementById('deleteModal');
