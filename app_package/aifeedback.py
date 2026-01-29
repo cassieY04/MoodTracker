@@ -35,14 +35,20 @@ def detect_context(text):
             "burnout", "overworked", "collapse", "rest", "bed", "pillow", "woke up",
             "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish", "yawning", "snooze"
         ],
+        "relationship general": [
+            "friend", "family", "partner", "parents", "roommate", "housemate", "peer", "social", 
+            "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out"
+        ],
         "relationship issues": [
-            "friend", "family", "partner", "argument", "fight", "conflict", "breakup", "toxic", "parents",
-            "crush", "ghosted", "situationship", "roommate", "housemate", "drama", "gossip", "red flag", "bestie",
-            "squad", "peer", "social", "reject", "dumped", "cheated", "ex", "boyfriend", "girlfriend", "bf", "gf",
-            "tea", "ick", "trust", "lie", "betray", "jealous", "envy", "date", "dating", "marriage", "divorce",
-            "gaslight", "love bomb", "boundaries", "clingy", "distant", "misunderstanding", "attachment style", 
-            "codependent", "third wheel", "friendzone", "catfish", "talking stage", "soft launch", "lonely", "miss them", 
-            "bff", "best friend", "love", "hate", "compromise", "apologize", "forgive"
+            "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
+            "red flag", "reject", "dumped", "cheated", "ex", "tea", "ick", "betray", "jealous", 
+            "envy", "divorce", "gaslight", "love bomb", "clingy", "distant", "misunderstanding", 
+            "codependent", "third wheel", "friendzone", "catfish", "hate", "lie"
+        ],
+        "relationship positive": [
+            "bestie", "bff", "best friend", "squad", "love", "date", "dating", "marriage", 
+            "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", 
+            "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
         ],
         "health concerns": [
             "sick", "pain", "doctor", "ill", "headache", "hurt", "health", "body",
@@ -90,7 +96,7 @@ def detect_context(text):
             "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
             "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama",
             "podcast", "vlog", "photography", "blog", "diy", "craft", "knitting", "gardening", "poca",
-            "photocard", "drawing"
+            "photocard", "drawing", "volleyball", "skate", "rollerblade", "skiing", "snowboard"
         ],
         "positive events": [
             "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won", "success", "bonus", "award",
@@ -140,7 +146,7 @@ def detect_context(text):
             "purr", "bark", "tortoise", "guinea pig", "lizard", "snake", "bird", "parrot", "hedgehog"
         ],
         "weather": [
-            "rain", "hot", "sun", "weather", "storm", "wet", "humid", "cold", "gloom", "dark"
+            "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog",
         ]
     }
     detected = []
@@ -218,23 +224,10 @@ def generate_short_feedback(emotion, reason="", thought=""):
     # Combine text for analysis
     full_text = f"{reason} {thought}".lower()
 
-    # --- Mixed Emotion Check ---
-    # If a positive emotion is chosen but the text contains negative words, flag it.
-    if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
-        return "It seems you're feeling positive, but your notes mention some challenges. It's okay to have mixed feelings."
-
-    if emotion in ["sad", "angry", "stressed", "anxious"] and any(word in full_text for word in POSITIVE_WORDS):
-        return "It seems you're feeling down, but your notes mention some positives. It's okay to have mixed feelings."
-
-    if emotion == "neutral":
-        if any(word in full_text for word in POSITIVE_WORDS):
-             return "You're feeling neutral, but your notes mention some positive things. It sounds like a calm and good moment."
-        if any(word in full_text for word in NEGATIVE_WORDS):
-             return "You're feeling neutral despite some challenges mentioned. Staying balanced is a great strength."
-
     detected_contexts = detect_context(full_text)
 
-    # 1. Check for specific keywords first (e.g. "tired")
+    #mixed emotion check
+    #Check for specific keywords first
     if "technology" in detected_contexts and "technical difficulties" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
@@ -257,12 +250,6 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "It is great that you are happy, but you seem tired as well. Remember to get some rest."
         return "You seem tired. Remember that rest is productive too."
 
-    elif "loneliness" in detected_contexts:
-        return "Feeling alone is tough. Try to reach out to someone you trust today."
-        
-    elif "emotional release" in detected_contexts:
-        return "Crying is a healthy way to release built-up emotion. It's okay to let it out."
-
     elif "achievement success" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "You crushed it! Make sure to treat yourself for this win today."
@@ -279,6 +266,12 @@ def generate_short_feedback(emotion, reason="", thought=""):
         else:
             return "The daily grind can be exhausting. Remember to take breaks and care for yourself."
         
+    elif "loneliness" in detected_contexts:
+        return "Feeling alone is tough. Try to reach out to someone you trust today."
+        
+    elif "emotional release" in detected_contexts:
+        return "Crying is a healthy way to release built-up emotion. It's okay to let it out."
+        
     # 2.5 If no specific context but text is present, reflect it back
     if not detected_contexts and (reason or thought):
         # Smart Fallback: Use the emotion to frame the response even if we don't recognize the words
@@ -294,6 +287,19 @@ def generate_short_feedback(emotion, reason="", thought=""):
         
         return f"It sounds like {target} is impacting you. Feeling {emotion} is valid."
 
+    #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
+    if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
+        return "It seems you're feeling positive, but your notes mention some challenges. It's okay to have mixed feelings."
+
+    if emotion in ["sad", "angry", "stressed", "anxious"] and any(word in full_text for word in POSITIVE_WORDS):
+        return "It seems you're feeling down, but your notes mention some positives. It's okay to have mixed feelings."
+
+    if emotion == "neutral":
+        if any(word in full_text for word in POSITIVE_WORDS):
+             return "You're feeling neutral, but your notes mention some positive things. It sounds like a calm and good moment."
+        if any(word in full_text for word in NEGATIVE_WORDS):
+             return "You're feeling neutral despite some challenges mentioned. Staying balanced is a great strength."
+    
     # 2. Then check emotion categories
     if emotion in ["stressed", "anxious"]:
         if reason or thought:
@@ -469,11 +475,13 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "achievement success" in reason_contexts:
                 analysis.append("You've clearly hit a milestone; acknowledging these wins builds long-term confidence.")
             elif "relationship issues" in reason_contexts:
-                analysis.append("Resolving social friction or enjoying a good interaction is a great emotional boost.")
+                analysis.append("Resolving social friction is a great emotional boost.")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in things you love is essential for your mental 'recharge'.")
             elif "pet" in reason_contexts:
                 analysis.append("Spending time with your pet is a scientifically proven way to lower stress and boost mood.")
+            elif "relationship positive" in reason_contexts:
+                analysis.append("Positive social connections are a key pillar of happiness and well-being.")
 
             if not reason_contexts:
                 analysis.append("Identifying these personal sources of happiness helps you build resilience.")
@@ -506,6 +514,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Engaging in your passions is fueling this excitement, which is fantastic for your mental health.")
             elif "achievement success" in reason_contexts:
                 analysis.append("Success is a great motivator; riding this wave can lead to even more accomplishments.")
+            elif "relationship positive" in reason_contexts:
+                analysis.append("Positive social interactions are a great source of excitement and joy.")
+            elif "relationship general" in reason_contexts:
+                analysis.append("Social connections often bring unexpected joy and excitement.")
             
             if not reason_contexts:
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
