@@ -626,12 +626,27 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is understandable that '{reason}' would cause frustration.")
-        
-        if reason_contexts:
-            analysis.append(f"It seems {', '.join(reason_contexts)} might be triggering this reaction.")
-             
-        elif not reason_contexts:
-            analysis.append("Even if the trigger seems specific, anger often points to a need for change or boundaries.")
+            if "technology" in reason_contexts:
+                analysis.append("Technical glitches are uniquely frustrating because they disrupt your sense of control and progress.")
+            elif "relationship_issues" in reason_contexts:
+                analysis.append("Feeling 'hate' or intense anger toward someone usually points to a significant disappointment or broken trust.")
+            elif "academic pressure" in reason_contexts:
+                analysis.append("When deadlines and expectations feel unfair or overwhelming, anger is a common reaction to that pressure.")
+            elif "daily_hustle" in reason_contexts:
+                analysis.append("Constant small errands and a busy schedule can wear down your patience, making small triggers feel much larger.")               
+            elif "relationship_general" in reason_contexts:
+                analysis.append("Even minor social friction can be aggravating when you're already carrying other stressors.")
+            
+            if not reason_contexts:
+                 analysis.append("Even if the trigger seems specific, anger often points to a need for change or firmer boundaries.")
+
+        if thought:
+            if "emotional_release" in thought_contexts:
+                analysis.append("The urge to vent or 'explode' indicates that your internal pressure has reached a boiling point.")
+            elif "self-esteem" in thought_contexts:
+                analysis.append("Sometimes we direct anger at others when we are actually feeling disappointed in ourselves; be kind to yourself.")
+            else:
+                analysis.append("Your thoughts show you are processing a sense of injustice or unfairness.")
 
         suggestions.extend([
             "Take a few deep breaths before reacting",
