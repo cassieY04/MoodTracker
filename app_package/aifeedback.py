@@ -242,6 +242,12 @@ def generate_short_feedback(emotion, reason="", thought=""):
                 return "Pets bring so much joy! Enjoy the time with your furry friend."
             else:
                 return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
+            
+    elif "hobbies" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It's wonderful that your hobbies are bringing you joy! Keep indulging in what you love."
+        else:
+            return "Engaging in activities you love is important; consider revisiting these to lift your mood."
         
     elif "fatigue" in detected_contexts:
         if emotion in ["happy", "excited"]:
@@ -268,23 +274,28 @@ def generate_short_feedback(emotion, reason="", thought=""):
         return "Feeling alone is tough. Try to reach out to someone you trust today."
         
     elif "emotional release" in detected_contexts:
-        return "Crying is a healthy way to release built-up emotion. It's okay to let it out."
+        if "relationship positive" in detected_contexts:
+            if emotion == "neutral":
+                return "It's okay to feel neutral even in the presence of loved ones. Emotions can be complex."
+            elif emotion in ["sad", "angry", "stressed", "anxious"]:
+                return "Crying in front of loved ones can be a sign of trust and connection. It's okay to let your guard down."  
+            else:
+                return "Sharing your joy with loved ones amplifies the happiness. Let yourself celebrate together!"
         
-    # 2.5 If no specific context but text is present, reflect it back
-    if not detected_contexts and (reason or thought):
-        # Smart Fallback: Use the emotion to frame the response even if we don't recognize the words
-        target = reason if reason else "your thoughts"
-        if emotion in ["happy", "excited"]:
-            return f"It's wonderful that {target} is bringing you positivity!"
-        elif emotion in ["sad", "neutral"]:
-            return f"It sounds like {target} is weighing on your mind. Be gentle with yourself."
-        elif emotion in ["angry"]:
-            return f"It seems {target} is causing frustration. It's valid to feel this way."
-        elif emotion in ["anxious", "stressed"]:
-            return f"It sounds like {target} is a source of pressure right now."
-        
-        return f"It sounds like {target} is impacting you. Feeling {emotion} is valid."
+        elif "relationship issues" in detected_contexts:
+            if emotion in ["happy", "excited"]:
+                return "It's okay to explode or vent when you've been pushed too far. Let the energy out, then breathe."
+            elif emotion == "neutral":
+                return "It's understandable to feel neutral after a tough interaction. Take time to process your feelings."
+            else:
+                return "Crying is a healthy way to release that weight. Let it out; you'll feel lighter soon."
 
+        elif "relationship general" in detected_contexts:
+            return f"Sometimes we just need to vent about the people in our lives. Acknowledging {reason} is a healthy release."
+
+        else:
+            return "Crying or venting is a healthy way to release built-up emotion. It's okay to let it out."
+        
     #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
     if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
         return "It seems you're feeling positive, but your notes mention some challenges. It's okay to have mixed feelings."
@@ -298,7 +309,22 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if any(word in full_text for word in NEGATIVE_WORDS):
              return "You're feeling neutral despite some challenges mentioned. Staying balanced is a great strength."
     
-    # 2. Then check emotion categories
+    #If no specific context but text is present, reflect it back
+    if not detected_contexts and (reason or thought):
+        # Smart Fallback: Use the emotion to frame the response even if we don't recognize the words
+        target = reason if reason else "your thoughts"
+        if emotion in ["happy", "excited"]:
+            return f"It's wonderful that {target} is bringing you positivity!"
+        elif emotion in ["sad", "neutral"]:
+            return f"It sounds like {target} is weighing on your mind. Be gentle with yourself."
+        elif emotion in ["angry"]:
+            return f"It seems {target} is causing frustration. It's valid to feel this way."
+        elif emotion in ["anxious", "stressed"]:
+            return f"It sounds like {target} is a source of pressure right now."
+        
+        return f"It sounds like {target} is impacting you. Feeling {emotion} is valid."
+    
+    #for if type nothing specific but just general emotion
     if emotion in ["stressed", "anxious"]:
         if reason or thought:
             return (
