@@ -285,18 +285,23 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if "relationship positive" in detected_contexts:
             if emotion == "neutral":
                 return "It's okay to feel neutral even in the presence of loved ones. Emotions can be complex."
+            
             elif emotion in ["sad", "angry", "stressed", "anxious"]:
                 return "Crying in front of loved ones can be a sign of trust and connection. It's okay to let your guard down."
+            
             elif any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's okay to have mixed feelings even during happy moments with loved ones. Emotions can be complex."
+            
             else:
                 return "Sharing your joy with loved ones amplifies the happiness. Let yourself celebrate together!"
         
         elif "relationship issues" in detected_contexts:
             if emotion in ["happy", "excited"]:
                 return "It's okay to explode or vent when you've been pushed too far. Let the energy out, then breathe."
+            
             elif emotion == "neutral":
                 return "It's understandable to feel neutral after a tough interaction. Take time to process your feelings."
+            
             else:
                 return "Crying is a healthy way to release that weight. Let it out; you'll feel lighter soon."
 
@@ -316,6 +321,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
     if emotion == "neutral":
         if any(word in full_text for word in POSITIVE_WORDS):
              return "You're feeling neutral, but your notes mention some positive things. It sounds like a calm and good moment."
+        
         if any(word in full_text for word in NEGATIVE_WORDS):
              return "You're feeling neutral despite some challenges mentioned. Staying balanced is a great strength."
     
@@ -325,10 +331,13 @@ def generate_short_feedback(emotion, reason="", thought=""):
         target = reason if reason else "your thoughts"
         if emotion in ["happy", "excited"]:
             return f"It's wonderful that {target} is bringing you positivity!"
+        
         elif emotion in ["sad", "neutral"]:
             return f"It sounds like {target} is weighing on your mind. Be gentle with yourself."
+        
         elif emotion in ["angry"]:
             return f"It seems {target} is causing frustration. It's valid to feel this way."
+        
         elif emotion in ["anxious", "stressed"]:
             return f"It sounds like {target} is a source of pressure right now."
         
@@ -415,30 +424,41 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"You identified '{reason}' as a key factor.")
             if reason_contexts:
                 analysis.append(f"Specifically, the situation involves {', '.join(reason_contexts)}, which is a common source of pressure.")
+            
             else:
                 analysis.append("External stressors like this often contribute to a sense of being overwhelmed, regardless of the specific cause.")
             
             #situation-based on keywords
             if "positive events" in reason_contexts:
                 analysis.append("Even positive life changes (eustress) can be physically and mentally draining.")
+            
             elif "pet" in reason_contexts:
                 analysis.append("Caring for a pet can add responsibilities, which might be contributing to your stress.")
+            
             elif "emotional release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
+            
             elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
                 analysis.append("Technical glitches or system crashes are frustrating because they disrupt your flow and sense of control.")            
+            
             elif "academic pressure" in reason_contexts:
                 analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
+            
             elif "work stress" in reason_contexts:
                 analysis.append("Professional responsibilities or workplace dynamics seem to be weighing on your energy.")
+            
             elif "achievement success" in reason_contexts:
                 analysis.append("Even after achieving success, the pressure to maintain or exceed that level can be stressful.")
+            
             elif "relationship postive" in reason_contexts:
                 analysis.append("Sometimes, even positive social interactions can lead to overstimulation and stress.")
+            
             elif "relationship issues" in reason_contexts:
                 analysis.append("Interpersonal conflicts can be a significant source of emotional strain.")
+            
             elif "relationship general" in reason_contexts:
                 analysis.append("Social dynamics, even in general interactions, can contribute to stress levels.")
+            
             elif "financial" in reason_contexts:
                 analysis.append("Monetary concerns are a common and impactful source of stress for many people.")
 
@@ -467,27 +487,38 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"The situation regarding '{reason}' seems to be weighing heavily on you.")
             if "relationship issues" in reason_contexts:
                 analysis.append("Interpersonal conflicts can be draining; try to protect your peace.")
+            
             elif "pet" in reason_contexts:
                 analysis.append("Pets can be a great comfort during tough times. Maybe spend some time with them today.")
+            
             elif "loneliness" in reason_contexts:
                 analysis.append("Isolation can amplify sadness; connection is often the antidote.")
                 suggestions.append("Reach out to a friend or family member, even just for a quick chat")
+            
             elif "positive events" in reason_contexts:
                 analysis.append("It is valid to feel sad even during happy events. This is often called 'paradoxical emotion'.")
+            
             elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
                 analysis.append("It’s valid to feel sad or defeated when tools you rely on fail you during important tasks.")
+            
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in activities you love is important; consider revisiting these to lift your mood.")
+            
             elif "academic pressure" in reason_contexts:
                 analysis.append("Academic challenges can feel overwhelming and impact your emotional well-being.")
-            elif "achievemtent success" in reason_contexts:
+            
+            elif "achievement success" in reason_contexts:
                 analysis.append("Sometimes after a big achievement, a sense of emptiness or sadness can follow.")
+            
             elif "relationship positive" in reason_contexts:
                 analysis.append("Even positive social interactions can sometimes stir up unexpected sadness.")
+            
             elif "relationship issues" in reason_contexts:
                 analysis.append("Conflicts or misunderstandings with loved ones can deeply affect your emotional state.")
+            
             elif "relationship general" in reason_contexts:
                 analysis.append("Social dynamics, even in general interactions, can influence your mood.")
+            
             elif "financial" in reason_contexts:
                 analysis.append("Worries about money can weigh heavily on your mind and contribute to feelings of sadness.")
 
@@ -500,6 +531,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         if thought:
             if "self-esteem" in thought_contexts:
                 analysis.append("Your internal monologue seems critical of yourself, which deepens the sadness.")
+            
             elif "loneliness" in thought_contexts:
                 analysis.append("You are telling yourself that you are alone, but this feeling is temporary.")
    
@@ -522,20 +554,28 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"It is great that '{reason}' is bringing you joy.")
             if "technology" in reason_contexts and "technical difficulties" in reason_contexts:
                 analysis.append("Staying positive despite technical hurdles is a sign of high resilience.")
+            
             elif "achievement success" in reason_contexts:
                 analysis.append("You've clearly hit a milestone; acknowledging these wins builds long-term confidence.")
+            
             elif "relationship issues" in reason_contexts:
                 analysis.append("Resolving social friction is a great emotional boost.")
+            
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in things you love is essential for your mental 'recharge'.")
+            
             elif "pet" in reason_contexts:
                 analysis.append("Spending time with your pet is a scientifically proven way to lower stress and boost mood.")
+            
             elif "relationship positive" in reason_contexts:
                 analysis.append("Positive social connections are a key pillar of happiness and well-being.")
+            
             elif "relationship issues" in reason_contexts:
                 analysis.append("Overcoming relationship challenges can lead to personal growth and happiness.")
+            
             elif "relationship general" in reason_contexts:
                 analysis.append("Social interactions, even casual ones, can significantly impact your mood.")
+            
             elif "financial" in reason_contexts:
                 analysis.append("Financial stability or positive developments can greatly enhance your sense of security and happiness.")
 
@@ -638,6 +678,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         if thought:
             if "uncertainty" in thought_contexts:
                 analysis.append("You're observing the future without immediate fear, which is a very high level of mindfulness.")
+            
             elif "self-esteem" in thought_contexts:
                 analysis.append("You are viewing yourself and your progress realistically today, without being too hard on yourself.")    
 
@@ -796,7 +837,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     main_emoji = "😐"
     main_icon = "neutral.png"
     
-    #thresholds: 1.0-1.66 (Neg), 1.67-2.33 (Neu), 2.34-3.0 (Pos)
+    #thresholds: 1.0-1.66 (neg), 1.67-2.33 (neu), 2.34-3.0 (pos)
     if avg_score >= 2.34:
         main_emotion = "Mostly Positive"
         main_emoji = "😊"
@@ -806,7 +847,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
         main_emoji = "😔"
         main_icon = "sad.png"
     else:
-        # It is in the Neutral range (approx 2.0). Check if it's stable Neutral or Mixed.
+        #check if it's stable neutral or mixed, when it's in neutral range (approx 2.0)
         has_pos = any(s == 3 for s in scores)
         has_neg = any(s == 1 for s in scores)
         
@@ -855,12 +896,15 @@ def generate_aggregated_feedback(logs, period_name="day"):
         analysis.append(f"Your {period_name} was an emotional rollercoaster, shifting between highs and lows.")
         analysis.append("Fluctuations like this are normal during busy or eventful periods.")
         suggestions.append("Take a moment to decompress and process these events.")
+    
     elif main_emotion == "Mostly Negative":
         analysis.append(f"It seems this {period_name} has been generally challenging for you (Avg Mood: Low).")
         suggestions.append("Be gentle with yourself; rest is important.")
+    
     elif main_emotion == "Mostly Positive":
         analysis.append(f"You've had a generally positive {period_name} (Avg Mood: High)!")
         suggestions.append("Reflect on what went well so you can maintain this momentum.")
+    
     else:
         analysis.append(f"Your {period_name} has been relatively stable and balanced.")
 
