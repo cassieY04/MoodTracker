@@ -18,7 +18,6 @@ def get_emotion_styling(emotion):
     """Returns color and emoji for a given emotion."""
     return EMOTION_MAP.get(emotion, {'color': "#EFD9D9", 'emoji': '🤷', 'icon': 'default.png'})
 
-
 log_emotion_bp = Blueprint('log_emotion', __name__)
 
 @log_emotion_bp.route("/log_emotion", methods=['GET', 'POST'])

@@ -14,12 +14,11 @@ def emotion_history():
     username = session['username']
     logs = UserManager.get_emotion_logs(username)
     
-    # --- Filtering Logic ---
+    #filter
     filter_date = request.args.get('date')
     filter_emotion = request.args.get('emotion')
 
-    if filter_date:
-        # Filter by date (timestamp starts with YYYY-MM-DD)
+    if filter_date: #standard YYYY-MM-DD format
         logs = [l for l in logs if l['timestamp'].startswith(filter_date)]
     
     if filter_emotion:
@@ -34,9 +33,9 @@ def emotion_history():
             new_note = request.form.get('note')
             new_thought = request.form.get('thought')
 
-            # Find original log to preserve timestamp (don't move history to "now")
+            #find original log to preserve timestamp (don't move history to "now")
             current_log = next((log for log in logs if str(log['id']) == str(log_id)), None)
-            # Use original timestamp if found, otherwise fallback to now
+            #sse original timestamp if found, otherwise fallback to now
             updated_timestamp = current_log['timestamp'] if current_log else datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
 
             if UserManager.update_emotion_log(log_id, username, new_emotion, new_note, new_thought, updated_timestamp):

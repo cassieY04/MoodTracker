@@ -9,7 +9,7 @@ from Databases.emologdb import get_emolog_by_id
 
 ai_feedback_bp = Blueprint('ai_feedback', __name__)
 
-# Global Constants for Word Detection
+#global positive and negative word lists
 POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "amazing", "best", "fun", "joy", "blessed", "lucky"]
 NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated", "lonely", "pain", "sick", "cry"]
 
@@ -214,7 +214,7 @@ def get_encouragement(emotion, contexts):
         ]
     }
     
-    # Default fallback
+    #default fallback
     options = messages.get(emotion, ["Trust the process. You are doing your best."])
     return random.choice(options)
 
@@ -225,7 +225,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
     detected_contexts = detect_context(full_text)
 
     #mixed emotion check
-    #Check for specific keywords first
+    #check for specific keywords first
     if "technology" in detected_contexts and "technical difficulties" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
@@ -358,26 +358,26 @@ def generate_full_feedback(emotion, reason="", thought=""):
     emotion = emotion.lower()
     full_text = f"{reason} {thought}".lower()
     
-    # Analyze separately to distinguish Situation (External) vs Thoughts (Internal)
+    #analyze separately to distinguish situation (external) vs thoughts (internal)
     reason_contexts = detect_context(reason) if reason else []
     thought_contexts = detect_context(thought) if thought else []
     
-    # Combined for general checks
+    #combined for general checks
     detected_contexts = list(set(reason_contexts + thought_contexts))
 
     analysis = []
     suggestions = []
     
-    # Get encouragement based on emotion
+    #get encouragement based on emotion
     encouragement = get_encouragement(emotion, detected_contexts)
 
-    # --- Mixed Emotion Check ---
+    #mixed emotion checks
     is_mixed_feeling_pos = emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS)
     is_mixed_feeling_neg = emotion in ["sad", "angry", "stressed", "anxious"] and any(word in full_text for word in POSITIVE_WORDS)
     is_mixed_feeling_neutral_pos = emotion == "neutral" and any(word in full_text for word in POSITIVE_WORDS)
     is_mixed_feeling_neutral_neg = emotion == "neutral" and any(word in full_text for word in NEGATIVE_WORDS)
 
-    # -------- ANALYSIS --------
+    #analaysis
     if is_mixed_feeling_pos:
         analysis.append("You've logged a positive emotion, but your notes hint at some negative feelings. This is known as a 'mixed emotional state'.")
         analysis.append("It's completely normal to feel happy about one thing while being worried or sad about another.")
@@ -408,7 +408,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             else:
                 analysis.append("External stressors like this often contribute to a sense of being overwhelmed, regardless of the specific cause.")
             
-            # situation-based on some keywords
+            #situation-based on keywords
             if "positive events" in reason_contexts:
                 analysis.append("Even positive life changes (eustress) can be physically and mentally draining.")
             elif "pet" in reason_contexts:
@@ -661,7 +661,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
              
         suggestions.append("Continue observing your emotions and reflecting on them")
 
-    # -------- GENERAL SUGGESTIONS (Fallback & Context-Specific) --------
+    #general suggestion (fallback & context-specific)
     if "self-esteem" in detected_contexts:
         suggestions.append("Write down 3 things you value about yourself")
         suggestions.append("Remember: social media is a highlight reel, not reality")
@@ -713,7 +713,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             "Take the rest of the day off if your schedule allows"
         ])
 
-    # Ensure suggestions list is never empty
+    #ensure suggestions list is never empty
     if not suggestions:
         if emotion in ["stressed", "anxious", "angry"]:
             suggestions.append("Practice deep breathing exercises (4-7-8 technique)")
@@ -724,11 +724,11 @@ def generate_full_feedback(emotion, reason="", thought=""):
         else:
             suggestions.append("Share your positive energy with someone else")
 
-    # Remove duplicates while preserving order
+    #remove duplicates while preserving order
     seen = set()
     suggestions = [x for x in suggestions if not (x in seen or seen.add(x))]
 
-    # Limit to 5 suggestions max to avoid overwhelming the user
+    #limit to 5 suggestions max
     suggestions = suggestions[:5]
 
     return {
@@ -744,12 +744,12 @@ def generate_full_feedback(emotion, reason="", thought=""):
     
 def generate_aggregated_feedback(logs, period_name="day"):
     """Generates feedback based on multiple logs (Day, Week, or Month)."""
-    # Sort logs by time
+    #sort logs by time
     logs.sort(key=lambda x: x['timestamp'])
     
     emotions = [l['emotion_name'] for l in logs]
     
-    # --- NEW LOGIC: Mood Level Calculation (Aligns with Statistics Graph) ---
+    #mood lvl calculations (align with mood statistics graph)
     mood_scores = {
         'Happy': 3, 'Excited': 3,
         'Neutral': 2,
@@ -762,7 +762,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     main_emoji = "😐"
     main_icon = "neutral.png"
     
-    # Thresholds: 1.0-1.66 (Neg), 1.67-2.33 (Neu), 2.34-3.0 (Pos)
+    #thresholds: 1.0-1.66 (Neg), 1.67-2.33 (Neu), 2.34-3.0 (Pos)
     if avg_score >= 2.34:
         main_emotion = "Mostly Positive"
         main_emoji = "😊"
@@ -785,7 +785,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
             main_emoji = "😐"
             main_icon = "neutral.png"
 
-    # Aggregate texts into a timeline format
+    #aggregate texts into a timeline format
     combined_reason = ""
     combined_thought = ""
     all_text_for_context = ""
@@ -807,11 +807,10 @@ def generate_aggregated_feedback(logs, period_name="day"):
     all_text_for_context = " ".join([f"{l['note']} {l['thought']}" for l in logs])
     detected_contexts = detect_context(all_text_for_context)
     
-    # Generate Analysis
     analysis = []
     suggestions = []
     
-    # --- NEW RULE: Check for Specific Emotion Spikes (e.g. Angry > 3) ---
+    #check for specific emotion spikes (e.g. Angry > 3)
     angry_count = emotions.count('Angry')
     if angry_count > 3:
         analysis.append(f"⚠️ Alert: You've logged 'Angry' {angry_count} times this {period_name}.")
@@ -831,7 +830,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     else:
         analysis.append(f"Your {period_name} has been relatively stable and balanced.")
 
-    # Add context specific advice
+    #add context specific advice
     if "academic pressure" in detected_contexts or "work stress" in detected_contexts:
         analysis.append(f"Work or school pressure was a recurring theme this {period_name}.")
         suggestions.append("Schedule downtime to prevent burnout.")
@@ -853,7 +852,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     if "social media" in detected_contexts:
         suggestions.append("Consider a short digital detox.")
 
-    # Fallback suggestions if empty
+    #fallback suggestions if empty
     if not suggestions:
         if main_emotion == "Mostly Negative":
              suggestions.append("Try a quick breathing exercise (4-7-8 technique).")
@@ -864,11 +863,11 @@ def generate_aggregated_feedback(logs, period_name="day"):
         else:
              suggestions.append("Practice mindfulness to maintain balance.")
 
-    # Remove duplicates while preserving order
+    #remove duplicates while preserving order
     seen = set()
     suggestions = [x for x in suggestions if not (x in seen or seen.add(x))]
 
-    # Limit to 5 suggestions max
+    #limit to 5 suggestions max
     suggestions = suggestions[:5]
 
     return {
@@ -895,7 +894,7 @@ def ai_feedback(log_id=None):
     
     log = None
     
-    # Data containers
+    #data containers
     single_data = None
     daily_data = None
     weekly_data = None
@@ -903,10 +902,10 @@ def ai_feedback(log_id=None):
     selected_date_str = None
     selected_month_str = None
     selected_week_str = None
-    view_type = 'dashboard' # Default to dashboard view
+    view_type = 'dashboard' #default to dashboard view
 
     if log_id:
-        # CASE 1: Specific Log Selected
+        #specific log selected
         log = get_emolog_by_id(log_id)
         if log and log['username'] != username:
             flash("You do not have permission to view this log.", "error")
@@ -915,11 +914,11 @@ def ai_feedback(log_id=None):
         view_type = 'single'
 
     if not log_id:
-        # CASE 2: No Log Selected -> Generate Summaries (Daily, Weekly, Monthly)
+        #when no log's selected, show data for daily/weekly/monthly
         all_logs = UserManager.get_emotion_logs(username)
         now = datetime.now()
         
-        # --- 1. Daily Logs ---
+        #daily logs
         date_param = request.args.get('date')
         target_date = now
         if date_param:
@@ -935,7 +934,7 @@ def ai_feedback(log_id=None):
             daily_data = generate_aggregated_feedback(todays_logs, "day")
             daily_data['timestamp'] = f"Daily Summary - {selected_date_str}"
 
-        # --- 2. Weekly Logs ---
+        #weekly logs
         week_param = request.args.get('week')
         
         if week_param:
@@ -950,11 +949,11 @@ def ai_feedback(log_id=None):
                 week_end = now + timedelta(days=1) # Future buffer
                 week_label = "Last 7 Days"
         else:
-            # Default to Last 7 Days
+            #default last 7 days
             week_start = now - timedelta(days=7)
             week_end = now + timedelta(days=1)
             week_label = "Last 7 Days"
-            # Set default ISO week for input
+            #for website the week format is shown correctly when user is trying to pick a week
             isocal = now.isocalendar()
             selected_week_str = f"{isocal.year}-W{isocal.week:02d}"
 
@@ -968,7 +967,7 @@ def ai_feedback(log_id=None):
             weekly_data = generate_aggregated_feedback(weekly_logs, "week")
             weekly_data['timestamp'] = f"{week_label} Summary"
 
-        # --- 3. Monthly Logs ---
+        #monthly logs
         month_param = request.args.get('month')
         if month_param:
             selected_month_str = month_param
@@ -981,12 +980,11 @@ def ai_feedback(log_id=None):
             dt_m = datetime.strptime(selected_month_str, '%Y-%m')
             monthly_data['timestamp'] = f"Monthly Summary - {dt_m.strftime('%B %Y')}"
         
-
-    # If we have absolutely no data to show
+    #if no data to show
     if not log and not daily_data and not weekly_data and not monthly_data: 
         return render_template("ai_feedback.html", empty=True)
     
-    # Determine active tab based on request args
+    #determine active tab when user requests(aka clicking the tab)
     active_tab = 'daily'
     if request.args.get('month'):
         active_tab = 'monthly'
@@ -994,10 +992,9 @@ def ai_feedback(log_id=None):
         active_tab = 'weekly'
 
     if log:
-        # Standard Single Log Feedback
         log_data = dict(log)
 
-        # 1. Try to load saved feedback from DB first
+        #load saved feedback from db first
         full = None
         if log_data.get("ai_full_feedback"):
             try:

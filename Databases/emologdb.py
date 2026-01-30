@@ -28,7 +28,7 @@ def init_emologdb():
                    FOREIGN KEY(username) REFERENCES users(username)
             )''')
         
-        # Check for missing columns (migration for existing database)
+        #check for missing columns (migration for existing db)
         cursor = db.execute("PRAGMA table_info(emolog)")
         columns = [col['name'] for col in cursor.fetchall()]
         

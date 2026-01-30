@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, 'user.db')
 
-def get_db():
+def get_db(): #return a connection object to database
     db = sqlite3.connect(
         DB_PATH,
         detect_types=sqlite3.PARSE_DECLTYPES
@@ -36,13 +36,6 @@ def init_db():
                 theme TEXT DEFAULT 'light'
             )''')
 
-        # Check for missing columns (Migration for existing databases)
-        cursor = db.execute("PRAGMA table_info(users)")
-        columns = [col['name'] for col in cursor.fetchall()]
-        
-        if 'theme' not in columns:
-            db.execute('ALTER TABLE users ADD COLUMN theme TEXT DEFAULT "light"')
-        
         db.commit()
 
     except Exception as e:
