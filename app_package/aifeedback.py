@@ -278,9 +278,6 @@ def generate_short_feedback(emotion, reason="", thought=""):
         else:
             return "The daily grind can be exhausting. Remember to take breaks and care for yourself."
         
-    elif "loneliness" in detected_contexts:
-        return "Feeling alone is tough. Try to reach out to someone you trust today."
-        
     elif "emotional release" in detected_contexts:
         if "relationship positive" in detected_contexts:
             if emotion == "neutral":
@@ -302,14 +299,69 @@ def generate_short_feedback(emotion, reason="", thought=""):
             elif emotion == "neutral":
                 return "It's understandable to feel neutral after a tough interaction. Take time to process your feelings."
             
+            elif any(word in full_text for word in POSITIVE_WORDS):
+                return "It seems you're finding glimpses of good despite the conflict."
+            
             else:
                 return "Crying is a healthy way to release that weight. Let it out; you'll feel lighter soon."
 
         elif "relationship general" in detected_contexts:
             return f"Sometimes we just need to vent about the people in our lives. Acknowledging {reason} is a healthy release."
-
+        
         else:
             return "Crying or venting is a healthy way to release built-up emotion. It's okay to let it out."
+    
+    elif "loneliness" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It's great that you're feeling positive, even when alone. Enjoy your own company!"
+            
+        elif emotion == "neutral":
+                return "It's okay to feel neutral when you're by yourself. Embrace the solitude."
+            
+        elif any(word in full_text for word in POSITIVE_WORDS):
+            return "Even when feeling lonely, it's wonderful that you can find some positive moments."
+            
+        else:
+            return "Crying or venting when feeling lonely is a natural way to cope. You're not alone in this."
+        
+    elif "social media platform" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It's great that you're enjoying your time on social media! Just remember to take breaks when needed."
+            
+        elif emotion == "neutral":
+                return "It's okay to feel neutral while using social media. Just be mindful of how it affects your mood."
+            
+        elif any(word in full_text for word in POSITIVE_WORDS):
+            return "It's wonderful that you're finding positive content on social media!"
+            
+        else:
+            return "Social media can sometimes bring negative feelings. Remember to take care of your mental health."
+    
+    elif "social media activity" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It's great that your social media interactions are bringing you joy!"
+            
+        elif emotion == "neutral":
+                return "It's okay to feel neutral about your social media activity. Balance is key."
+            
+        elif any(word in full_text for word in POSITIVE_WORDS):
+            return "It's wonderful that your social media activity is leading to positive experiences!"
+            
+        else:
+            return "Sometimes social media interactions can be draining. Remember to prioritize your well-being."
+        
+    elif "social media negativity" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "It's impressive that you're maintaining positivity despite negative experiences on social media."
+            
+        elif emotion == "neutral":
+                return "It's understandable to feel neutral after encountering negativity on social media."
+            
+        elif any(word in full_text for word in POSITIVE_WORDS):
+            return "It's great that you're finding some positive aspects even amidst social media negativity."
+            
+        else:
+            return "Negative experiences on social media can be tough. Remember to take breaks and focus on your mental health."
         
     #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
     if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
@@ -459,6 +511,15 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "relationship general" in reason_contexts:
                 analysis.append("Social dynamics, even in general interactions, can contribute to stress levels.")
             
+            elif "social media negativity" in reason_contexts:
+                analysis.append("Negative experiences on social media can amplify feelings of stress and anxiety.")
+            
+            elif "social media activity" in reason_contexts:
+                analysis.append("High engagement on social media can lead to information overload, contributing to stress.")
+
+            elif "social media platform" in reason_contexts:
+                analysis.append("Spending extended time on social media platforms can sometimes increase stress levels due to constant connectivity and exposure to various content.")
+            
             elif "financial" in reason_contexts:
                 analysis.append("Monetary concerns are a common and impactful source of stress for many people.")
 
@@ -522,11 +583,20 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "financial" in reason_contexts:
                 analysis.append("Worries about money can weigh heavily on your mind and contribute to feelings of sadness.")
 
+            elif "emotional release" in reason_contexts:
+                analysis.append("Crying is often a necessary release valve for overwhelming feelings; it helps reset your nervous system.")
+            
+            elif "social media negativity" in reason_contexts:
+                analysis.append("Negative interactions on social media can contribute to feelings of sadness and isolation.")
+
+            elif "social media activity" in reason_contexts:
+                analysis.append("Over-engagement with social media can lead to feelings of inadequacy or sadness due to constant comparisons.")
+
+            elif "social media platform" in reason_contexts:
+                analysis.append("Spending too much time on social media platforms can sometimes lead to feelings of sadness due to exposure to negative contents.")
+
             if not reason_contexts:
                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
-
-            if "emotional release" in reason_contexts:
-                analysis.append("Crying is often a necessary release valve for overwhelming feelings; it helps reset your nervous system.")
 
         if thought:
             if "self-esteem" in thought_contexts:
@@ -578,6 +648,15 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "financial" in reason_contexts:
                 analysis.append("Financial stability or positive developments can greatly enhance your sense of security and happiness.")
+            
+            elif "social media activity" in reason_contexts:
+                analysis.append("Positive interactions on social media can enhance your sense of community and belonging.")
+            
+            elif "social media platform" in reason_contexts:
+                analysis.append("Enjoying your time on social media platforms can contribute to feelings of connection and joy.")
+            
+            elif "social media negativity" in reason_contexts:
+                analysis.append("Overcoming negative experiences on social media shows your strength and focus on positivity.")
 
             if not reason_contexts:
                 analysis.append("Identifying these personal sources of happiness helps you build resilience.")
@@ -604,8 +683,14 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "pet" in reason_contexts:
                 analysis.append("Pets often bring joy and excitement; it's wonderful you're experiencing that bond.")
             
-            elif "social media" in reason_contexts:
+            elif "social media activity" in reason_contexts:
                 analysis.append("Positive digital interactions can be a great way to feel connected to your community.")
+            
+            elif "social media platform" in reason_contexts:
+                analysis.append("Enjoying your time on social media platforms can contribute to feelings of connection and joy.")
+            
+            elif "social media negativity" in reason_contexts:
+                analysis.append("Rising above negative experiences on social media shows your resilience and focus on positivity.")
             
             elif "future uncertainty" in reason_contexts:
                 analysis.append("You're viewing the unknown as an opportunity rather than a threat. Keep that perspective!")
@@ -672,6 +757,15 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "financial" in reason_contexts:
                 analysis.append("A neutral stance on financial matters allows for clear decision-making without emotional bias.")
             
+            elif "social media activity" in reason_contexts:
+                analysis.append("Engaging with social media in a neutral way helps you avoid emotional ups and downs.")
+            
+            elif "social media platform" in reason_contexts:
+                analysis.append("Using social media platforms with a balanced mindset protects your emotional well-being.")
+
+            elif "social media negativity" in reason_contexts:
+                analysis.append("Approaching negative social media experiences with neutrality helps you maintain perspective.")
+            
             if not reason_contexts:
                  analysis.append("Taking a step back to view things neutrally is a valuable skill.")
 
@@ -696,23 +790,35 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if "technology" in reason_contexts:
                 analysis.append("Technical glitches are uniquely frustrating because they disrupt your sense of control and progress.")
             
-            elif "relationship_issues" in reason_contexts:
+            elif "relationship issues" in reason_contexts:
                 analysis.append("Feeling 'hate' or intense anger toward someone usually points to a significant disappointment or broken trust.")
+            
+            elif "relationship positive" in reason_contexts:
+                analysis.append("Sometimes even positive interactions can trigger anger if they highlight unmet needs or boundaries.")
+
+            elif "relationship general" in reason_contexts:
+                analysis.append("Even minor social friction can be aggravating when you're already carrying other stressors.")
             
             elif "academic pressure" in reason_contexts:
                 analysis.append("When deadlines and expectations feel unfair or overwhelming, anger is a common reaction to that pressure.")
             
-            elif "daily_hustle" in reason_contexts:
+            elif "daily hustle" in reason_contexts:
                 analysis.append("Constant small errands and a busy schedule can wear down your patience, making small triggers feel much larger.")               
             
-            elif "relationship_general" in reason_contexts:
-                analysis.append("Even minor social friction can be aggravating when you're already carrying other stressors.")
+            elif "social media negativity" in reason_contexts:
+                analysis.append("Encountering negativity on social media can provoke strong emotional reactions, including anger.")
+            
+            elif "social media activity" in reason_contexts:
+                analysis.append("Excessive social media use can lead to feelings of inadequacy or frustration, especially when comparing yourself to others.")
+
+            elif "social media platform" in reason_contexts:
+                analysis.append("Social media platforms can sometimes amplify negative emotions due to constant exposure to curated content and comparisons.")
             
             if not reason_contexts:
                  analysis.append("Even if the trigger seems specific, anger often points to a need for change or firmer boundaries.")
 
         if thought:
-            if "emotional_release" in thought_contexts:
+            if "emotional release" in thought_contexts:
                 analysis.append("The urge to vent or 'explode' indicates that your internal pressure has reached a boiling point.")
             
             elif "self-esteem" in thought_contexts:
@@ -747,7 +853,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Identify one small change to your budget")
         suggestions.append("Try a 'no-spend' day challenge")
     
-    if "social media" in detected_contexts:
+    if "social media negativity" in detected_contexts:
         suggestions.append("Consider a short 'digital detox'")
         suggestions.append("Unfollow accounts that drain your energy")
     
@@ -927,7 +1033,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     if "health concerns" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed.")
 
-    if "social media" in detected_contexts:
+    if "social media negativity" in detected_contexts:
         suggestions.append("Consider a short digital detox.")
 
     #fallback suggestions if empty
