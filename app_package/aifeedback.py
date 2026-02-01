@@ -10,8 +10,8 @@ from Databases.emologdb import get_emolog_by_id
 ai_feedback_bp = Blueprint('ai_feedback', __name__)
 
 #general positive and negative word lists
-POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "amazing", "best", "fun", "joy", "blessed", "lucky", "not bad", "fanstastic", "awesome", "pleased", "satisfied", "grateful", "cheerful", "elated", "overjoyed", "thrilled", "delighted", "joyful", "radiant", "lighthearted"]
-NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated", "lonely", "pain", "sick", "cry", "not good", "aint good", "ain't good"]
+POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "amazing", "best", "fun", "joy", "blessed", "lucky", "not bad", "fanstastic", "awesome", "pleased", "satisfied", "grateful", "cheerful", "elated", "overjoyed", "thrilled", "delighted", "joyful", "radiant", "lighthearted", "proud", "relief", "relieved", "confident", "content", "calm", "peaceful", "better", "improving", "progress", "productive", "accomplished", "win", "winning", "won", "success", "successful", "pass", "passed", "safe", "secure", "hope", "hopeful", "optimistic", "eager", "energetic", "strong", "healthy", "fit", "beautiful", "smart", "easy", "smooth", "fresh", "clean", "free", "freedom"]
+NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated", "lonely", "pain", "sick", "cry", "not good", "aint good", "ain't good", "fail", "failed", "failing", "loss", "lost", "losing", "missed", "missing", "worst", "horrible", "disaster", "mess", "hard", "difficult", "tough", "struggle", "struggling", "stuck", "trapped", "boring", "bored", "annoyed", "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "worried", "worry", "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy", "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless", "hopeless", "poor", "broke", "debt"]
 
 #function to detect context based on keywords
 #can detect duplicate spellings but not mispellings
@@ -22,7 +22,7 @@ def detect_context(text):
         "academic pressure": [
             "exam", "study", "assignment", "deadline", "test", "school", "grade", "gpa", "class",
             "quiz", "midterm", "final", "thesis", "fyp", "project", "presentation", "lecture", "tutorial",
-            "lab", "semester", "submission", "due", "fail", "pass", "resit", "repeat", "transcript",
+            "lab", "semester", "submission", "due", "fail", "resit", "repeat", "transcript",
             "scholarship", "tuition", "fees", "enrollment", "coursework", "syllabus", "lecturer", "professor",
             "tutor", "dean", "campus", "university", "college", "uni", "degree", "diploma", "group project",
             "capstone", "internship", "practicum", "viva", "research", "paper", "essay",
@@ -34,41 +34,53 @@ def detect_context(text):
             "burnout", "overworked", "collapse", "rest", "bed", "pillow", "woke up",
             "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish", "yawning", "snooze"
         ],
+        "fitness": [
+            "gym", "workout", "running", "exercise", "cardio", "weights", "lifting", "training", 
+            "jogging", "treadmill", "dumbbells", "squat", "pushup", "fitness", "athlete", "sport", "swim", "yoga", "pilates"
+        ],
         "relationship general": [
             "friend", "family", "partner", "parents", "roommate", "housemate", "peer", "social", 
-            "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out"
+            "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out", "bf", "gf", "boyfriend", "girlfriend", "husband", "wife", "mom", "dad", "mother", "father", "sister", "brother", "sibling", "cousin"
         ],
         "relationship issues": [
             "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
-            "red flag", "reject", "dumped", "cheated", "ex", "tea", "ick", "betray", "jealous", 
+            "red flag", "reject", "dumped", "cheated", "ex", "tea", "ick", "betray", "jealous", "annoying", "rude", "mean", "ignore", "ignored",
             "envy", "divorce", "gaslight", "love bomb", "clingy", "distant", "misunderstanding", 
             "codependent", "third wheel", "friendzone", "catfish", "hate", "lie"
         ],
         "relationship positive": [
             "bestie", "bff", "best friend", "squad", "love", "date", "dating", "marriage", 
-            "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", 
+            "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", "cute", "sweet", "fun", "laugh",
             "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
         ],
-        "health concerns": [
-            "sick", "pain", "doctor", "ill", "headache", "hurt", "health", "body",
-            "fever", "flu", "cold", "stomach", "migraine", "dizzy", "nausea", "vomit", "medicine", "pill",
-            "period", "cramps", "injury", "broken", "bleed", "hospital", "clinic", "weight", "diet", "skin",
-            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", "condition",
+        "health general": [
+            "doctor", "health", "body", "medicine", "pill", "hospital", "clinic", "weight", "diet", "skin", 
+            "checkup", "appointment", "surgery", "therapy", "medication", "treatment", "recovery", "healed", "cured"
+        ],
+        "health issues": [
+            "sick", "pain", "ill", "headache", "hurt", "fever", "flu", "cold", "stomach", "migraine", "dizzy", 
+            "nausea", "vomit", "stomachache", "period", "cramps", "injury", "broken", "bleed", 
+            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", "condition", "diagnosed", "symptom"
+        ],
+        "work general": [
+            "job", "boss", "work", "meeting", "career", "colleague", "project", "internship", "part-time", 
+            "shift", "manager", "client", "interview", "resume", "cv", "coworker", "office", "business", 
+            "corporate", "9 to 5", "commute"
         ],
         "work stress": [
-            "job", "boss", "work", "salary", "meeting", "career", "colleague", "project",
-            "internship", "part-time", "shift", "manager", "customer", "rude", "overtime", "ot", "client",
-            "interview", "resume", "cv", "fired", "hired", "promotion", "raise", "colleague", "coworker",
-            "office", "business",
-            "micromanage", "toxic workplace", "kpi", "workload", "underpaid", "hustle", "grind", "corporate", 
-            "9 to 5", "slack", "teams", "zoom fatigue", "commute", "unemployed", "job hunt"
+            "rude", "overtime", "ot", "quit", "resign", "fired", "micromanage", "toxic workplace", "kpi", 
+            "workload", "underpaid", "hustle", "grind", "slack", "teams", "zoom fatigue", "unemployed", "job hunt"
         ],
-        "financial": [
-            "money", "cost", "expensive", "debt", "pay", "broke", "bill", "rent",
-            "loan", "allowance", "budget", "save", "spend", "price", "cash", "wallet",
-            "bank", "transfer", "shopping", "buy", "purchase", "afford", "cheap",
-            "inflation", "groceries", "savings", "investment", "crypto", "stocks", "salary", "wage", 
-            "poverty", "rich", "poor", "splurge", "treat myself", "retail therapy"
+        "financial general": [
+            "money", "pay", "bill", "rent", "budget", "spend", "price", "cash", "wallet", "bank", "transfer", 
+            "shopping", "buy", "purchase", "groceries", "salary", "wage"
+        ],
+        "financial stress": [
+            "cost", "expensive", "debt", "broke", "loan", "inflation", "poverty", "poor", "unaffordable"
+        ],
+        "financial gain": [
+            "save", "savings", "investment", "crypto", "stocks", "rich", "splurge", "treat myself", 
+            "retail therapy", "bonus", "profit", "afford", "cheap"
         ],
         "self-esteem": [
             "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "confidence",
@@ -78,7 +90,7 @@ def detect_context(text):
             "glow up", "mid", "basic", "try hard", "people pleaser"
         ],
         "loneliness": [
-            "lonely", "alone", "isolated", "nobody", "ignored", "miss", "lonliness", "friendless",
+            "lonely", "alone", "isolated", "nobody", "ignored", "miss", "loneliness", "friendless",
             "left out", "excluded", "no friends", "homesick", "empty", "silence", "quiet", "abandoned",
             "unseen", "unheard"
         ],
@@ -90,7 +102,7 @@ def detect_context(text):
         "hobbies": [
             "game", "music", "read", "sport", "art", "draw", "code", "movie", "world of warcraft",
             "gaming", "valorant", "league", "netflix", "binge", "gym", "workout", "spotify", "concert",
-            "travel", "food", "eat", "football", "basketball", "badminton", "hiking", "swim", "dance",
+            "travel", "food", "football", "basketball", "badminton", "hiking", "swim", "dance",
             "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano", "shopping",
             "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
             "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama",
@@ -100,7 +112,7 @@ def detect_context(text):
         "positive events": [
             "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won",
             "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", "fun", "happy",
-            "slay", "ate", "gift", "present", "surprise", "lucky", "blessed", "success", "bonus", "award",
+            "slay", "gift", "present", "surprise", "lucky", "blessed", "success", "bonus", "award",
             "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", "w", "win"
         ],
         "emotional release": [
@@ -113,10 +125,12 @@ def detect_context(text):
             "douyin", "weibo", "bilibili", "vk", "quora", "medium", "twitch", "pinterest", "skype", "quora", "teams",
             "zoom", "xiaohongshu", "threads", "qq", "messenger"
         ],
-        "social media activity": [
-            "like", "comment", "follower", "viral", "trend", "feed", "scroll", "screen", "phone",
-            "notification", "dm", "message", "reply", "live", "stream", "subscribe", "highlight reel", 
-            "doomscrolling", "fomo", "influencer", "reel", "algorithm", "screen time", "aesthetic", "edit"
+        "social media general": [
+            "feed", "scroll", "screen", "phone", "notification", "dm", "message", "reply", "live", "stream", 
+            "subscribe", "post", "upload", "story", "status", "app", "comment"
+        ],
+        "social media positive": [
+            "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views", "growth", "hit", "like"
         ],
         "social media negativity": [
             "hate", "bully", "toxic", "envy", "jealous", "fake", "drama", "unfollow", "cancel", "troll",
@@ -134,9 +148,11 @@ def detect_context(text):
             "lost data", "corrupted", "unable to submit", "submission failed", "stuck", "freeze", "unresponsive",
             "overheat", "malfunction", "reboot", "restart", "factory reset", "system failure", "technical issue"
         ],
-        "transport": [
-            "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "traffic", "jam", "late", "wait",
-            "parking", "road", "accident"
+        "transport general": [
+            "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "road", "commute", "flight", "plane", "airport", "ride", "driver"
+        ],
+        "transport stress": [
+            "traffic", "jam", "late", "wait", "parking", "accident", "breakdown", "flat tire", "missed", "delay", "delayed", "rush hour"
         ],
         "daily hustle": [
             "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", "laundry",
@@ -146,7 +162,9 @@ def detect_context(text):
         "achievement success": [
             "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", "celebrate",
             "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", "proud",
-            "improvement", "progress", "growth", "finally", "done"
+            "improvement", "progress", "growth", "finally", "done", "worth it", "paid off", "fruitful",
+            "pass", "passed", "ace", "aced", "distinction", "scored", "high distinction",
+            "hired", "promotion", "raise", "offer", "bonus"
         ],
         "pet": [
             "dog", "cat", "pet", "puppy", "kitten", "fish", "bird", "hamster", "rabbit", "paws", "furry",
@@ -234,23 +252,92 @@ def generate_short_feedback(emotion, reason="", thought=""):
 
     #mixed emotion check
     #check for specific keywords first
-    if "technology" in detected_contexts and "technical difficulties" in detected_contexts:
+    if "technical difficulties" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
         elif emotion in ["angry", "stressed", "sad", "anxious"]:
             return "Tech issues are the worst. Take a step back, maybe a 5-minute break will help clear the 'bug' in your mind too."
 
+    elif "achievement success" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "You crushed it! Make sure to treat yourself for this win today."
+        else:
+            return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
+
     elif "academic pressure" in detected_contexts:
         if emotion in ["happy", "excited"]:
-            return "It is impressive that you are staying positive despite the academic pressure!"
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's impressive that you're staying positive despite the academic challenges!"
+            return "It sounds like things are going well with your studies! It's great to see your hard work paying off."
+        
+        if any(word in full_text for word in ["fail", "failed", "failing", "bad grade", "poor result"]):
+            return "Setbacks like this don't define you. Take a moment to breathe, then try again."
+            
         return "School can be tough. Take it one assignment at a time."
     
+    elif "work general" in detected_contexts or "work stress" in detected_contexts:
+        if "work stress" in detected_contexts:
+             return "Work stress can be overwhelming. Remember your value isn't defined by your job."
+        if "achievement success" in detected_contexts:
+             return "Great job on hitting those professional milestones!"
+        if emotion in ["happy", "excited"]:
+             return "It's great that work is going well! Enjoy the productivity."
+        return "Work can be draining. Make sure to leave work at work when you're done."
+
+    elif "financial general" in detected_contexts or "financial stress" in detected_contexts:
+        if "financial stress" in detected_contexts:
+             return "Financial worry is a heavy burden. Focus on what is within your control today."
+        if "financial gain" in detected_contexts:
+             return "Financial wins feel great! Use this stability to treat yourself or save up."
+        if emotion in ["happy", "excited"]:
+             return "It's good to feel secure about your finances."
+        return "Money matters can be stressful. Budgeting one step at a time helps."
+
+    elif "health general" in detected_contexts or "health issues" in detected_contexts:
+        if "health issues" in detected_contexts:
+            return "Being unwell is tough. Prioritize rest and recovery above all else."
+        if emotion in ["happy", "excited"]:
+            return "Feeling healthy is a great blessing! Glad you're feeling good."
+        return "Health is wealth. Take care of your body."
+
+    elif "transport general" in detected_contexts or "transport stress" in detected_contexts:
+        if "transport stress" in detected_contexts:
+            return "Commuting issues are frustrating. Deep breaths while you wait."
+        if emotion in ["happy", "excited"]:
+            return "Enjoy the journey! Safe travels."
+        return "Commuting can be tiring. Hope you get to your destination safely."
+        
+    elif "relationship positive" in detected_contexts:
+        return "It's wonderful to feel supported and connected. Cherish these bonds."
+
+    elif "relationship issues" in detected_contexts:
+        return "Relationship conflicts are draining. Protect your peace and set boundaries if needed."
+
+    elif "relationship general" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+             return "Spending time with loved ones is a great way to boost your mood."
+        elif emotion in ["angry", "stressed", "sad", "anxious"]:
+             return "Interactions with family or friends can be complicated. It's okay to set boundaries."
+        return "Social connections are a key part of life."
+
+    elif "social media positive" in detected_contexts:
+        return "It's fun when things go well online! Enjoy the engagement."
+
+    elif "social media negativity" in detected_contexts:
+        return "Don't let online negativity affect your real-world peace."
+
     elif "pet" in detected_contexts:
             if emotion in ["happy", "excited"]:
                 return "Pets bring so much joy! Enjoy the time with your furry friend."
             else:
                 return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
             
+    elif "fitness" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            return "Great job on staying active! Endorphins from exercise are a great mood booster."
+        else:
+            return "It's great that you're moving your body. Remember to rest if you need to."
+
     elif "hobbies" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's wonderful that your hobbies are bringing you joy! Keep indulging in what you love."
@@ -261,12 +348,6 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["happy", "excited"]:
             return "It is great that you are happy, but you seem tired as well. Remember to get some rest."
         return "You seem tired. Remember that rest is productive too."
-
-    elif "achievement success" in detected_contexts:
-        if emotion in ["happy", "excited"]:
-            return "You crushed it! Make sure to treat yourself for this win today."
-        else:
-            return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
 
     elif "positive events" in detected_contexts:
         if emotion in ["sad", "angry", "stressed", "anxious"]:
@@ -425,12 +506,23 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Caring for a pet can add responsibilities, which might be contributing to your stress.")
             elif "emotional release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
-            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
+            elif "technical difficulties" in reason_contexts:
                 analysis.append("Technical glitches or system crashes are frustrating because they disrupt your flow and sense of control.")            
             elif "academic pressure" in reason_contexts:
-                analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
+                if "achievement success" in reason_contexts:
+                    analysis.append("Even with a success (like passing), the pressure of maintaining grades can still be stressful.")
+                else:
+                    analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
             elif "work stress" in reason_contexts:
-                analysis.append("Professional responsibilities or workplace dynamics seem to be weighing on your energy.")
+                analysis.append("Toxic or demanding workplace dynamics seem to be weighing on your energy.")
+            elif "work general" in reason_contexts:
+                analysis.append("Professional responsibilities seem to be weighing on your energy.")
+            elif "fitness" in reason_contexts:
+                analysis.append("Pushing your body too hard without enough recovery can lead to physical and mental stress.")
+            elif "health issues" in reason_contexts:
+                analysis.append("Physical discomfort or illness is a major stressor on the mind and body.")
+            elif "transport stress" in reason_contexts:
+                analysis.append("Travel delays and traffic are external stressors that feel out of your control.")
             elif "achievement success" in reason_contexts:
                 analysis.append("Even after achieving success, the pressure to maintain or exceed that level can be stressful.")
             elif "relationship postive" in reason_contexts:
@@ -439,8 +531,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Interpersonal conflicts can be a significant source of emotional strain.")
             elif "relationship general" in reason_contexts:
                 analysis.append("Social dynamics, even in general interactions, can contribute to stress levels.")
-            elif "financial" in reason_contexts:
+            elif "financial stress" in reason_contexts:
                 analysis.append("Monetary concerns are a common and impactful source of stress for many people.")
+            elif "financial general" in reason_contexts:
+                analysis.append("Managing finances seems to be a source of pressure right now.")
 
         if thought:
             if "uncertainty" in thought_contexts:
@@ -474,13 +568,13 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 suggestions.append("Reach out to a friend or family member, even just for a quick chat")
             elif "positive events" in reason_contexts:
                 analysis.append("It is valid to feel sad even during happy events. This is often called 'paradoxical emotion'.")
-            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
+            elif "technical difficulties" in reason_contexts:
                 analysis.append("It’s valid to feel sad or defeated when tools you rely on fail you during important tasks.")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in activities you love is important; consider revisiting these to lift your mood.")
             elif "academic pressure" in reason_contexts:
                 analysis.append("Academic challenges can feel overwhelming and impact your emotional well-being.")
-            elif "achievemtent success" in reason_contexts:
+            elif "achievement success" in reason_contexts:
                 analysis.append("Sometimes after a big achievement, a sense of emptiness or sadness can follow.")
             elif "relationship positive" in reason_contexts:
                 analysis.append("Even positive social interactions can sometimes stir up unexpected sadness.")
@@ -488,8 +582,14 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Conflicts or misunderstandings with loved ones can deeply affect your emotional state.")
             elif "relationship general" in reason_contexts:
                 analysis.append("Social dynamics, even in general interactions, can influence your mood.")
-            elif "financial" in reason_contexts:
+            elif "financial stress" in reason_contexts:
                 analysis.append("Worries about money can weigh heavily on your mind and contribute to feelings of sadness.")
+            elif "financial general" in reason_contexts:
+                analysis.append("Financial situations often carry emotional weight.")
+            elif "health issues" in reason_contexts:
+                analysis.append("Dealing with health problems can be physically and emotionally draining.")
+            elif "social media negativity" in reason_contexts:
+                analysis.append("Negative interactions online can feel personal and isolating.")
 
             if not reason_contexts:
                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
@@ -520,14 +620,18 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is great that '{reason}' is bringing you joy.")
-            if "technology" in reason_contexts and "technical difficulties" in reason_contexts:
+            if "technical difficulties" in reason_contexts:
                 analysis.append("Staying positive despite technical hurdles is a sign of high resilience.")
             elif "achievement success" in reason_contexts:
                 analysis.append("You've clearly hit a milestone; acknowledging these wins builds long-term confidence.")
+            elif "academic pressure" in reason_contexts:
+                analysis.append("Finding joy in your studies is a great sign of engagement and progress.")
             elif "relationship issues" in reason_contexts:
                 analysis.append("Resolving social friction is a great emotional boost.")
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in things you love is essential for your mental 'recharge'.")
+            elif "fitness" in reason_contexts:
+                analysis.append("Physical activity releases endorphins, which directly contributes to your happiness.")
             elif "pet" in reason_contexts:
                 analysis.append("Spending time with your pet is a scientifically proven way to lower stress and boost mood.")
             elif "relationship positive" in reason_contexts:
@@ -536,8 +640,14 @@ def generate_full_feedback(emotion, reason="", thought=""):
                 analysis.append("Overcoming relationship challenges can lead to personal growth and happiness.")
             elif "relationship general" in reason_contexts:
                 analysis.append("Social interactions, even casual ones, can significantly impact your mood.")
-            elif "financial" in reason_contexts:
+            elif "financial gain" in reason_contexts:
                 analysis.append("Financial stability or positive developments can greatly enhance your sense of security and happiness.")
+            elif "financial general" in reason_contexts:
+                analysis.append("Feeling good about your financial situation contributes to overall peace of mind.")
+            elif "health general" in reason_contexts:
+                analysis.append("Feeling healthy and strong is a fundamental foundation for happiness.")
+            elif "transport general" in reason_contexts:
+                analysis.append("A smooth journey or drive can be surprisingly relaxing and enjoyable.")
 
             if not reason_contexts:
                 analysis.append("Identifying these personal sources of happiness helps you build resilience.")
@@ -558,13 +668,13 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is wonderful that '{reason}' has sparked this enthusiasm.")
-            if "academic pressure" in reason_contexts or "work stress" in reason_contexts:
+            if "academic pressure" in reason_contexts or "work general" in reason_contexts:
                 analysis.append("You're turning a challenge into a motivation—this is a powerful 'flow state'.")
             
             elif "pet" in reason_contexts:
                 analysis.append("Pets often bring joy and excitement; it's wonderful you're experiencing that bond.")
             
-            elif "social media" in reason_contexts:
+            elif "social media positive" in reason_contexts:
                 analysis.append("Positive digital interactions can be a great way to feel connected to your community.")
             
             elif "future uncertainty" in reason_contexts:
@@ -572,6 +682,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in your passions is fueling this excitement, which is fantastic for your mental health.")
+            
+            elif "fitness" in reason_contexts:
+                analysis.append("Hitting fitness goals or feeling strong is a fantastic source of excitement.")
             
             elif "achievement success" in reason_contexts:
                 analysis.append("Success is a great motivator; riding this wave can lead to even more accomplishments.")
@@ -585,8 +698,12 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "relationship general" in reason_contexts:
                 analysis.append("Social connections often bring unexpected joy and excitement.")
             
-            elif "financial" in reason_contexts:
+            elif "financial gain" in reason_contexts:
                 analysis.append("Positive financial developments can lead to a sense of freedom and excitement about the future.")
+            elif "financial general" in reason_contexts:
+                analysis.append("Feeling in control of your finances can be very exciting.")
+            elif "transport general" in reason_contexts:
+                analysis.append("Going somewhere new or enjoying a drive is a great mood booster.")
             
             if not reason_contexts:
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
@@ -611,7 +728,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if "fatigue" in reason_contexts:
                 analysis.append("You might be feeling 'flat' because you're physically drained. Neutrality here is your body's way of resting.")
             
-            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
+            elif "technical difficulties" in reason_contexts:
                 analysis.append("Handling tech issues with a neutral head is the most efficient way to problem-solve.")
             
             elif "academic pressure" in reason_contexts:
@@ -629,7 +746,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "relationship general" in reason_contexts:
                 analysis.append("A balanced view of social dynamics is a healthy approach.")
             
-            elif "financial" in reason_contexts:
+            elif "financial general" in reason_contexts:
                 analysis.append("A neutral stance on financial matters allows for clear decision-making without emotional bias.")
             
             if not reason_contexts:
@@ -652,26 +769,26 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is understandable that '{reason}' would cause frustration.")
-            if "technology" in reason_contexts:
+            if "technology" in reason_contexts or "technical difficulties" in reason_contexts:
                 analysis.append("Technical glitches are uniquely frustrating because they disrupt your sense of control and progress.")
             
-            elif "relationship_issues" in reason_contexts:
+            elif "relationship issues" in reason_contexts:
                 analysis.append("Feeling 'hate' or intense anger toward someone usually points to a significant disappointment or broken trust.")
             
             elif "academic pressure" in reason_contexts:
                 analysis.append("When deadlines and expectations feel unfair or overwhelming, anger is a common reaction to that pressure.")
             
-            elif "daily_hustle" in reason_contexts:
+            elif "daily hustle" in reason_contexts:
                 analysis.append("Constant small errands and a busy schedule can wear down your patience, making small triggers feel much larger.")               
             
-            elif "relationship_general" in reason_contexts:
+            elif "relationship general" in reason_contexts:
                 analysis.append("Even minor social friction can be aggravating when you're already carrying other stressors.")
             
             if not reason_contexts:
                  analysis.append("Even if the trigger seems specific, anger often points to a need for change or firmer boundaries.")
 
         if thought:
-            if "emotional_release" in thought_contexts:
+            if "emotional release" in thought_contexts:
                 analysis.append("The urge to vent or 'explode' indicates that your internal pressure has reached a boiling point.")
             
             elif "self-esteem" in thought_contexts:
@@ -702,20 +819,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Try the Pomodoro technique: 25m focus, 5m break")
         suggestions.append("Celebrate small wins, even just finishing one task")
 
-    if "financial" in detected_contexts:
+    if "financial general" in detected_contexts or "financial stress" in detected_contexts:
         suggestions.append("Identify one small change to your budget")
         suggestions.append("Try a 'no-spend' day challenge")
     
-    if "social media" in detected_contexts:
+    if "social media general" in detected_contexts or "social media negativity" in detected_contexts or "social media platform" in detected_contexts:
         suggestions.append("Consider a short 'digital detox'")
         suggestions.append("Unfollow accounts that drain your energy")
     
-    if "health concerns" in detected_contexts:
+    if "health issues" in detected_contexts or "health general" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed")
         suggestions.append("Stay hydrated and prioritize sleep")
 
     if "pet" in detected_contexts:
         suggestions.append("Spend some therapeutic time with your pet")
+
+    if "fitness" in detected_contexts:
+        suggestions.append("Remember to hydrate and stretch after your workout")
+        suggestions.append("Track your progress to see how far you've come")
 
     if "fatigue" in detected_contexts:
         suggestions.append("Prioritize getting a good night's sleep")
@@ -724,7 +845,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Set healthy boundaries to protect your energy")
         suggestions.append("Communicate your needs clearly using 'I' statements")
     
-    if "technology" in detected_contexts and "technical difficulties" in detected_contexts:
+    if "technical difficulties" in detected_contexts:
         suggestions.extend([
             "Step away from the screen for 15 minutes",
             "Try a 'Rubber Duck' debugging session (explain the problem out loud)",
@@ -877,13 +998,13 @@ def generate_aggregated_feedback(logs, period_name="day"):
         analysis.append("You mentioned being tired multiple times; you might be running on empty.")
         suggestions.append("Prioritize sleep and rest above all else.")
 
-    if "financial" in detected_contexts:
+    if "financial stress" in detected_contexts or "financial general" in detected_contexts:
         suggestions.append("Focus on small, controllable financial steps.")
 
     if "health concerns" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed.")
 
-    if "social media" in detected_contexts:
+    if "social media negativity" in detected_contexts or "social media general" in detected_contexts:
         suggestions.append("Consider a short digital detox.")
 
     #fallback suggestions if empty
