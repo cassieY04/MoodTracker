@@ -14,7 +14,7 @@ POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "ama
                   "blessed", "lucky", "not bad", "fanstastic", "awesome", "pleased", "satisfied", "grateful",
                   "cheerful", "elated", "overjoyed", "thrilled", "delighted", "joyful", "radiant", "lighthearted",
                   "proud", "relief", "relieved", "confident", "content", "calm", "peaceful", "better", "improving",
-                  "progress", "productive", 
+                  "progress", "productive", "cute", "sweet", "fun", "laugh", "smile", "smiling", "joke", "humor", "humorous",
                   "pass", "passed", "safe", "secure", "hope", "hopeful", "optimistic", "eager", "energetic", "strong",
                   "healthy", "fit", "beautiful", "smart", "easy", "smooth", "fresh", "clean", "free", "freedom"]
 NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated",
@@ -24,7 +24,7 @@ NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terr
                   "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "worried", "worry",
                   "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy",
                   "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless",
-                  "hopeless", "poor", "broke", "debt"]
+                  "hopeless"]
 
 #function to detect context based on keywords
 #can detect duplicate spellings but not mispellings
@@ -41,7 +41,6 @@ def detect_context(text):
             "capstone", "internship", "practicum", "viva", "research", "paper", "essay",
             "procrastinate", "cramming", "burnout", "dropout", "academic validation", "library"
             "group project", "study group", "professor", "tutorial", "transcript"
-            
         ],
         "achievement success": [
             "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", 
@@ -61,11 +60,11 @@ def detect_context(text):
             "scream", "yell", "vent", "rant", "explode", "meltdown"
         ],
         "financial stress": [
-            "cost", "expensive", "debt", "broke", "loan", "inflation", "poverty", "poor",
+            "costy", "expensive", "debt", "broke", "loan", "inflation", "poverty", "poor",
             "unaffordable"
         ],
         "financial gain": [
-            "save", "savings", "investment", "crypto", "stocks", "rich", "splurge", "treat myself", 
+            "save", "savings", "investment", "stocks", "rich", "splurge", "treat myself", 
             "retail therapy", "bonus", "profit", "afford", "cheap"
         ],
         "financial general": [
@@ -84,16 +83,23 @@ def detect_context(text):
             "jogging", "treadmill", "dumbbells", "squat", "pushup", "fitness", "athlete", "sport",
             "swim", "yoga", "pilates", "football", "basketball", "badminton", "hiking", "swim", "dance",
             "volleyball", "cycling", "bike ride", "marathon", "triathlon", "stretching", 
-            "skate", "rollerblade", "skiing", "snowboard"
+            "skate", "rollerblade", "skiing", "snowboard", "wrestling", "exercising", "exercised"
         ],
         "health general": [
-            "doctor", "health", "body", "medicine", "pill", "hospital", "clinic", "weight", "diet", "skin", 
-            "checkup", "appointment", "surgery", "therapy", "medication", "treatment", "recovery", "healed", "cured"
+            "doctor", "health", "body", "medicine", "pill", "hospital", "clinic", "weight", "diet", 
+            "checkup", "appointment", "surgery", "therapy", "medication", "treatment", "recovery",
+            "skin", "symptom", "condition"
         ],
         "health issues": [
-            "sick", "pain", "ill", "headache", "hurt", "fever", "flu", "cold", "stomach", "migraine", "dizzy", 
-            "nausea", "vomit", "stomachache", "period", "cramps", "injury", "broken", "bleed", "symptom",
-            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", "condition", "diagnosed", 
+            "sick", "pain", "ill", "headache", "hurt", "fever", "flu", "cold", "stomach", "migraine", 
+            "nausea", "vomit", "stomachache", "period", "cramps", "injury", "broken", "bleed", 
+            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", 
+            "diagnosed", "bacterial infection", "viral infection", "fatigue", "cough", "sore throat",
+            "runny nose", "dengue", "fungal infection", "covid", "dizzy", "chronic pain", "dehydrated",
+            "high blood pressure", "hypertension", "low blood pressure", "hypotension", "diabetes",
+        ],
+        "health positive": [
+            "recover", "recovered", "healed", "cured", "fit", "strong", "well", "healthy", "cure"
         ],
         "hobbies": [
             "game", "music", "read", "art", "draw", "code", "movie", "world of warcraft",
@@ -103,28 +109,31 @@ def detect_context(text):
             "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", 
             "makeup", "skincare", "meditation", "journaling", "podcast", "kpop", "kdrama",
             "podcast", "vlog", "photography", "blog", "diy", "shopping", "fashion", "cpop",
-            "songs", "songwriting", "fishing", "camping", "road trip"
+            "songs", "songwriting", "fishing", "camping", "road trip", "hobby", "hobbies"
+            "pop", "puzzles", "lego", "board games", "tabletop", "cosplay"
         ],
         "loneliness": [
             "lonely", "alone", "isolated", "nobody", "ignored", "miss", "loneliness", "friendless",
             "left out", "excluded", "no friends", "homesick", "empty", "silence", "quiet", "abandoned",
-            "unseen", "unheard", "lone wolf", "no friend"
+            "unseen", "unheard", "lone wolf", "no friend", "abandon"
         ],
         "pet": [
             "dog", "cat", "pet", "puppy", "kitten", "fish", "bird", "hamster", "rabbit", "paws", "furry",
             "purr", "bark", "tortoise", "guinea pig", "lizard", "snake", "bird", "parrot", "hedgehog"
         ],
         "positive events": [
-            "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won",
-            "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", 
+            "party", "holiday", "vacation", "trip", "promotion", "celebrate", "winning", "won",
+            "ace", "aced", "graduate", "convo", "offer", "hired", "vibe", "chill", "relax", 
             "slay", "gift", "present", "surprise", "lucky", "blessed", "success", "bonus", "award",
             "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", 
             "fun", "happy",
         ],
         "relationship general": [
             "friend", "family", "partner", "parents", "roommate", "housemate", "peer", "social", 
-            "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out", "bf", "gf",
-            "boyfriend", "girlfriend", "husband", "wife", "mom", "dad", "mother", "father", "sister", "brother", "sibling", "cousin"
+            "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out", "bf", 
+            "boyfriend", "girlfriend", "husband", "wife", "mom", "dad", "mother", "father", "sister", 
+            "brother", "sibling", "cousin", "gf", "significant other", "mate", "pal", "buddy",
+            "date", "dating"
         ],
         "relationship issues": [
             "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
@@ -134,29 +143,30 @@ def detect_context(text):
         ],
         "relationship positive": [
             "bestie", "bff", "best friend", "squad", "love", "date", "dating", "marriage", 
-            "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", "cute", "sweet", "fun", "laugh",
+            "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", 
             "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
         ],
         "self-esteem": [
             "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "confidence",
-            "cringe", "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb", "flop",
-            "mistake", "guilt", "shame", "embarrassed", "regret", "fault",
-            "body image", "skinny", "acne", "looks", "appearance", "unlovable", "not enough", "validation",
+            "cringe", "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb", 
+            "mistake", "guilt", "shame", "embarrassed", "validation",
+            "body image", "skinny", "acne", "looks", "appearance", "unlovable", "not enough", 
             "glow up", "mid", "basic", "try hard", "people pleaser"
         ],
         "social media platform": [
-            "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "xhs", "igtv", "youtube", "whatsapp",
-            "wechat", "line", "discord", "reddit", "pinterest", "tumblr", "linkedin", "telegram", "clubhouse",
-            "douyin", "weibo", "bilibili", "vk", "quora", "medium", "twitch", "pinterest", "skype", "quora", "teams",
-            "zoom", "xiaohongshu", "threads", "qq", "messenger"
+            "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "xhs", "igtv", "youtube", 
+            "wechat", "line", "discord", "reddit", "pinterest", "tumblr", "linkedin", "telegram", 
+            "douyin", "weibo", "bilibili", "vk", "quora", "medium", "twitch", "pinterest", "skype", 
+            "zoom", "xiaohongshu", "threads", "qq", "messenger", "quora", "teams", "clubhouse",
+            "whatsapp"
         ],
         "social media general": [
-            "feed", "scroll", "screen", "phone", "notification", "dm", "message", "reply", "live", "stream", 
-            "subscribe", "post", "upload", "story", "status", "app", "comment"
+            "feed", "scroll", "screen", "phone", "notification", "dm", "message", "reply", "live", 
+            "subscribe", "post", "upload", "story", "status", "app", "comment", "stream", 
         ],
         "social media negativity": [
             "hate", "bully", "toxic", "envy", "jealous", "fake", "drama", "unfollow", "cancel", "troll",
-            "block", "unfollow", "cyberbully", "death threat", "expose", "clout"
+            "block", "unfollow", "cyberbully", "death threat", "expose", "clout", "flop", "shade", "snub"
         ],
         "social media positive": [
             "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views",
@@ -185,14 +195,13 @@ def detect_context(text):
         ],
         "uncertainty": [
             "future", "career", "plans", "worried", "anxious", "what if", "unknown", "direction", "lost",
-            "confused", "choice", "decision", "adulting", "graduation", "internship", "applications",
-            "rejection", "waiting", "hopeful", "dream", "goal"
+            "confused", "choice", "decision", "adulting", "rejection", "waiting", "hopeful", "dream", "goal"
         ],
         "weather": [
             "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog"
         ],
         "work general": [
-            "job", "boss", "work", "meeting", "career", "colleague", "project", "internship", "part-time", 
+            "job", "boss", "work", "meeting", "career", "colleague", "project", "part-time", 
             "shift", "manager", "client", "interview", "resume", "cv", "coworker", "office", "business", 
             "corporate", "9 to 5", "commute"
         ],
