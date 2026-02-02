@@ -303,6 +303,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
     
     elif "technology" in detected_contexts:
         if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's great that you're staying positive even when facing tech challenges!"
             return "It's a great feeling when your tools are working perfectly. Enjoy the smooth flow!"
         
         elif emotion == "neutral":
@@ -369,33 +371,55 @@ def generate_short_feedback(emotion, reason="", thought=""):
         return "Commuting can be tiring. Hope you get to your destination safely."
         
     elif "relationship positive" in detected_contexts:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            if "emotional release" in detected_contexts:
+                return "Sharing your joy with loved ones amplifies the happiness. It's tears of joy!"
+        
+        elif emotion == "neutral":
+            return "It's okay to feel neutral even in the presence of loved ones. Emotions can be complex."
+
+        elif emotion in ["angry", "sad", "anxious", "stressed"] or any(word in full_text for word in NEGATIVE_WORDS):
+            if "emotional release" in detected_contexts:
+                return "Crying or venting is a healthy way to release built-up emotion, even with supportive people around."
+            return "It's okay to feel heavy even when you're around supportive people."
+        
         return "It's wonderful to feel supported and connected. Cherish these bonds."
+        
 
     elif "relationship issues" in detected_contexts:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            if "emotional release" in detected_contexts:
+                return "It's great to see you having tears of joy from the challenges in your relationships!"
+            return "It's great that you're finding positivity even amidst relationship challenges!"
+            
+        elif emotion == "neutral":
+            return "It's understandable to feel neutral after a tough interaction. Take time to process your feelings."
+            
+        elif any(word in full_text for word in NEGATIVE_WORDS):
+            return "It's okay to feel negative emotions even in relationship issues. Let it out; you'll feel lighter soon."
+        
         return "Relationship conflicts are draining. Protect your peace and set boundaries if needed."
 
     elif "relationship general" in detected_contexts:
-        if emotion in ["happy", "excited"]:
-             return "Spending time with loved ones is a great way to boost your mood."
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            if "emotional release" in detected_contexts:
+                return "It's wonderful to have tears of joy when spending time with loved ones!"
+            return "Spending time with loved ones is a great way to boost your mood."
         
-        elif emotion in ["angry", "stressed", "sad", "anxious"]:
-             return "Interactions with family or friends can be complicated. It's okay to set boundaries."
+        elif emotion in ["angry", "stressed", "sad", "anxious"] or any(word in full_text for word in NEGATIVE_WORDS):
+            if "emotional release" in detected_contexts:
+                return "Crying or venting about relationship challenges is a healthy way to release built-up emotion."
+            return "It's normal that interactions with family or friends can be tough and complicated."
         
         return "Social connections are a key part of life."
 
-    elif "social media positive" in detected_contexts:
-        return "It's fun when things go well online! Enjoy the engagement."
-
-    elif "social media negativity" in detected_contexts:
-        return "Don't let online negativity affect your real-world peace."
-
     elif "pet" in detected_contexts:
-            if emotion in ["happy", "excited"]:
-                return "Pets bring so much joy! Enjoy the time with your furry friend."
-            return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            return "Pets bring so much joy! Enjoy the time with your furry friend."
+        return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
             
     elif "fitness" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "Great job on staying active! Endorphins from exercise are a great mood booster."
         return "It's great that you're moving your body. Remember to rest if you need to."
 
@@ -412,6 +436,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "positive events" in detected_contexts:
         if emotion in ["sad", "angry", "stressed", "anxious"]:
             return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
+        return "It's wonderful that positive events are happening in your life! Enjoy these moments."
         
     elif "daily hustle" in detected_contexts:
         if emotion in ["happy", "excited"]:
@@ -419,81 +444,55 @@ def generate_short_feedback(emotion, reason="", thought=""):
         return "The daily grind can be exhausting. Remember to take breaks and care for yourself."
         
     elif "emotional release" in detected_contexts:
-        if "relationship positive" in detected_contexts:
-            if emotion == "neutral":
-                return "It's okay to feel neutral even in the presence of loved ones. Emotions can be complex."
-            
-            elif emotion in ["sad", "angry", "stressed", "anxious"]:
-                return "Crying in front of loved ones can be a sign of trust and connection. It's okay to let your guard down."
-            
-            elif any(word in full_text for word in NEGATIVE_WORDS):
-                return "It's okay to have mixed feelings even during happy moments with loved ones. Emotions can be complex."
-
-            return "Sharing your joy with loved ones amplifies the happiness. Let yourself celebrate together!"
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            return "It's wonderful to have tears of joy! Let those happy emotions flow."
         
-        elif "relationship issues" in detected_contexts:
-            if emotion in ["happy", "excited"]:
-                return "It's okay to explode or vent when you've been pushed too far. Let the energy out, then breathe."
-            
-            elif emotion == "neutral":
-                return "It's understandable to feel neutral after a tough interaction. Take time to process your feelings."
-            
-            elif any(word in full_text for word in POSITIVE_WORDS):
-                return "It seems you're finding glimpses of good despite the conflict."
-
-            return "Crying is a healthy way to release that weight. Let it out; you'll feel lighter soon."
-
-        elif "relationship general" in detected_contexts:
-            return f"Sometimes we just need to vent about the people in our lives. Acknowledging {reason} is a healthy release."
+        elif emotion == "neutral":
+            return "Crying or venting can be a way to process your emotions, even when feeling neutral."
+        
         return "Crying or venting is a healthy way to release built-up emotion. It's okay to let it out."
     
     elif "loneliness" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "It's great that you're feeling positive, even when alone. Enjoy your own company!"
             
         elif emotion == "neutral":
             return "It's okay to feel neutral when you're by yourself. Embrace the solitude."
-            
-        elif any(word in full_text for word in POSITIVE_WORDS):
-            return "Even when feeling lonely, it's wonderful that you can find some positive moments."
+        
+        elif any(word in full_text for word in NEGATIVE_WORDS):
+            return "Feeling lonely can be tough. Remember that it's okay to reach out to others when you need support."
 
         return "Crying or venting when feeling lonely is a natural way to cope. You're not alone in this."
         
     elif "social media platform" in detected_contexts:
-        if emotion in ["happy", "excited"]:
-            return "It's great that you're enjoying your time on social media! Just remember to take breaks when needed."
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            return "It's great that you're enjoying your time on social media platforms!"
             
         elif emotion == "neutral":
                 return "It's okay to feel neutral while using social media. Just be mindful of how it affects your mood."
-            
-        elif any(word in full_text for word in POSITIVE_WORDS):
-            return "It's wonderful that you're finding positive content on social media!"
 
         return "Social media can sometimes bring negative feelings. Remember to take care of your mental health."
     
-    elif "social media activity" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+    elif "social media positive" in detected_contexts:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "It's great that your social media interactions are bringing you joy!"
             
         elif emotion == "neutral":
                 return "It's okay to feel neutral about your social media activity. Balance is key."
             
-        elif any(word in full_text for word in POSITIVE_WORDS):
-            return "It's wonderful that your social media activity is leading to positive experiences!"
+        elif any(word in full_text for word in NEGATIVE_WORDS):
+            return "It's good that you're finding some positives even if there are some negativity on social media."
 
         return "Sometimes social media interactions can be draining. Remember to prioritize your well-being."
         
     elif "social media negativity" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "It's impressive that you're maintaining positivity despite negative experiences on social media."
             
         elif emotion == "neutral":
                 return "It's understandable to feel neutral after encountering negativity on social media."
             
-        elif any(word in full_text for word in POSITIVE_WORDS):
-            return "It's great that you're finding some positive aspects even amidst social media negativity."
-
-        return "Negative experiences on social media can be tough. Remember to take breaks and focus on your mental health."
+        return "Negative experiences on social media can be tough. Remember to take breaks."
         
     #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
     if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
