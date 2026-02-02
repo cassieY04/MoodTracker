@@ -10,8 +10,21 @@ from Databases.emologdb import get_emolog_by_id
 ai_feedback_bp = Blueprint('ai_feedback', __name__)
 
 #general positive and negative word lists
-POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "amazing", "best", "fun", "joy", "blessed", "lucky", "not bad", "fanstastic", "awesome", "pleased", "satisfied", "grateful", "cheerful", "elated", "overjoyed", "thrilled", "delighted", "joyful", "radiant", "lighthearted", "proud", "relief", "relieved", "confident", "content", "calm", "peaceful", "better", "improving", "progress", "productive", "accomplished", "win", "winning", "won", "success", "successful", "pass", "passed", "safe", "secure", "hope", "hopeful", "optimistic", "eager", "energetic", "strong", "healthy", "fit", "beautiful", "smart", "easy", "smooth", "fresh", "clean", "free", "freedom"]
-NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated", "lonely", "pain", "sick", "cry", "not good", "aint good", "ain't good", "fail", "failed", "failing", "loss", "lost", "losing", "missed", "missing", "worst", "horrible", "disaster", "mess", "hard", "difficult", "tough", "struggle", "struggling", "stuck", "trapped", "boring", "bored", "annoyed", "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "worried", "worry", "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy", "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless", "hopeless", "poor", "broke", "debt"]
+POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "amazing", "best", "fun", "joy",
+                  "blessed", "lucky", "not bad", "fanstastic", "awesome", "pleased", "satisfied", "grateful",
+                  "cheerful", "elated", "overjoyed", "thrilled", "delighted", "joyful", "radiant", "lighthearted",
+                  "proud", "relief", "relieved", "confident", "content", "calm", "peaceful", "better", "improving",
+                  "progress", "productive", 
+                  "pass", "passed", "safe", "secure", "hope", "hopeful", "optimistic", "eager", "energetic", "strong",
+                  "healthy", "fit", "beautiful", "smart", "easy", "smooth", "fresh", "clean", "free", "freedom"]
+NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated",
+                  "lonely", "pain", "sick", "cry", "not good", "aint good", "ain't good", "fail", "failed", "failing",
+                  "loss", "lost", "losing", "missed", "missing", "worst", "horrible", "disaster", "mess", "hard",
+                  "difficult", "tough", "struggle", "struggling", "stuck", "trapped", "boring", "bored", "annoyed",
+                  "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "worried", "worry",
+                  "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy",
+                  "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless",
+                  "hopeless", "poor", "broke", "debt"]
 
 #function to detect context based on keywords
 #can detect duplicate spellings but not mispellings
@@ -21,49 +34,57 @@ def detect_context(text):
     context_map = {
         "academic pressure": [
             "exam", "study", "assignment", "deadline", "test", "school", "grade", "gpa", "class",
-            "quiz", "midterm", "final", "thesis", "fyp", "project", "presentation", "lecture", "tutorial",
-            "lab", "semester", "submission", "due", "fail", "resit", "repeat", "transcript",
-            "scholarship", "tuition", "fees", "enrollment", "coursework", "syllabus", "lecturer", "professor",
-            "tutor", "dean", "campus", "university", "college", "uni", "degree", "diploma", "group project",
+            "quiz", "midterm", "final", "thesis", "fyp", "project", "presentation", "lecture", 
+            "lab", "semester", "submission", "duedate", "late", "fail", "resit", "repeat", 
+            "scholarship", "tuition", "fees", "enrollment", "coursework", "syllabus", "lecturer", 
+            "tutor", "dean", "campus", "university", "college", "uni", "degree", "diploma",
             "capstone", "internship", "practicum", "viva", "research", "paper", "essay",
-            "procrastinate", "cramming", "burnout", "dropout", "academic validation", "study group", "library"
+            "procrastinate", "cramming", "burnout", "dropout", "academic validation", "library"
+            "group project", "study group", "professor", "tutorial", "transcript"
+            
         ],
         "achievement success": [
-            "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", "celebrate",
-            "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", "proud",
-            "improvement", "progress", "growth", "finally", "done", "worth it", "paid off", "fruitful",
+            "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", 
+            "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", 
+            "improvement", "progress", "growth", "finally", "done", "worth it", "paid off", 
             "pass", "passed", "ace", "aced", "distinction", "scored", "high distinction",
-            "hired", "promotion", "raise", "offer", "bonus"
+            "hired", "promotion", "raise", "offer", "bonus", "accomplished", "success", 
+            "celebrate", "successful", "fruitful", "proud"
         ],
         "daily hustle": [
-            "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", "laundry",
-            "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", "organized",
-            "journaling", "meditating", "hydration", "water"
+            "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", 
+            "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", 
+            "journaling", "meditating", "hydration", "water", "laundry", "organized",
         ],
         "emotional release": [
             "cry", "crying", "tears", "sob", "weep", "bawling", "break down", "teary",
             "scream", "yell", "vent", "rant", "explode", "meltdown"
         ],
         "financial stress": [
-            "cost", "expensive", "debt", "broke", "loan", "inflation", "poverty", "poor", "unaffordable"
+            "cost", "expensive", "debt", "broke", "loan", "inflation", "poverty", "poor",
+            "unaffordable"
         ],
         "financial gain": [
             "save", "savings", "investment", "crypto", "stocks", "rich", "splurge", "treat myself", 
             "retail therapy", "bonus", "profit", "afford", "cheap"
         ],
         "financial general": [
-            "money", "pay", "bill", "rent", "budget", "spend", "price", "cash", "wallet", "bank", "transfer", 
-            "shopping", "buy", "purchase", "groceries", "salary", "wage"
+            "money", "pay", "bill", "rent", "budget", "spend", "price", "cash", "wallet", "bank",
+            "transfer", "shopping", "buy", "purchase", "groceries", "salary", "wage"
         ],
         "fatigue": [
             "tired", "sleep", "exhausted", "burnt out", "insomnia", "nap", "drained", "fatigue",
-            "all-nighter", "sleepy", "zombie", "caffeine", "coffee", "energy drink", "no sleep", "awake",
+            "all-nighter", "sleepy", "zombie", "caffeine", "coffee", "energy drink", "no sleep", 
             "burnout", "overworked", "collapse", "rest", "bed", "pillow", "woke up",
-            "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish", "yawning", "snooze"
+            "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish", 
+            "yawning", "snooze", "awake", "sleepless"
         ],
         "fitness": [
             "gym", "workout", "running", "exercise", "cardio", "weights", "lifting", "training", 
-            "jogging", "treadmill", "dumbbells", "squat", "pushup", "fitness", "athlete", "sport", "swim", "yoga", "pilates"
+            "jogging", "treadmill", "dumbbells", "squat", "pushup", "fitness", "athlete", "sport",
+            "swim", "yoga", "pilates", "football", "basketball", "badminton", "hiking", "swim", "dance",
+            "volleyball", "cycling", "bike ride", "marathon", "triathlon", "stretching", 
+            "skate", "rollerblade", "skiing", "snowboard"
         ],
         "health general": [
             "doctor", "health", "body", "medicine", "pill", "hospital", "clinic", "weight", "diet", "skin", 
@@ -71,23 +92,23 @@ def detect_context(text):
         ],
         "health issues": [
             "sick", "pain", "ill", "headache", "hurt", "fever", "flu", "cold", "stomach", "migraine", "dizzy", 
-            "nausea", "vomit", "stomachache", "period", "cramps", "injury", "broken", "bleed", 
-            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", "condition", "diagnosed", "symptom"
+            "nausea", "vomit", "stomachache", "period", "cramps", "injury", "broken", "bleed", "symptom",
+            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", "condition", "diagnosed", 
         ],
         "hobbies": [
-            "game", "music", "read", "sport", "art", "draw", "code", "movie", "world of warcraft",
-            "gaming", "valorant", "league", "netflix", "binge", "gym", "workout", "spotify", "concert",
-            "travel", "food", "football", "basketball", "badminton", "hiking", "swim", "dance",
-            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano", "shopping",
-            "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
-            "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama",
-            "podcast", "vlog", "photography", "blog", "diy", "craft", "knitting", "gardening", "poca",
-            "photocard", "drawing", "volleyball", "skate", "rollerblade", "skiing", "snowboard"
+            "game", "music", "read", "art", "draw", "code", "movie", "world of warcraft",
+            "gaming", "valorant", "league", "netflix", "binge", "spotify", "concert",
+            "travel", "food", "photocard", "drawing", "craft", "knitting", "gardening", "poca",
+            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano", 
+            "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", 
+            "makeup", "skincare", "meditation", "journaling", "podcast", "kpop", "kdrama",
+            "podcast", "vlog", "photography", "blog", "diy", "shopping", "fashion", "cpop",
+            "songs", "songwriting", "fishing", "camping", "road trip"
         ],
         "loneliness": [
             "lonely", "alone", "isolated", "nobody", "ignored", "miss", "loneliness", "friendless",
             "left out", "excluded", "no friends", "homesick", "empty", "silence", "quiet", "abandoned",
-            "unseen", "unheard"
+            "unseen", "unheard", "lone wolf", "no friend"
         ],
         "pet": [
             "dog", "cat", "pet", "puppy", "kitten", "fish", "bird", "hamster", "rabbit", "paws", "furry",
@@ -95,13 +116,15 @@ def detect_context(text):
         ],
         "positive events": [
             "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won",
-            "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", "fun", "happy",
+            "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", 
             "slay", "gift", "present", "surprise", "lucky", "blessed", "success", "bonus", "award",
-            "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", "w", "win"
+            "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", 
+            "fun", "happy",
         ],
         "relationship general": [
             "friend", "family", "partner", "parents", "roommate", "housemate", "peer", "social", 
-            "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out", "bf", "gf", "boyfriend", "girlfriend", "husband", "wife", "mom", "dad", "mother", "father", "sister", "brother", "sibling", "cousin"
+            "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out", "bf", "gf",
+            "boyfriend", "girlfriend", "husband", "wife", "mom", "dad", "mother", "father", "sister", "brother", "sibling", "cousin"
         ],
         "relationship issues": [
             "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
@@ -136,7 +159,8 @@ def detect_context(text):
             "block", "unfollow", "cyberbully", "death threat", "expose", "clout"
         ],
         "social media positive": [
-            "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views", "growth", "hit", "like"
+            "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views",
+            "growth", "hit", "like"
         ],
         "technology": [
             "wifi", "internet", "laptop", "pc", "computer", "battery", "pc", "app", "website", "download",
@@ -146,15 +170,18 @@ def detect_context(text):
         ],
         "technical difficulties": [
             "bug", "error", "crash", "lag", "slow", "frozen", "update failed", "broken", "blue screen",
-            "black screen", "glitch", "disconnect", "disconnecting", "network issue", "server down", "high ping",
-            "lost data", "corrupted", "unable to submit", "submission failed", "stuck", "freeze", "unresponsive",
-            "overheat", "malfunction", "reboot", "restart", "factory reset", "system failure", "technical issue"
+            "black screen", "glitch", "disconnect", "disconnecting", "network issue", "server down", 
+            "lost data", "corrupted", "unable to submit", "submission failed", "stuck", "freeze", 
+            "overheat", "malfunction", "reboot", "restart", "factory reset", "system failure", 
+            "high ping", "unresponsive", "technical issue", "dc"
         ],
         "transport general": [
-            "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "road", "commute", "flight", "plane", "airport", "ride", "driver"
+            "bus", "train", "mrt", "lrt", "grab", "taxi", "car", "drive", "road", "commute", "flight",
+            "plane", "airport", "ride", "driver"
         ],
         "transport stress": [
-            "traffic", "jam", "late", "wait", "parking", "accident", "breakdown", "flat tire", "missed", "delay", "delayed", "rush hour"
+            "traffic", "jam", "late", "wait", "parking", "accident", "breakdown", "flat tire", "missed",
+            "delay", "delayed", "rush hour"
         ],
         "uncertainty": [
             "future", "career", "plans", "worried", "anxious", "what if", "unknown", "direction", "lost",
@@ -162,7 +189,7 @@ def detect_context(text):
             "rejection", "waiting", "hopeful", "dream", "goal"
         ],
         "weather": [
-            "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog",
+            "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog"
         ],
         "work general": [
             "job", "boss", "work", "meeting", "career", "colleague", "project", "internship", "part-time", 
@@ -171,7 +198,8 @@ def detect_context(text):
         ],
         "work stress": [
             "rude", "overtime", "ot", "quit", "resign", "fired", "micromanage", "toxic workplace", "kpi", 
-            "workload", "underpaid", "hustle", "grind", "slack", "teams", "zoom fatigue", "unemployed", "job hunt"
+            "workload", "underpaid", "hustle", "grind", "slack", "teams", "zoom fatigue", "unemployed",
+            "job hunt"
         ]
     }
     detected = []
@@ -252,7 +280,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
 
     #mixed emotion check
     #check for specific keywords first
-    if "technical difficulties" in detected_contexts:
+    if "technology" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
         elif emotion in ["angry", "stressed", "sad", "anxious"]:
@@ -278,17 +306,22 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "work general" in detected_contexts or "work stress" in detected_contexts:
         if "work stress" in detected_contexts:
              return "Work stress can be overwhelming. Remember your value isn't defined by your job."
+        
         if "achievement success" in detected_contexts:
              return "Great job on hitting those professional milestones!"
+        
         if emotion in ["happy", "excited"]:
              return "It's great that work is going well! Enjoy the productivity."
+        
         return "Work can be draining. Make sure to leave work at work when you're done."
 
     elif "financial general" in detected_contexts or "financial stress" in detected_contexts:
         if "financial stress" in detected_contexts:
              return "Financial worry is a heavy burden. Focus on what is within your control today."
+        
         if "financial gain" in detected_contexts:
              return "Financial wins feel great! Use this stability to treat yourself or save up."
+        
         if emotion in ["happy", "excited"]:
              return "It's good to feel secure about your finances."
         return "Money matters can be stressful. Budgeting one step at a time helps."
@@ -296,15 +329,19 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "health general" in detected_contexts or "health issues" in detected_contexts:
         if "health issues" in detected_contexts:
             return "Being unwell is tough. Prioritize rest and recovery above all else."
+        
         if emotion in ["happy", "excited"]:
             return "Feeling healthy is a great blessing! Glad you're feeling good."
+        
         return "Health is wealth. Take care of your body."
 
     elif "transport general" in detected_contexts or "transport stress" in detected_contexts:
         if "transport stress" in detected_contexts:
             return "Commuting issues are frustrating. Deep breaths while you wait."
+        
         if emotion in ["happy", "excited"]:
             return "Enjoy the journey! Safe travels."
+        
         return "Commuting can be tiring. Hope you get to your destination safely."
         
     elif "relationship positive" in detected_contexts:
