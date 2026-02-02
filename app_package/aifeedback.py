@@ -28,6 +28,33 @@ def detect_context(text):
             "capstone", "internship", "practicum", "viva", "research", "paper", "essay",
             "procrastinate", "cramming", "burnout", "dropout", "academic validation", "study group", "library"
         ],
+        "achievement success": [
+            "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", "celebrate",
+            "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", "proud",
+            "improvement", "progress", "growth", "finally", "done", "worth it", "paid off", "fruitful",
+            "pass", "passed", "ace", "aced", "distinction", "scored", "high distinction",
+            "hired", "promotion", "raise", "offer", "bonus"
+        ],
+        "daily hustle": [
+            "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", "laundry",
+            "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", "organized",
+            "journaling", "meditating", "hydration", "water"
+        ],
+        "emotional release": [
+            "cry", "crying", "tears", "sob", "weep", "bawling", "break down", "teary",
+            "scream", "yell", "vent", "rant", "explode", "meltdown"
+        ],
+        "financial stress": [
+            "cost", "expensive", "debt", "broke", "loan", "inflation", "poverty", "poor", "unaffordable"
+        ],
+        "financial gain": [
+            "save", "savings", "investment", "crypto", "stocks", "rich", "splurge", "treat myself", 
+            "retail therapy", "bonus", "profit", "afford", "cheap"
+        ],
+        "financial general": [
+            "money", "pay", "bill", "rent", "budget", "spend", "price", "cash", "wallet", "bank", "transfer", 
+            "shopping", "buy", "purchase", "groceries", "salary", "wage"
+        ],
         "fatigue": [
             "tired", "sleep", "exhausted", "burnt out", "insomnia", "nap", "drained", "fatigue",
             "all-nighter", "sleepy", "zombie", "caffeine", "coffee", "energy drink", "no sleep", "awake",
@@ -37,6 +64,40 @@ def detect_context(text):
         "fitness": [
             "gym", "workout", "running", "exercise", "cardio", "weights", "lifting", "training", 
             "jogging", "treadmill", "dumbbells", "squat", "pushup", "fitness", "athlete", "sport", "swim", "yoga", "pilates"
+        ],
+        "health general": [
+            "doctor", "health", "body", "medicine", "pill", "hospital", "clinic", "weight", "diet", "skin", 
+            "checkup", "appointment", "surgery", "therapy", "medication", "treatment", "recovery", "healed", "cured"
+        ],
+        "health issues": [
+            "sick", "pain", "ill", "headache", "hurt", "fever", "flu", "cold", "stomach", "migraine", "dizzy", 
+            "nausea", "vomit", "stomachache", "period", "cramps", "injury", "broken", "bleed", 
+            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", "condition", "diagnosed", "symptom"
+        ],
+        "hobbies": [
+            "game", "music", "read", "sport", "art", "draw", "code", "movie", "world of warcraft",
+            "gaming", "valorant", "league", "netflix", "binge", "gym", "workout", "spotify", "concert",
+            "travel", "food", "football", "basketball", "badminton", "hiking", "swim", "dance",
+            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano", "shopping",
+            "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
+            "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama",
+            "podcast", "vlog", "photography", "blog", "diy", "craft", "knitting", "gardening", "poca",
+            "photocard", "drawing", "volleyball", "skate", "rollerblade", "skiing", "snowboard"
+        ],
+        "loneliness": [
+            "lonely", "alone", "isolated", "nobody", "ignored", "miss", "loneliness", "friendless",
+            "left out", "excluded", "no friends", "homesick", "empty", "silence", "quiet", "abandoned",
+            "unseen", "unheard"
+        ],
+        "pet": [
+            "dog", "cat", "pet", "puppy", "kitten", "fish", "bird", "hamster", "rabbit", "paws", "furry",
+            "purr", "bark", "tortoise", "guinea pig", "lizard", "snake", "bird", "parrot", "hedgehog"
+        ],
+        "positive events": [
+            "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won",
+            "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", "fun", "happy",
+            "slay", "gift", "present", "surprise", "lucky", "blessed", "success", "bonus", "award",
+            "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", "w", "win"
         ],
         "relationship general": [
             "friend", "family", "partner", "parents", "roommate", "housemate", "peer", "social", 
@@ -53,71 +114,12 @@ def detect_context(text):
             "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", "cute", "sweet", "fun", "laugh",
             "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
         ],
-        "health general": [
-            "doctor", "health", "body", "medicine", "pill", "hospital", "clinic", "weight", "diet", "skin", 
-            "checkup", "appointment", "surgery", "therapy", "medication", "treatment", "recovery", "healed", "cured"
-        ],
-        "health issues": [
-            "sick", "pain", "ill", "headache", "hurt", "fever", "flu", "cold", "stomach", "migraine", "dizzy", 
-            "nausea", "vomit", "stomachache", "period", "cramps", "injury", "broken", "bleed", 
-            "acne", "pimple", "allergy", "asthma", "infection", "virus", "bacteria", "chronic", "condition", "diagnosed", "symptom"
-        ],
-        "work general": [
-            "job", "boss", "work", "meeting", "career", "colleague", "project", "internship", "part-time", 
-            "shift", "manager", "client", "interview", "resume", "cv", "coworker", "office", "business", 
-            "corporate", "9 to 5", "commute"
-        ],
-        "work stress": [
-            "rude", "overtime", "ot", "quit", "resign", "fired", "micromanage", "toxic workplace", "kpi", 
-            "workload", "underpaid", "hustle", "grind", "slack", "teams", "zoom fatigue", "unemployed", "job hunt"
-        ],
-        "financial general": [
-            "money", "pay", "bill", "rent", "budget", "spend", "price", "cash", "wallet", "bank", "transfer", 
-            "shopping", "buy", "purchase", "groceries", "salary", "wage"
-        ],
-        "financial stress": [
-            "cost", "expensive", "debt", "broke", "loan", "inflation", "poverty", "poor", "unaffordable"
-        ],
-        "financial gain": [
-            "save", "savings", "investment", "crypto", "stocks", "rich", "splurge", "treat myself", 
-            "retail therapy", "bonus", "profit", "afford", "cheap"
-        ],
         "self-esteem": [
             "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "confidence",
             "cringe", "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb", "flop",
             "mistake", "guilt", "shame", "embarrassed", "regret", "fault",
             "body image", "skinny", "acne", "looks", "appearance", "unlovable", "not enough", "validation",
             "glow up", "mid", "basic", "try hard", "people pleaser"
-        ],
-        "loneliness": [
-            "lonely", "alone", "isolated", "nobody", "ignored", "miss", "loneliness", "friendless",
-            "left out", "excluded", "no friends", "homesick", "empty", "silence", "quiet", "abandoned",
-            "unseen", "unheard"
-        ],
-        "uncertainty": [
-            "future", "career", "plans", "worried", "anxious", "what if", "unknown", "direction", "lost",
-            "confused", "choice", "decision", "adulting", "graduation", "internship", "applications",
-            "rejection", "waiting", "hopeful", "dream", "goal"
-        ],
-        "hobbies": [
-            "game", "music", "read", "sport", "art", "draw", "code", "movie", "world of warcraft",
-            "gaming", "valorant", "league", "netflix", "binge", "gym", "workout", "spotify", "concert",
-            "travel", "food", "football", "basketball", "badminton", "hiking", "swim", "dance",
-            "anime", "manga", "series", "cook", "bake", "write", "sing", "guitar", "piano", "shopping",
-            "stream", "twitch", "youtube", "festival", "cafe", "coffee hopping", "thrifting", "fashion", 
-            "makeup", "skincare", "pilates", "yoga", "meditation", "journaling", "podcast", "kpop", "kdrama",
-            "podcast", "vlog", "photography", "blog", "diy", "craft", "knitting", "gardening", "poca",
-            "photocard", "drawing", "volleyball", "skate", "rollerblade", "skiing", "snowboard"
-        ],
-        "positive events": [
-            "party", "holiday", "vacation", "trip", "promotion", "date", "celebrate", "winning", "won",
-            "ace", "aced", "graduate", "convo", "internship", "offer", "hired", "vibe", "chill", "relax", "fun", "happy",
-            "slay", "gift", "present", "surprise", "lucky", "blessed", "success", "bonus", "award",
-            "main character", "thriving", "healing", "productive", "accomplished", "proud", "grateful", "w", "win"
-        ],
-        "emotional release": [
-            "cry", "crying", "tears", "sob", "weep", "bawling", "break down", "teary",
-            "scream", "yell", "vent", "rant", "explode", "meltdown"
         ],
         "social media platform": [
             "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "xhs", "igtv", "youtube", "whatsapp",
@@ -129,12 +131,12 @@ def detect_context(text):
             "feed", "scroll", "screen", "phone", "notification", "dm", "message", "reply", "live", "stream", 
             "subscribe", "post", "upload", "story", "status", "app", "comment"
         ],
-        "social media positive": [
-            "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views", "growth", "hit", "like"
-        ],
         "social media negativity": [
             "hate", "bully", "toxic", "envy", "jealous", "fake", "drama", "unfollow", "cancel", "troll",
             "block", "unfollow", "cyberbully", "death threat", "expose", "clout"
+        ],
+        "social media positive": [
+            "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views", "growth", "hit", "like"
         ],
         "technology": [
             "wifi", "internet", "laptop", "pc", "computer", "battery", "pc", "app", "website", "download",
@@ -154,24 +156,22 @@ def detect_context(text):
         "transport stress": [
             "traffic", "jam", "late", "wait", "parking", "accident", "breakdown", "flat tire", "missed", "delay", "delayed", "rush hour"
         ],
-        "daily hustle": [
-            "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", "laundry",
-            "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", "organized",
-            "journaling", "meditating", "hydration", "water"
-        ],
-        "achievement success": [
-            "won", "solved", "fixed", "completed", "finished", "accomplished", "award", "prize", "celebrate",
-            "win", "victory", "success", "milestone", "breakthrough", "nailed it", "crushed it", "proud",
-            "improvement", "progress", "growth", "finally", "done", "worth it", "paid off", "fruitful",
-            "pass", "passed", "ace", "aced", "distinction", "scored", "high distinction",
-            "hired", "promotion", "raise", "offer", "bonus"
-        ],
-        "pet": [
-            "dog", "cat", "pet", "puppy", "kitten", "fish", "bird", "hamster", "rabbit", "paws", "furry",
-            "purr", "bark", "tortoise", "guinea pig", "lizard", "snake", "bird", "parrot", "hedgehog"
+        "uncertainty": [
+            "future", "career", "plans", "worried", "anxious", "what if", "unknown", "direction", "lost",
+            "confused", "choice", "decision", "adulting", "graduation", "internship", "applications",
+            "rejection", "waiting", "hopeful", "dream", "goal"
         ],
         "weather": [
             "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog",
+        ],
+        "work general": [
+            "job", "boss", "work", "meeting", "career", "colleague", "project", "internship", "part-time", 
+            "shift", "manager", "client", "interview", "resume", "cv", "coworker", "office", "business", 
+            "corporate", "9 to 5", "commute"
+        ],
+        "work stress": [
+            "rude", "overtime", "ot", "quit", "resign", "fired", "micromanage", "toxic workplace", "kpi", 
+            "workload", "underpaid", "hustle", "grind", "slack", "teams", "zoom fatigue", "unemployed", "job hunt"
         ]
     }
     detected = []
@@ -581,14 +581,19 @@ def generate_full_feedback(emotion, reason="", thought=""):
                     analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
             elif "work stress" in reason_contexts:
                 analysis.append("Toxic or demanding workplace dynamics seem to be weighing on your energy.")
+            
             elif "work general" in reason_contexts:
                 analysis.append("Professional responsibilities seem to be weighing on your energy.")
+            
             elif "fitness" in reason_contexts:
                 analysis.append("Pushing your body too hard without enough recovery can lead to physical and mental stress.")
+            
             elif "health issues" in reason_contexts:
                 analysis.append("Physical discomfort or illness is a major stressor on the mind and body.")
+            
             elif "transport stress" in reason_contexts:
                 analysis.append("Travel delays and traffic are external stressors that feel out of your control.")
+            
             elif "achievement success" in reason_contexts:
                 analysis.append("Even after achieving success, the pressure to maintain or exceed that level can be stressful.")
             
@@ -669,12 +674,16 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "relationship general" in reason_contexts:
                 analysis.append("Social dynamics, even in general interactions, can influence your mood.")
+            
             elif "financial stress" in reason_contexts:
                 analysis.append("Worries about money can weigh heavily on your mind and contribute to feelings of sadness.")
+            
             elif "financial general" in reason_contexts:
                 analysis.append("Financial situations often carry emotional weight.")
+            
             elif "health issues" in reason_contexts:
                 analysis.append("Dealing with health problems can be physically and emotionally draining.")
+            
             elif "social media negativity" in reason_contexts:
                 analysis.append("Negative interactions online can feel personal and isolating.")
 
@@ -722,15 +731,19 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "achievement success" in reason_contexts:
                 analysis.append("You've clearly hit a milestone; acknowledging these wins builds long-term confidence.")
+            
             elif "academic pressure" in reason_contexts:
                 analysis.append("Finding joy in your studies is a great sign of engagement and progress.")
+            
             elif "relationship issues" in reason_contexts:
                 analysis.append("Resolving social friction is a great emotional boost.")
             
             elif "hobbies" in reason_contexts:
                 analysis.append("Engaging in things you love is essential for your mental 'recharge'.")
+            
             elif "fitness" in reason_contexts:
                 analysis.append("Physical activity releases endorphins, which directly contributes to your happiness.")
+            
             elif "pet" in reason_contexts:
                 analysis.append("Spending time with your pet is a scientifically proven way to lower stress and boost mood.")
             
@@ -754,12 +767,16 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "social media negativity" in reason_contexts:
                 analysis.append("Overcoming negative experiences on social media shows your strength and focus on positivity.")
+            
             elif "financial gain" in reason_contexts:
                 analysis.append("Financial stability or positive developments can greatly enhance your sense of security and happiness.")
+            
             elif "financial general" in reason_contexts:
                 analysis.append("Feeling good about your financial situation contributes to overall peace of mind.")
+            
             elif "health general" in reason_contexts:
                 analysis.append("Feeling healthy and strong is a fundamental foundation for happiness.")
+            
             elif "transport general" in reason_contexts:
                 analysis.append("A smooth journey or drive can be surprisingly relaxing and enjoyable.")
 
