@@ -68,17 +68,17 @@ def calculate_emotional_pattern(emotion_counts, total_entries):
     if negative_pct > 0.5:
         return EMOTIONAL_PATTERN_RESULT['Stress-Dominant']
     
-    # Rule 3: Mixed Emotion (Neutral is the largest category)
+    # Rule 3: Emotionally Balanced (Neutral is the largest category)
     # This rule triggers if Neutral is the single most frequent category.
     # This handles the case where Neutral is high (e.g., 40%) but not dominant (>50%) 
-    # and should be categorized as 'Mixed Emotion'.
+    # and should be categorized as 'Emotionally Balanced'.
     if neutral_pct == max_count / total_entries:
-        return EMOTIONAL_PATTERN_RESULT['Mixed Emotion']
+        return EMOTIONAL_PATTERN_RESULT['Emotionally Balanced']
     
-    # Rule 4: Emotionally Balanced (Fallback)
+    # Rule 4: Mixed Emotion (Fallback)
     # This is the final fallback, triggered only when no single category dominates AND 
     # Neutral is NOT the largest category. This implies true balance.
-    return EMOTIONAL_PATTERN_RESULT['Emotionally Balanced'] 
+    return EMOTIONAL_PATTERN_RESULT['Mixed Emotion'] 
 
 
 def get_monthly_mood_data(username, year, month):
