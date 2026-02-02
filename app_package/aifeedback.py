@@ -24,7 +24,7 @@ NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terr
                   "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "worried", "worry",
                   "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy",
                   "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless",
-                  "hopeless"]
+                  "hopeless", "worthless", "pointless", "troubled", "sucks"]
 
 #function to detect context based on keywords
 #can detect duplicate spellings but not mispellings
@@ -289,24 +289,39 @@ def generate_short_feedback(emotion, reason="", thought=""):
 
     #mixed emotion check
     #check for specific keywords first
-    if "technology" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+    if "technical difficulties" in detected_contexts:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
-        elif emotion in ["angry", "stressed", "sad", "anxious"]:
-            return "Tech issues are the worst. Take a step back, maybe a 5-minute break will help clear the 'bug' in your mind too."
+        
+        if emotion == "neutral":
+            return "Handling a technical hurdle with a neutral perspective helps you stay focused on the facts of the situation."
+        
+        elif any(word in full_text for word in NEGATIVE_WORDS):
+             return "It's completely valid to feel frustrated when tools fail you. Don't let a 'bug' ruin your mood."
+        
+        return "Tech issues are the worst. Take a step back, maybe a 5-minute break will help clear the 'bug' in your mind too."
+    
+    elif "technology" in detected_contexts:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+            return "It's a great feeling when your tools are working perfectly. Enjoy the smooth flow!"
+        
+        elif emotion == "neutral":
+            return "Staying focused on your digital tasks. It's good to be in the zone."
+        
+        return "Sometimes even when the tech is working, the digital hustle can be draining. Remember to blink!"
 
     elif "achievement success" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "You crushed it! Make sure to treat yourself for this win today."
         return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
 
     elif "academic pressure" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's impressive that you're staying positive despite the academic challenges!"
             return "It sounds like things are going well with your studies! It's great to see your hard work paying off."
         
-        if any(word in full_text for word in ["fail", "failed", "failing", "bad grade", "poor result"]):
+        if any(word in full_text for word in ["fail", "failed", "failing", "bad grade", "poor result"] + NEGATIVE_WORDS):
             return "Setbacks like this don't define you. Take a moment to breathe, then try again."
             
         return "School can be tough. Take it one assignment at a time."
@@ -605,7 +620,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "emotional release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
             
-            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
+            elif "technical difficulties" in reason_contexts:
                 analysis.append("Technical glitches or system crashes are frustrating because they disrupt your flow and sense of control.")            
             
             elif "academic pressure" in reason_contexts:
@@ -689,7 +704,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "positive events" in reason_contexts:
                 analysis.append("It is valid to feel sad even during happy events. This is often called 'paradoxical emotion'.")
             
-            elif "technology" in reason_contexts and "technical difficulties" in reason_contexts:
+            elif "technical difficulties" in reason_contexts:
                 analysis.append("It’s valid to feel sad or defeated when tools you rely on fail you during important tasks.")
             
             elif "hobbies" in reason_contexts:
@@ -951,7 +966,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         
         if reason:
             analysis.append(f"It is understandable that '{reason}' would cause frustration.")
-            if "technology" in reason_contexts or "technical difficulties" in reason_contexts:
+            if "technical difficulties" in reason_contexts:
                 analysis.append("Technical glitches are uniquely frustrating because they disrupt your sense of control and progress.")
             
             elif "relationship issues" in reason_contexts:
