@@ -298,8 +298,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "achievement success" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "You crushed it! Make sure to treat yourself for this win today."
-        else:
-            return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
+        return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
 
     elif "academic pressure" in detected_contexts:
         if emotion in ["happy", "excited"]:
@@ -314,13 +313,13 @@ def generate_short_feedback(emotion, reason="", thought=""):
     
     elif "work general" in detected_contexts or "work stress" in detected_contexts:
         if "work stress" in detected_contexts:
-             return "Work stress can be overwhelming. Remember your value isn't defined by your job."
+            return "Work stress can be overwhelming. Remember your value isn't defined by your job."
         
         if "achievement success" in detected_contexts:
-             return "Great job on hitting those professional milestones!"
+            return "Great job on hitting those professional milestones!"
         
         if emotion in ["happy", "excited"]:
-             return "It's great that work is going well! Enjoy the productivity."
+            return "It's great that work is going well! Enjoy the productivity."
         
         return "Work can be draining. Make sure to leave work at work when you're done."
 
@@ -333,6 +332,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
         
         if emotion in ["happy", "excited"]:
              return "It's good to feel secure about your finances."
+        
         return "Money matters can be stressful. Budgeting one step at a time helps."
 
     elif "health general" in detected_contexts or "health issues" in detected_contexts:
@@ -362,8 +362,10 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "relationship general" in detected_contexts:
         if emotion in ["happy", "excited"]:
              return "Spending time with loved ones is a great way to boost your mood."
+        
         elif emotion in ["angry", "stressed", "sad", "anxious"]:
              return "Interactions with family or friends can be complicated. It's okay to set boundaries."
+        
         return "Social connections are a key part of life."
 
     elif "social media positive" in detected_contexts:
@@ -375,20 +377,17 @@ def generate_short_feedback(emotion, reason="", thought=""):
     elif "pet" in detected_contexts:
             if emotion in ["happy", "excited"]:
                 return "Pets bring so much joy! Enjoy the time with your furry friend."
-            else:
-                return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
+            return "Pets can be a great comfort during tough times. Maybe spend some time with them today."
             
     elif "fitness" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "Great job on staying active! Endorphins from exercise are a great mood booster."
-        else:
-            return "It's great that you're moving your body. Remember to rest if you need to."
+        return "It's great that you're moving your body. Remember to rest if you need to."
 
     elif "hobbies" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's wonderful that your hobbies are bringing you joy! Keep indulging in what you love."
-        else:
-            return "Engaging in activities you love is important; consider revisiting these to lift your mood."
+        return "Engaging in activities you love is important; consider revisiting these to lift your mood."
         
     elif "fatigue" in detected_contexts:
         if emotion in ["happy", "excited"]:
@@ -397,13 +396,12 @@ def generate_short_feedback(emotion, reason="", thought=""):
 
     elif "positive events" in detected_contexts:
         if emotion in ["sad", "angry", "stressed", "anxious"]:
-             return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
+            return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
         
     elif "daily hustle" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "Amidst the busy hustle, it's great to see you're finding moments of joy!"
-        else:
-            return "The daily grind can be exhausting. Remember to take breaks and care for yourself."
+        return "The daily grind can be exhausting. Remember to take breaks and care for yourself."
         
     elif "emotional release" in detected_contexts:
         if "relationship positive" in detected_contexts:
@@ -415,9 +413,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             
             elif any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's okay to have mixed feelings even during happy moments with loved ones. Emotions can be complex."
-            
-            else:
-                return "Sharing your joy with loved ones amplifies the happiness. Let yourself celebrate together!"
+
+            return "Sharing your joy with loved ones amplifies the happiness. Let yourself celebrate together!"
         
         elif "relationship issues" in detected_contexts:
             if emotion in ["happy", "excited"]:
@@ -428,28 +425,24 @@ def generate_short_feedback(emotion, reason="", thought=""):
             
             elif any(word in full_text for word in POSITIVE_WORDS):
                 return "It seems you're finding glimpses of good despite the conflict."
-            
-            else:
-                return "Crying is a healthy way to release that weight. Let it out; you'll feel lighter soon."
+
+            return "Crying is a healthy way to release that weight. Let it out; you'll feel lighter soon."
 
         elif "relationship general" in detected_contexts:
             return f"Sometimes we just need to vent about the people in our lives. Acknowledging {reason} is a healthy release."
-        
-        else:
-            return "Crying or venting is a healthy way to release built-up emotion. It's okay to let it out."
+        return "Crying or venting is a healthy way to release built-up emotion. It's okay to let it out."
     
     elif "loneliness" in detected_contexts:
         if emotion in ["happy", "excited"]:
             return "It's great that you're feeling positive, even when alone. Enjoy your own company!"
             
         elif emotion == "neutral":
-                return "It's okay to feel neutral when you're by yourself. Embrace the solitude."
+            return "It's okay to feel neutral when you're by yourself. Embrace the solitude."
             
         elif any(word in full_text for word in POSITIVE_WORDS):
             return "Even when feeling lonely, it's wonderful that you can find some positive moments."
-            
-        else:
-            return "Crying or venting when feeling lonely is a natural way to cope. You're not alone in this."
+
+        return "Crying or venting when feeling lonely is a natural way to cope. You're not alone in this."
         
     elif "social media platform" in detected_contexts:
         if emotion in ["happy", "excited"]:
@@ -460,9 +453,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             
         elif any(word in full_text for word in POSITIVE_WORDS):
             return "It's wonderful that you're finding positive content on social media!"
-            
-        else:
-            return "Social media can sometimes bring negative feelings. Remember to take care of your mental health."
+
+        return "Social media can sometimes bring negative feelings. Remember to take care of your mental health."
     
     elif "social media activity" in detected_contexts:
         if emotion in ["happy", "excited"]:
@@ -473,9 +465,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             
         elif any(word in full_text for word in POSITIVE_WORDS):
             return "It's wonderful that your social media activity is leading to positive experiences!"
-            
-        else:
-            return "Sometimes social media interactions can be draining. Remember to prioritize your well-being."
+
+        return "Sometimes social media interactions can be draining. Remember to prioritize your well-being."
         
     elif "social media negativity" in detected_contexts:
         if emotion in ["happy", "excited"]:
@@ -486,9 +477,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             
         elif any(word in full_text for word in POSITIVE_WORDS):
             return "It's great that you're finding some positive aspects even amidst social media negativity."
-            
-        else:
-            return "Negative experiences on social media can be tough. Remember to take breaks and focus on your mental health."
+
+        return "Negative experiences on social media can be tough. Remember to take breaks and focus on your mental health."
         
     #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
     if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
@@ -529,8 +519,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
                 "It's okay to feel stressed. You've been dealing with a lot, "
                 "and recognizing this is already a positive step."
             )
-        else:
-            return "You seem stressed today. Try to take a short break if possible."
+        return "You seem stressed today. Try to take a short break if possible."
 
     if emotion == "sad":
         if thought:
@@ -603,7 +592,6 @@ def generate_full_feedback(emotion, reason="", thought=""):
             analysis.append(f"You identified '{reason}' as a key factor.")
             if reason_contexts:
                 analysis.append(f"Specifically, the situation involves {', '.join(reason_contexts)}, which is a common source of pressure.")
-            
             else:
                 analysis.append("External stressors like this often contribute to a sense of being overwhelmed, regardless of the specific cause.")
             
@@ -625,6 +613,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
                     analysis.append("Even with a success (like passing), the pressure of maintaining grades can still be stressful.")
                 else:
                     analysis.append(f"Specifically, {reason} involves academic demands, which are a primary source of your current pressure.")           
+            
             elif "work stress" in reason_contexts:
                 analysis.append("Toxic or demanding workplace dynamics seem to be weighing on your energy.")
             
