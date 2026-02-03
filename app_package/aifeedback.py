@@ -292,19 +292,27 @@ def generate_short_feedback(emotion, reason="", thought=""):
     #mixed emotion check
     #check for specific keywords first
     if "technical difficulties" in detected_contexts:
-        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's great that you're staying positive even when facing tech challenges!"
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
         
         elif emotion == "neutral":
             return "Handling a technical hurdle with a neutral perspective helps you stay focused on the facts of the situation."
         
-        elif any(word in full_text for word in NEGATIVE_WORDS):
-             return "It's completely valid to feel frustrated when tools fail you. Don't let a 'bug' ruin your mood."
-        
-        return "Tech issues are the worst. Take a step back, maybe a 5-minute break will help clear the 'bug' in your mind too."
+        elif emotion in ["angry", "sad", "anxious", "stressed"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's completely valid to feel frustrated when tools fail you. Don't let a 'bug' ruin your mood."
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even amidst technical difficulties you still find reasons to be grateful!"
+            return "Technical issues can be really frustrating. Remember to take breaks and not let it get to you."
     
     elif "technology" in detected_contexts:
-        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's wonderful that your tech is working well! Smooth sailing ahead."
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's great that you're staying positive even when facing tech challenges!"
             return "It's a great feeling when your tools are working perfectly. Enjoy the smooth flow!"
@@ -312,12 +320,28 @@ def generate_short_feedback(emotion, reason="", thought=""):
         elif emotion == "neutral":
             return "Staying focused on your digital tasks. It's good to be in the zone."
         
-        return "Sometimes even when the tech is working, the digital hustle can be draining. Remember to blink!"
+        elif emotion in ["angry", "sad", "anxious", "stressed"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's completely valid to feel frustrated when tech doesn't cooperate. Take a deep breath."
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even amidst tech challenges you still find reasons to be grateful!"
 
     elif "achievement success" in detected_contexts:
-        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "Your hard work is paying off! Celebrate these victories, big or small."
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's valid to feel bad even after a win." 
             return "You crushed it! Make sure to treat yourself for this win today."
-        return "You achieved something great, but you still feel down. It's okay to feel 'post-project blues' after a big push."
+        
+        elif emotion == "neutral":
+            return "You achieved something great! It's okay to feel neutral about it."
+        
+        elif emotion in ["angry", "sad", "anxious", "stressed"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's okay to feel down even after a success. Your feelings are valid."
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even after a big achievement you still find reasons to be grateful!"
 
     elif "academic pressure" in detected_contexts:
         if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
@@ -431,8 +455,14 @@ def generate_short_feedback(emotion, reason="", thought=""):
         return "Engaging in activities you love is important; consider revisiting these to lift your mood."
         
     elif "fatigue" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "It is great that you are happy, but you seem tired as well. Remember to get some rest."
+        
+        elif emotion == "neutral":
+            return "Feeling tired can make everything feel a bit more muted. Make sure to prioritize rest."
+        
+        elif any(word in full_text for word in NEGATIVE_WORDS):
+            return "You seem tired. Remember that rest is productive too."
         return "You seem tired. Remember that rest is productive too."
 
     elif "positive events" in detected_contexts:
@@ -441,12 +471,22 @@ def generate_short_feedback(emotion, reason="", thought=""):
         return "It's wonderful that positive events are happening in your life! Enjoy these moments."
         
     elif "daily hustle" in detected_contexts:
-        if emotion in ["happy", "excited"]:
+        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "Amidst the busy hustle, it's great to see you're finding moments of joy!"
+        
+        elif emotion == "neutral":
+            return "A busy day can sometimes feel neutral. Remember to find small moments for yourself."
+        
+        elif any(word in full_text for word in NEGATIVE_WORDS):
+            return "The daily grind can be overwhelming. Make sure to take breaks and care for yourself."
         return "The daily grind can be exhausting. Remember to take breaks and care for yourself."
         
     elif "emotional release" in detected_contexts:
-        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's wonderful to have tears of joy! Let those happy emotions flow."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "Letting out emotions, even happy ones, is healthy. It's okay to have mixed feelings."
             return "It's wonderful to have tears of joy! Let those happy emotions flow."
         
         elif emotion == "neutral":
@@ -480,7 +520,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "It's great that your social media interactions are bringing you joy!"
             
         elif emotion == "neutral":
-                return "It's okay to feel neutral about your social media activity. Balance is key."
+            return "It's okay to feel neutral about your social media activity. Balance is key."
             
         elif any(word in full_text for word in NEGATIVE_WORDS):
             return "It's good that you're finding some positives even if there are some negativity on social media."
