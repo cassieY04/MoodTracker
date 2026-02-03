@@ -21,7 +21,7 @@ NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terr
                   "lonely", "pain", "sick", "cry", "not good", "aint good", "ain't good", "fail", "failed", "failing",
                   "loss", "lost", "losing", "missed", "missing", "worst", "horrible", "disaster", "mess", "hard",
                   "difficult", "tough", "struggle", "struggling", "stuck", "trapped", "boring", "bored", "annoyed",
-                  "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "worried", "worry",
+                  "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "uneasy",
                   "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy",
                   "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless",
                   "hopeless", "worthless", "pointless", "troubled", "sucks"]
@@ -51,7 +51,7 @@ def detect_context(text):
             "celebrate", "successful", "fruitful", "proud"
         ],
         "daily hustle": [
-            "busy", "productive", "errands", "cleaning", "cooking", "gym", "workout", "routine", 
+            "busy", "productive", "errands", "cleaning", "cooking", "routine", 
             "grocery", "commute", "traffic", "driving", "walking", "parking", "planning", 
             "journaling", "meditating", "hydration", "water", "laundry", "organized",
         ],
@@ -65,7 +65,9 @@ def detect_context(text):
         ],
         "financial gain": [
             "save", "savings", "investment", "stocks", "rich", "splurge", "treat myself", 
-            "retail therapy", "bonus", "profit", "afford", "cheap"
+            "retail therapy", "bonus", "profit", "afford", "cheap", "discount", "on sale",
+            "on a sale", "income", "got money", "got some money", "treating myself", "job raise",
+            "jackpot", "winning money", "win money", "win some money"
         ],
         "financial general": [
             "money", "pay", "bill", "rent", "budget", "spend", "price", "cash", "wallet", "bank",
@@ -293,7 +295,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
         
-        if emotion == "neutral":
+        elif emotion == "neutral":
             return "Handling a technical hurdle with a neutral perspective helps you stay focused on the facts of the situation."
         
         elif any(word in full_text for word in NEGATIVE_WORDS):
@@ -434,7 +436,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
         return "You seem tired. Remember that rest is productive too."
 
     elif "positive events" in detected_contexts:
-        if emotion in ["sad", "angry", "stressed", "anxious"]:
+        if emotion in ["sad", "angry", "stressed", "anxious"] or any(word in full_text for word in NEGATIVE_WORDS):
             return f"It seems like a significant event happened ({reason}). It's okay to have mixed feelings about it."
         return "It's wonderful that positive events are happening in your life! Enjoy these moments."
         
@@ -508,9 +510,9 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if any(word in full_text for word in NEGATIVE_WORDS):
              return "You're feeling neutral despite some challenges mentioned. Staying balanced is a great strength."
     
-    #If no specific context but text is present, reflect it back
+    #if no specific context but text is present, reflect it back
     if not detected_contexts and (reason or thought):
-        # Smart Fallback: Use the emotion to frame the response even if we don't recognize the words
+        #use emotion to give feedback if can't recognize the context
         target = reason if reason else "your thoughts"
         if emotion in ["happy", "excited"]:
             return f"It's wonderful that {target} is bringing you positivity!"
@@ -551,7 +553,6 @@ def generate_short_feedback(emotion, reason="", thought=""):
 
     if emotion == "neutral":
         return "Feeling neutral is perfectly okay. It's a moment of balance."
-
     return "Thank you for sharing how you're feeling today."
 
 
@@ -855,6 +856,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
         if thought:
             if "self-esteem" in thought_contexts:
                 analysis.append("Your thoughts reflect a healthy sense of self-worth right now.")
+            
             elif "positive events" in thought_contexts:
                 analysis.append("You are actively focusing on the good, which helps strengthen your mental well-being.")
         
