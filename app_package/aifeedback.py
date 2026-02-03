@@ -510,24 +510,61 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "It's normal to get frustrated during the healing process."
 
     elif "health general" in detected_contexts:
-        if emotion == "neutral":
-            if any(word in full_text for word in NEGATIVE_WORDS):
-                return "Handling medical appointments or routines can be a hassle, but stay focused on the goal of wellness."
-            return "Staying on top of your health routines and checkups is a smart way to care for your future self."
-            
-        return "Your health is your wealth. Taking these steps to manage your body is always worth the effort."
-
-    elif "transport general" in detected_contexts or "transport stress" in detected_contexts:
-        if "transport stress" in detected_contexts:
-            return "Commuting issues are frustrating. Deep breaths while you wait."
-        
         if emotion in ["happy", "excited"]:
-            return "Enjoy the journey! Safe travels."
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's impressive that you're maintaining a positive outlook while managing your health routines!"
+            return "It's a great feeling to be proactive about your health and body. Keep up that positive energy!"
         
-        return "Commuting can be tiring. Hope you get to your destination safely."
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great to see you're feeling steady and balanced while taking care of your physical well-being."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "Handling medical appointments or routines can be a hassle, but stay focused on the goal of wellness."
+            return "Staying on top of your health appointments and routines is a solid habit for long-term health."
+        
+        else:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even amidst health-related chores, you're still finding reasons to be grateful!"    
+        return "Managing health matters can be a constant, sometimes draining task. You're doing the work to take care of yourself."
+
+    elif "transport stress" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's impressive that you're staying positive despite the commute delays!"
+            return "Even with transport hurdles, your positive energy is great to see. Safe travels!"
+            
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "Despite having a level head towards transport stress, you still find positivity!"
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "Don't feel bad for having a neutral approach to transport stress; staying patient is a skill."
+            return "Commuting issues are frustrating. Keeping a level head helps the time pass faster."
+            
+        else: 
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even amidst a stressful commute, you still find reasons to be grateful!"
+            return "Traffic and delays can be so draining. Take a deep breath and you'll get there eventually."
+
+    elif "transport general" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "Although commuting can be a hassle, it's great you're maintaining a positive outlook!"
+            return "Enjoy the journey! It's a great time to listen to some music or just enjoy the ride."
+            
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great to see that you're feeling steady and balanced during your travels."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's valid to feel neutral while travelling, it must've been boring right?"
+            return "Having a neutral approach to your daily commute is a good way to save your mental energy."
+            
+        else:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                "Despite the frustrations while travelling, you still find positivity!"
+            return "Traveling can be tiring. Remember to rest once you reach your destination."
         
     elif "relationship positive" in detected_contexts:
-        if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
+        if emotion in ["happy", "excited"]:
             if "emotional release" in detected_contexts:
                 return "Sharing your joy with loved ones amplifies the happiness. It's tears of joy!"
         
