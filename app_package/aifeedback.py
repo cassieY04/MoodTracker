@@ -35,7 +35,7 @@ def detect_context(text):
         "academic pressure": [
             "exam", "study", "assignment", "deadline", "test", "school", "grade", "gpa", "class",
             "quiz", "midterm", "final", "thesis", "fyp", "project", "presentation", "lecture", 
-            "lab", "semester", "submission", "duedate", "late", "fail", "resit", "repeat", 
+            "lab", "semester", "submission", "duedate", "late", "resit", "repeat", 
             "scholarship", "tuition", "fees", "enrollment", "coursework", "syllabus", "lecturer", 
             "tutor", "dean", "campus", "university", "college", "uni", "degree", "diploma",
             "capstone", "internship", "practicum", "viva", "research", "paper", "essay",
@@ -295,7 +295,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["happy", "excited"]:
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
-            if any(word in full_text for word in NEGATIVE_WORDS):
+            elif any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's great that you're staying positive even when facing tech challenges!"
             return "It's impressive that you're keeping your head up even when the system is crashing! Resilience is key."
         
@@ -305,7 +305,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
         elif emotion in ["angry", "sad", "anxious", "stressed"]:
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's completely valid to feel frustrated when tools fail you. Don't let a 'bug' ruin your mood."
-            if any(word in full_text for word in POSITIVE_WORDS):
+            elif any(word in full_text for word in POSITIVE_WORDS):
                 return "It's great that even amidst technical difficulties you still find reasons to be grateful!"
             return "Technical issues can be really frustrating. Remember to take breaks and not let it get to you."
     
@@ -313,7 +313,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["happy", "excited"]:
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "It's wonderful that your tech is working well! Smooth sailing ahead."
-            if any(word in full_text for word in NEGATIVE_WORDS):
+            elif any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's great that you're staying positive even when facing tech challenges!"
             return "It's a great feeling when your tools are working perfectly. Enjoy the smooth flow!"
         
@@ -323,14 +323,15 @@ def generate_short_feedback(emotion, reason="", thought=""):
         elif emotion in ["angry", "sad", "anxious", "stressed"]:
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's completely valid to feel frustrated when tech doesn't cooperate. Take a deep breath."
-            if any(word in full_text for word in POSITIVE_WORDS):
+            elif any(word in full_text for word in POSITIVE_WORDS):
                 return "It's great that even amidst tech challenges you still find reasons to be grateful!"
+            return "Technology can be frustrating at times. Remember to take breaks and not let it get to you."
 
     elif "achievement success" in detected_contexts:
         if emotion in ["happy", "excited"]:
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "Your hard work is paying off! Celebrate these victories, big or small."
-            if any(word in full_text for word in NEGATIVE_WORDS):
+            elif any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's valid to feel bad even after a win." 
             return "You crushed it! Make sure to treat yourself for this win today."
         
@@ -340,19 +341,26 @@ def generate_short_feedback(emotion, reason="", thought=""):
         elif emotion in ["angry", "sad", "anxious", "stressed"]:
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's okay to feel down even after a success. Your feelings are valid."
-            if any(word in full_text for word in POSITIVE_WORDS):
-                return "It's great that even after a big achievement you still find reasons to be grateful!"
+            elif any(word in full_text for word in POSITIVE_WORDS):
+                return "Success is heavy work. It's valid to be proud of the result while still feeling the strain of the journey."
 
     elif "academic pressure" in detected_contexts:
         if emotion in ["happy", "excited"] or any(word in full_text for word in POSITIVE_WORDS):
-            if any(word in full_text for word in NEGATIVE_WORDS):
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's fantastic that you're excelling in your studies! Keep up the great work."
+            elif any(word in full_text for word in ["fail", "failed", "failing", "bad grade", "poor result"] + NEGATIVE_WORDS):
                 return "It's impressive that you're staying positive despite the academic challenges!"
             return "It sounds like things are going well with your studies! It's great to see your hard work paying off."
         
-        if any(word in full_text for word in ["fail", "failed", "failing", "bad grade", "poor result"] + NEGATIVE_WORDS):
-            return "Setbacks like this don't define you. Take a moment to breathe, then try again."
-            
-        return "School can be tough. Take it one assignment at a time."
+        elif emotion == "neutral":
+            return "School can be a lot to handle. It's okay to feel neutral about it sometimes."
+        
+        elif emotion in ["angry", "sad", "anxious", "stressed"]:
+            if any(word in full_text for word in ["fail", "failed", "failing", "bad grade", "poor result"] + NEGATIVE_WORDS):
+                return "Setbacks like this don't define you. Take a moment to breathe, then try again."
+            elif any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that you're finding positivity even amidst academic challenges!"
+            return "School can be tough. Take it one assignment at a time."
     
     elif "work general" in detected_contexts or "work stress" in detected_contexts:
         if "work stress" in detected_contexts:
