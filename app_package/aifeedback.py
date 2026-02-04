@@ -5,7 +5,7 @@ import random
 from datetime import datetime, timedelta
 from collections import Counter
 from Databases.emologdb import get_emolog_by_id
-
+import re
 
 ai_feedback_bp = Blueprint('ai_feedback', __name__)
 
@@ -211,8 +211,14 @@ def detect_context(text):
     }
     detected = []
     for category, keywords in context_map.items():
-        if any(word in text for word in keywords):
-            detected.append(category)
+        for word in keywords:
+            #\b ensures we match whole words only (stops 'app' in 'happy')
+            #{word[-1]}* allows the last letter to repeat (catches 'exammm')
+            pattern = rf"\b{word}{word[-1]}*\b"
+            
+            if re.search(pattern, text):
+                detected.append(category)
+                break  #move to the next category once a match is found          
     return detected
 
 def get_encouragement(emotion, contexts):
@@ -245,7 +251,7 @@ def get_encouragement(emotion, contexts):
             "This feeling is temporary, but your strength is permanent.",
             "It's okay not to be okay. Be gentle with yourself today.",
             "Stars can't shine without darkness. You will get through this.",
-            "It’s okay to rot in bed for a bit if you need to. Your feelings are valid.",
+            "It's okay to rot in bed for a bit if you need to. Your feelings are valid.",
             "Sending you a virtual hug. Take all the time you need to heal.",
             "Even a rainy day serves a purpose. Let yourself feel."
         ],
@@ -880,11 +886,17 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "You are much more than your mistakes or your appearance. Please be gentle with yourself today."
    
     #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
-    if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
-        return "It seems you're feeling positive, but your notes mention some challenges. It's okay to have mixed feelings."
+    if emotion in ["happy", "excited"]: 
+        if any(word in full_text for word in NEGATIVE_WORDS):
+            return "It seems you're feeling positive, but your notes mention some challenges. It's okay to have mixed feelings."
+        if any(word in full_text for word in POSITIVE_WORDS):
+            return "It seems you're feeling positive, glad to see you are feeling great!"
 
-    if emotion in ["sad", "angry", "stressed", "anxious"] and any(word in full_text for word in POSITIVE_WORDS):
-        return "It seems you're feeling down, but your notes mention some positives. It's okay to have mixed feelings."
+    if emotion in ["sad", "angry", "stressed", "anxious"]:
+        if any(word in full_text for word in POSITIVE_WORDS):
+            return "It seems you're feeling down, but your notes mention some positives. It's okay to have mixed feelings."
+        if any(word in full_text for word in NEGATIVE_WORDS):
+            return "It seems you're feeling down, take a deep breath."
 
     if emotion == "neutral":
         if any(word in full_text for word in POSITIVE_WORDS):

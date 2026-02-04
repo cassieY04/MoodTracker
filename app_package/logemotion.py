@@ -42,7 +42,7 @@ def emolog():
 
         if not selected_emotion:
             flash("Please select an emotion to save your entry.", "warning")
-            return render_template("log_emotion.html", emotions=emotion_choice)
+            return render_template("log_emotion.html", emotions=emotion_choice, emotion_map=EMOTION_MAP)
 
         msia_tz = timezone(timedelta(hours=8))
         current_msia_time = datetime.now(msia_tz).strftime("%Y-%m-%d %H:%M:%S")
