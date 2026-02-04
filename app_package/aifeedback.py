@@ -201,7 +201,8 @@ def detect_context(text):
             "confused", "choice", "decision", "adulting", "rejection", "waiting", "hopeful", "dream", "goal"
         ],
         "weather": [
-            "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog"
+            "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog",
+            "gloomy"
         ],
         "work general": [
             "job", "boss", "work", "meeting", "career", "colleague", "project", "part-time", 
@@ -246,7 +247,6 @@ def get_encouragement(emotion, contexts):
             "The hype is real! Make the most of this spark."
         ],
         "neutral": [
-            "Peace is power. Enjoy the calm in the chaos.",
             "A quiet mind is a creative mind. Use this balance wisely.",
             "It's okay to just 'be'. Not every day needs to be a rollercoaster.",
             "Sometimes a chill day is exactly what the soul needs.",
@@ -1034,13 +1034,19 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "hobbies" in reason_contexts:
                 analysis.append("Not having enough time for leisure activities can lead to burnout and increased stress.")
-
+            
+            elif "self-esteem issues" in reason_contexts:
+                analysis.append("Setting expections too high on yourself can cause frustrations and stress.")
+            
             elif "fitness" in reason_contexts:
                 analysis.append("Pushing your body too hard without enough recovery can lead to physical and mental stress.")
             
             elif "health issues" in reason_contexts:
                 analysis.append("Physical discomfort or illness is a major stressor on the mind and body.")
             
+            elif "health positive" in reason_contexts:
+                analysis.append("Negative emotions can delay the process of healing, so turn that frown upside down.")
+
             elif "health general" in reason_contexts:
                 analysis.append("General health concerns can subtly contribute to an overall sense of stress.")
             
@@ -1065,7 +1071,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "social media negativity" in reason_contexts:
                 analysis.append("Negative experiences on social media can amplify feelings of stress and anxiety.")
             
-            elif "social media activity" in reason_contexts:
+            elif "social media general" in reason_contexts:
                 analysis.append("High engagement on social media can lead to information overload, contributing to stress.")
 
             elif "social media platform" in reason_contexts:
@@ -1077,11 +1083,32 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "financial stress" in reason_contexts:
                 analysis.append("Worries about money can be a heavy burden, contributing significantly to stress.")
             
+            elif "daily hustle" in reason_contexts:
+                analysis.append("The accumulation of routine micro-tasks appears to be causing 'cognitive load'—where the mind feels cluttered by unfinished business.")
+            
+            elif "technology" in reason_contexts:
+                analysis.append("Digital stressors often lead to 'technostress,' a state of exhaustion caused by an inability to mentally disconnect from digital tools.")
+
+            elif "social media positive" in reason_contexts:
+                analysis.append("Positive social feedback can paradoxically trigger anxiety through 'upward social comparison' or the pressure to sustain a certain digital persona.")
+
+            elif "fatigue" in reason_contexts:
+                analysis.append("Physical exhaustion is likely lowering your emotional regulation threshold, making standard challenges feel significantly more threatening.")
+
+            elif "weather" in reason_contexts:
+                analysis.append("Environmental stressors, such as extreme heat or low light, are known to impact serotonin levels, intensifying an internal sense of unease.")
+
+            elif "health positive" in reason_contexts:
+                analysis.append("The transition period of recovery can cause 'healing anxiety,' where the fear of relapse or the pace of improvement creates mental strain.")
+
+            elif "transport general" in reason_contexts:
+                analysis.append("Commuting involves 'passive stress'—a feeling of powerlessness caused by being in a high-stakes environment (travel) with zero control over variables.")
+            
         if thought:
             if "uncertainty" in thought_contexts:
                 analysis.append("Your thoughts are focused on the unknown, which fuels anxiety.")
             
-            if "self-esteem" in thought_contexts:
+            if "self-esteem issues" in thought_contexts:
                 analysis.append("Your thoughts show a high level of self-expectation, which can intensify your feeling of being overwhelmed.")
             
             else:
@@ -1096,6 +1123,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
         if "uncertainty" in detected_contexts:
             analysis.append("Uncertainty about the future can be paralyzing, but taking small steps helps.")
             suggestions.append("Focus on one small thing you can control right now")
+
+        if "social media general" in reason_contexts:
+            suggestions.append("Set your phone to 'Do Not Disturb' for the next 30 minutes to reduce sensory input.")
 
     elif emotion == "sad":
         analysis.append("Feeling sad may be linked to emotional fatigue or unmet emotional needs.")
@@ -1145,16 +1175,13 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "health general" in reason_contexts:
                 analysis.append("General health concerns can make you feel down.")
 
-            elif "social media negativity" in reason_contexts:
-                analysis.append("Negative interactions online can feel personal and isolating.")
-
             elif "emotional release" in reason_contexts:
                 analysis.append("Crying is often a necessary release valve for overwhelming feelings; it helps reset your nervous system.")
             
             elif "social media negativity" in reason_contexts:
                 analysis.append("Negative interactions on social media can contribute to feelings of sadness and isolation.")
 
-            elif "social media activity" in reason_contexts:
+            elif "social media general" in reason_contexts:
                 analysis.append("Over-engagement with social media can lead to feelings of inadequacy or sadness due to constant comparisons.")
 
             elif "social media platform" in reason_contexts:
@@ -1162,22 +1189,52 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "fitness" in reason_contexts:
                 analysis.append("Lack of physical activity can contribute to feelings of sadness due to lower endorphin levels.")
+            
+            elif "daily hustle" in reason_contexts:
+                analysis.append("The 'daily grind' of routine chores can lead to emotional stagnation, where a lack of variety creates a persistent low mood.")
 
+            elif "technology" in reason_contexts:
+                analysis.append("Digital fatigue or a sense of disconnection despite being 'online' can contribute to a subtle, modern form of melancholy.")
+
+            elif "fatigue" in reason_contexts:
+                analysis.append("Physical depletion often mimics sadness; when the body is exhausted, the brain struggle to maintain emotional resilience.")
+
+            elif "weather" in reason_contexts:
+                analysis.append("Environmental factors like a lack of sunlight or gloomy conditions can physically lower serotonin levels, triggering a 'seasonal' low.")
+
+            elif "uncertainty" in reason_contexts:
+                analysis.append("A lack of clarity regarding future goals can lead to 'anticipatory grief,' where the mind mourns a lost sense of security.")
+
+            elif "self-esteem positive" in reason_contexts:
+                analysis.append("Paradoxically, moments of self-reflection after a 'glow up' or success can stir up old insecurities, leading to a temporary emotional dip.")
+
+            elif "social media positive" in reason_contexts:
+                analysis.append("The pressure to maintain a successful digital image or keep up with viral trends can be an exhausting and lonely experience.")
+
+            elif "financial gain" in reason_contexts:
+                analysis.append("Unexpected financial changes, even positive ones, can cause 'adjustment sadness' as you navigate new responsibilities or lifestyle shifts.")
+
+            elif "transport general" in reason_contexts:
+                analysis.append("The monotony of commuting can trigger a sense of 'transit loneliness,' making you feel isolated despite being in a public space.")
+
+            elif "health positive" in reason_contexts:
+                analysis.append("Post-recovery periods can sometimes feel empty, as the focus shifts from the goal of 'getting well' back to the weight of daily life.")
+            
             if not reason_contexts:
                 analysis.append("Sometimes specific events trigger sadness because they touch on deeper values or needs.")
 
         if thought:
-            if "self-esteem" in thought_contexts:
+            if "self-esteem issues" in thought_contexts:
                 analysis.append("Your internal monologue seems critical of yourself, which deepens the sadness.")
+            
+            elif "emotional release" in thought_contexts:
+                analysis.append("Thinking about crying indicates you are reaching a point of emotional overflow.")
             
             elif "loneliness" in thought_contexts:
                 analysis.append("You are telling yourself that you are alone, but this feeling is temporary.")
    
-            if not any(ctx in thought_contexts for ctx in ["uncertainty", "self-esteem"]):
+            if not any(ctx in thought_contexts for ctx in ["uncertainty", "self-esteem issues"]):
                 analysis.append("Your thoughts suggest self-doubt or emotional disappointment.")
-            
-            if "emotional release" in thought_contexts:
-                analysis.append("Thinking about crying indicates you are reaching a point of emotional overflow.")
 
         suggestions.extend([
             "Allow yourself time to process these feelings",
