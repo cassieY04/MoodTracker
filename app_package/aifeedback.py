@@ -24,7 +24,7 @@ NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terr
                   "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "uneasy",
                   "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy",
                   "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless",
-                  "hopeless", "worthless", "pointless", "troubled", "sucks",]
+                  "hopeless", "worthless", "pointless", "troubled", "sucks", "hate", "hates", "hating", ]
 
 #function to detect context based on keywords
 #can detect duplicate spellings but not mispellings
@@ -132,9 +132,10 @@ def detect_context(text):
         ],
         "relationship issues": [
             "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
-            "red flag", "reject", "dumped", "cheated", "ex", "tea", "ick", "betray", "jealous", "annoying", "rude", "mean", "ignore", "ignored",
+            "red flag", "reject", "dumped", "cheated", "ex", "tea", "ick", "betray", "jealous", 
             "envy", "divorce", "gaslight", "love bomb", "clingy", "distant", "misunderstanding", 
-            "codependent", "third wheel", "friendzone", "catfish", "hate", "lie"
+            "codependent", "third wheel", "friendzone", "catfish", "lie", 
+            "envies", "gossiping", "gossipping", "envying"
         ],
         "relationship positive": [
             "bestie", "bff", "best friend", "squad", "love", "date", "dating", "marriage", 
@@ -160,11 +161,15 @@ def detect_context(text):
         ],
         "social media general": [
             "feed", "scroll", "screen", "phone", "notification", "dm", "message", "reply", "live", 
-            "subscribe", "post", "upload", "story", "status", "app", "comment", "stream", 
+            "subscribe", "post", "upload", "story", "status", "app", "comment", "stream", "posted",
+            "streams", "feeds", "uploads", "uploading", "uploaded", "commented", "notifications",
+            "messaged", "messaging", "subscribes", "subscribed", "scrolls"
         ],
         "social media negativity": [
-            "hate", "bully", "toxic", "envy", "jealous", "fake", "drama", "unfollow", "cancel", "troll",
-            "block", "unfollow", "cyberbully", "death threat", "expose", "clout", "flop", "shade", "snub"
+            "bully", "toxic", "fake", "drama", "unfollow", "cancel", "troll", "hater", 
+            "block", "unfollow", "cyberbully", "death threat", "expose", "clout", "flop", "shade", "snub",
+            "death threats", "unfollows", "haters", "cyberbulling", "cyberbullies", "cancel culture",
+            "sasaeng", "cancelled", "cancels"
         ],
         "social media positive": [
             "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views",
@@ -745,7 +750,7 @@ def generate_short_feedback(emotion, reason="", thought=""):
     
     elif "social media negativity" in detected_contexts:
         if emotion in ["happy", "excited"]:
-            if any(word in full_text for word in NEGATIVE_WORDS):
+            if any(word in full_text for word in ["envy", "envies", "envying", "jealous"] + NEGATIVE_WORDS):
                 return "It's impressive that you're staying positive and rising above the drama even when social media feels toxic!"
             return "It's great that you're maintaining such a high vibe despite the negative experiences you've encountered online."
             
@@ -1591,12 +1596,12 @@ def generate_aggregated_feedback(logs, period_name="day"):
     combined_thought = ""
     all_text_for_context = ""
     
-    # Limit detailed timeline for longer periods to avoid huge text blocks
-    display_logs = logs if len(logs) < 20 else logs[-20:] # Show last 20 entries max
+    #limit detailed timeline for longer periods to avoid huge text blocks
+    display_logs = logs if len(logs) < 20 else logs[-20:] #show last 20 entries max
     
     for log in display_logs:
-        # Format timestamp based on period
-        time_str = log['timestamp'][5:16] # MM-DD HH:MM
+        #timestamp format based on period
+        time_str = log['timestamp'][5:16] #MM-DD HH:MM
         emo = log['emotion_name']
         
         if log['note']:
@@ -1604,14 +1609,14 @@ def generate_aggregated_feedback(logs, period_name="day"):
         if log['thought']:
             combined_thought += f"• {time_str} ({emo}): {log['thought']}\n"
 
-    # Use ALL logs for context detection, not just the displayed ones
+    #use ALL logs for context detection, not just the displayed ones
     all_text_for_context = " ".join([f"{l['note']} {l['thought']}" for l in logs])
     detected_contexts = detect_context(all_text_for_context)
     
     analysis = []
     suggestions = []
     
-    #check for specific emotion spikes (e.g. Angry > 3)
+    #check for specific emotion spikes (e.g. angry > 3)
     angry_count = emotions.count('Angry')
     if angry_count > 3:
         analysis.append(f"⚠️ Alert: You've logged 'Angry' {angry_count} times this {period_name}.")
@@ -1637,7 +1642,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     #add context specific advice
     if "academic pressure" in detected_contexts or "work stress" in detected_contexts:
         analysis.append(f"Work or school pressure was a recurring theme this {period_name}.")
-        suggestions.append("Schedule downtime to prevent burnout.")
+        suggestions.append("Schedule downtime to prevent burnout from academics or work.")
 
     if "relationship issues" in detected_contexts:
         analysis.append(f"Social interactions played a big role in your {period_name}.")
