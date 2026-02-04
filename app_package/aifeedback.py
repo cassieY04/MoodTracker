@@ -24,7 +24,7 @@ NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terr
                   "irritated", "mad", "furious", "scared", "afraid", "fear", "terrified", "nervous", "uneasy",
                   "dread", "panic", "guilt", "guilty", "shame", "ashamed", "embarrassed", "regret", "jealous", "envy",
                   "tired", "exhausted", "drained", "weak", "hurt", "hurting", "broken", "damaged", "stupid", "useless",
-                  "hopeless", "worthless", "pointless", "troubled", "sucks"]
+                  "hopeless", "worthless", "pointless", "troubled", "sucks",]
 
 #function to detect context based on keywords
 #can detect duplicate spellings but not mispellings
@@ -141,12 +141,15 @@ def detect_context(text):
             "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", 
             "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
         ],
-        "self-esteem": [
-            "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "confidence",
-            "cringe", "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb", 
-            "mistake", "guilt", "shame", "embarrassed", "validation",
-            "body image", "skinny", "acne", "looks", "appearance", "unlovable", "not enough", 
-            "glow up", "mid", "basic", "try hard", "people pleaser"
+        "self-esteem issues":[
+            "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "cringe",
+            "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb",
+            "mistake", "guilt", "shame", "embarrassed", "body image", "skinny", "acne", "looks",
+            "appearance", "unlovable", "not enough", "mid", "basic", "try hard", "people pleaser"
+        ],
+        "self-esteem positive":[
+            "confidence", "validation", "glow up", "proud", "self-love", "worthy", "enough",
+            "accepting", "confident"
         ],
         "social media platform": [
             "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "xhs", "igtv", "youtube", 
@@ -785,6 +788,96 @@ def generate_short_feedback(emotion, reason="", thought=""):
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "It's impressive that you still find positivity despite being overhwhelmed by social media platforms."
             return "If your time on these apps is feeling heavy, remember it's okay to log off and reset for a bit."
+    
+    elif "weather" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's impressive that you're maintaining a sunny outlook regardless of the weather outside!"
+            return "It's great that the weather is adding to your positive energy today. Enjoy the atmosphere!"
+            
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's nice to feel balanced and steady, no matter what the weather is doing outside."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "Don't feel bad for feeling a bit flat when the weather is gloomy; your mood can naturally follow the environment."
+            return "The weather often sets the pace for the day. Take this calm moment to just exist in the present."
+            
+        else:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even on a dark or stormy day, you're still finding reasons to be grateful."
+            return "The weather can really affect our energy. Remember to be gentle with yourself if the gloom is feeling heavy."
+    
+    elif "uncertainty" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's impressive that you're embracing the unknown with such a hopeful and positive spirit!"
+            return "It's wonderful to feel excited about your dreams and the direction your life is heading."
+            
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "Taking a steady, objective look at your future plans is a very mature way to find your direction."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "Don't feel bad for having a neutral approach toward uncertainty; processing your choices takes time."
+            return "Navigating the unknown with a calm head helps you make the best decisions for your future."
+            
+        else:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even amidst worries about the future, you're still finding a spark of hope."
+            return "Adulting and future plans can be overwhelming. Remember, it's okay not to have all the answers right now."
+        
+    elif "fatigue" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's impressive that you're staying so positive even when your energy is running low!"
+            return "It's great that you're feeling energized! Just make sure to rest later so you don't burn out."
+            
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's good to see you're feeling balanced; giving your body a moment to rest is a smart move."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "Don't feel bad for having a neutral approach to your fatigue; sometimes you just need to power through."
+            return "When you're feeling lethargic, taking things one step at a time is the best way to manage your day."
+            
+        else:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even amidst the burnout, you're still finding a sense of accomplishment."
+            return "Burnout and exhaustion are signs that your body needs a real break. Please prioritize your rest today."
+        
+    elif "self-esteem positive" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "You've worked hard to build this confidence; despite there were some struggles during the journey."
+            return "That confidence looks great on you! Enjoy this feeling of being truly comfortable in your own skin."
+            
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's good to have a quiet, steady sense of confidence in your abilities while you go about your day."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "Holding onto your sense of worth even when you're feeling flat or tired is a sign of solid self-assurance."
+            return "Maintaining a steady sense of self-confidence is a powerful habit for long-term peace of mind."
+            
+        else:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's brave to acknowledge your worth even on days when your emotions feel a bit heavy."
+            return "Even on the hard days, remembering your value is a huge strength. This feeling will pass, but your worth remains."
+        
+    elif "self-esteem issues" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's impressive that you're maintaining a positive outlook even when facing those inner insecurities."
+            return "It's great that you're feeling good! Don't let those old insecurities hold back your current happiness."
+            
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "Noticing your mistakes without letting them shift your mood shows a very practical and steady mindset."
+            elif any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's okay to have days where you feel ordinary or critical of yourself. Staying objective is just part of the process."
+            return "Embracing a calm, non-judgmental view of yourself is a powerful way to find inner peace."
+            
+        else:
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that even when you're being hard on yourself, you can still find a reason to be proud of your effort."
+            return "You are much more than your mistakes or your appearance. Please be gentle with yourself today."
    
     #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
     if emotion in ["happy", "excited"] and any(word in full_text for word in NEGATIVE_WORDS):
