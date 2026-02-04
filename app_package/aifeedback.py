@@ -16,7 +16,8 @@ POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "ama
                   "proud", "relief", "relieved", "confident", "content", "calm", "peaceful", "better", "improving",
                   "progress", "productive", "cute", "sweet", "fun", "laugh", "smile", "smiling", "joke", "humor", "humorous",
                   "pass", "passed", "safe", "secure", "hope", "hopeful", "optimistic", "eager", "energetic", "strong",
-                  "healthy", "fit", "beautiful", "smart", "easy", "smooth", "fresh", "clean", "free", "freedom"]
+                  "healthy", "fit", "beautiful", "smart", "easy", "smooth", "fresh", "clean", "free", "freedom", "like",
+                  "likes"]
 NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated",
                   "lonely", "pain", "sick", "cry", "not good", "aint good", "ain't good", "fail", "failed", "failing",
                   "loss", "lost", "losing", "missed", "missing", "worst", "horrible", "disaster", "mess", "hard",
@@ -149,8 +150,8 @@ def detect_context(text):
             "appearance", "unlovable", "not enough", "mid", "basic", "try hard", "people pleaser"
         ],
         "self-esteem positive":[
-            "confidence", "validation", "glow up", "proud", "self-love", "worthy", "enough",
-            "accepting", "confident"
+            "confidence", "validation", "glow up", "proud of myself", "self-love", "worthy", "enough",
+            "accepting", "confident", "great about myself", "good about myself"
         ],
         "social media platform": [
             "instagram", "tiktok", "twitter", "x", "facebook", "snapchat", "xhs", "igtv", "youtube", 
@@ -202,7 +203,7 @@ def detect_context(text):
         ],
         "weather": [
             "rain", "hot", "sun", "weather", "storm", "humid", "cold", "gloom", "dark", "snow", "fog",
-            "gloomy"
+            "gloomy", "sky"
         ],
         "work general": [
             "job", "boss", "work", "meeting", "career", "colleague", "project", "part-time", 
@@ -1300,6 +1301,42 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "transport general" in reason_contexts:
                 analysis.append("A smooth journey or drive can be surprisingly relaxing and enjoyable.")
+            
+            elif "daily hustle" in reason_contexts:
+                analysis.append("Finding satisfaction in routine indicates high 'autonomy'—the psychological state of feeling in control of your daily environment.")
+            
+            elif "technology" in reason_contexts:
+                analysis.append("A positive tech experience reflects 'frictionless interaction,' where the tool disappears and allows for a state of cognitive flow.")
+
+            elif "social media positive" in reason_contexts:
+                analysis.append("Positive digital engagement triggers the 'social reward' pathway, reinforcing a sense of community and belonging through digital mirroring.")
+
+            elif "uncertainty" in reason_contexts:
+                analysis.append("Happiness despite uncertainty suggests 'cognitive flexibility,' where the mind prioritizes current potential over the need for absolute control.")
+
+            elif "fatigue" in reason_contexts:
+                analysis.append("This suggests a state of 'eustress' or meaningful exhaustion, where the sense of purpose behind the fatigue outweighs the physical cost.")
+
+            elif "achievement success" in reason_contexts:
+                analysis.append("This emotional peak is a result of 'self-efficacy'—the rewarding realization that your personal actions have led to a desired outcome.")
+
+            elif "academic pressure" in reason_contexts:
+                analysis.append("Finding joy in studies indicates 'intrinsic motivation,' where the act of learning itself is providing the reward rather than just the final grade.")
+
+            elif "self-esteem positive" in reason_contexts:
+                analysis.append("Internal validation indicates that your current actions are highly aligned with your self-concept and personal values.")
+
+            elif "health positive" in reason_contexts:
+                analysis.append("Physical vitality provides a 'somatic foundation' for happiness, as the body communicates a state of safety and optimal functioning to the brain.")
+
+            elif "work stress" in reason_contexts:
+                analysis.append("Happiness amidst work stress shows 'resilience-based detachment,' where you are successfully separating your personal joy from professional pressure.")
+
+            elif "financial gain" in reason_contexts:
+                analysis.append("Financial developments contribute to 'safety-security satisfaction,' reducing the background noise of survival-based anxiety.")
+
+            elif "relationship positive" in reason_contexts:
+                analysis.append("Social joy is driven by 'interpersonal synchrony,' where high-quality connections act as a primary regulator for emotional stability.")
 
             if not reason_contexts:
                 analysis.append("Identifying these personal sources of happiness helps you build resilience.")
@@ -1307,6 +1344,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
         if thought:
             if "self-esteem" in thought_contexts:
                 analysis.append("Your thoughts reflect a healthy sense of self-worth right now.")
+            
+            elif "achievement success" in thought_contexts:
+                analysis.append("Reflecting on wins creates 'psychological momentum,' increasing the likelihood of approaching future tasks with confidence.")
             
         suggestions.extend([
             "Take note of what contributed to this feeling",
@@ -1333,7 +1373,7 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "social media negativity" in reason_contexts:
                 analysis.append("Rising above negative experiences on social media shows your resilience and focus on positivity.")
             
-            elif "future uncertainty" in reason_contexts:
+            elif "uncertainty" in reason_contexts:
                 analysis.append("You're viewing the unknown as an opportunity rather than a threat. Keep that perspective!")
             
             elif "hobbies" in reason_contexts:
@@ -1369,15 +1409,52 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "transport general" in reason_contexts:
                 analysis.append("Going somewhere new or enjoying a drive is a great mood booster.")
             
+            elif "daily hustle" in reason_contexts:
+                analysis.append("Enthusiasm for routine suggests a state of 'functional momentum,' where the efficiency of your daily cycle is providing its own reward.")
+            
+            elif "technology" in reason_contexts:
+                analysis.append("This excitement suggests 'technological empowerment'—a boost in self-efficacy when tools effectively expand your capabilities.")
+
+            elif "social media general" in reason_contexts:
+                analysis.append("High engagement with digital feeds can trigger 'variable ratio rewards,' creating a cycle of excitement through constant novelty.")
+
+            elif "technical difficulties" in reason_contexts:
+                analysis.append("Feeling excited despite technical hurdles indicates 'resilience-based engagement,' where the problem-solving process itself has become rewarding.")
+
+            elif "fatigue" in reason_contexts:
+                analysis.append("Excitement during physical exhaustion often signals 'second wind' neurochemistry, where adrenaline temporarily overrides your need for recovery.")
+
+            elif "weather" in reason_contexts:
+                analysis.append("Atmospheric shifts can trigger 'environmental arousal,' where specific sensory conditions (like sunlight or a storm) stimulate your nervous system.")
+
+            elif "self-esteem positive" in reason_contexts:
+                analysis.append("This indicates an 'upward self-concept shift,' where your internal perception of worth is actively being reinforced by your current experiences.")
+
+            elif "health positive" in reason_contexts:
+                analysis.append("Biological vitality provides a 'somatic high,' as the body signals a state of peak physical readiness to the brain.")
+
+            elif "work stress" in reason_contexts:
+                analysis.append("Excitement under professional pressure suggests 'stress-is-enhancing' mindset, where you are successfully converting high stakes into fuel.")
+
+            elif "financial stress" in reason_contexts:
+                analysis.append("Maintaining enthusiasm despite money worries shows 'cognitive reappraisal,' where you are prioritizing non-monetary goals or growth.")
+
+            elif "transport stress" in reason_contexts:
+                analysis.append("Staying excited through travel delays indicates a high 'internal locus of control,' as you maintain your mood independently of external disruptions.")
+
+            elif "emotional release" in reason_contexts:
+                analysis.append("Enthusiasm following an emotional release indicates a successful 'post-cathartic reset,' clearing the path for high-energy optimism.")
+            
             if not reason_contexts:
                 analysis.append("Passion for specific interests is a great fuel for mental well-being.")
         
         if thought:
             if "emotional release" in thought_contexts:
                 analysis.append("Your excitement is so strong it feels overwhelming; remember to breathe and stay grounded.")
-            else:
-                analysis.append("Your thoughts are racing with possibilities. This creative energy is a great asset.")
-
+            
+            elif "self-esteem positive" in thought_contexts:
+                analysis.append("Your internal monologue is currently facilitating a 'virtuous cycle,' where positive self-thoughts further amplify your energy levels.")
+            
         suggestions.extend([
             "Channel this energy into a creative project",
             "Share your good news with a friend",
@@ -1434,6 +1511,45 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "heatlh issues" in reason_contexts:
                 analysis.append("Facing health challenges with a neutral mindset can help you focus on solutions rather than stress.")
             
+            elif "daily hustle" in reason_contexts:
+                analysis.append("Engagement in routine tasks with a neutral affect suggests 'habitual efficiency,' where your actions are automated and mentally non-taxing.")
+            
+            elif "technology" in reason_contexts:
+                analysis.append("A neutral tech experience indicates 'functional transparency,' where tools are working as intended without creating cognitive friction.")
+
+            elif "social media positive" in reason_contexts:
+                analysis.append("This suggests 'digital stoicism'—the ability to acknowledge positive online feedback without becoming dependent on the dopaminergic hit.")
+
+            elif "hobbies" in reason_contexts:
+                analysis.append("Neutrality during leisure activities indicates 'passive recovery,' where you are engaging in a hobby purely for mental decompression rather than excitement.")
+
+            elif "financial gain" in reason_contexts:
+                analysis.append("Responding to financial developments neutrally indicates a high level of 'monetary stability' and a lack of survival-based emotional triggers.")
+
+            elif "financial stress" in reason_contexts:
+                analysis.append("Observing financial pressure neutrally suggests 'pragmatic detachment,' focusing on logical problem-solving rather than the anxiety of the debt.")
+
+            elif "weather" in reason_contexts:
+                analysis.append("Environmental neutrality shows 'climatic adaptation,' where your internal mood is stable enough to remain unaffected by external shifts in conditions.")
+
+            elif "self-esteem positive" in reason_contexts:
+                analysis.append("This indicates 'secure self-concept'—a state where your worth is a quiet, accepted fact that doesn't require active excitement or validation.")
+
+            elif "health positive" in reason_contexts:
+                analysis.append("Feeling neutral during health recovery suggests 'biological recalibration,' as the body returns to its standard state of well-being.")
+
+            elif "work general" in reason_contexts:
+                analysis.append("Professional neutrality often stems from 'work-life integration,' where tasks are viewed as standard responsibilities rather than emotional events.")
+
+            elif "work stress" in reason_contexts:
+                analysis.append("Maintaining neutrality under work pressure indicates 'professional resilience,' successfully insulating your inner state from workplace demands.")
+
+            elif "transport general" in reason_contexts:
+                analysis.append("A neutral commute indicates 'transit mindfulness,' where the act of traveling is treated as a transitional space for quiet thought.")
+
+            elif "emotional release" in reason_contexts:
+                analysis.append("Neutrality following an emotional release indicates the 'post-cathartic plateau,' where the system has successfully exhausted intense signals and reset.")
+            
             if not reason_contexts:
                  analysis.append("Taking a step back to view things neutrally is a valuable skill.")
 
@@ -1443,7 +1559,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "self-esteem" in thought_contexts:
                 analysis.append("You are viewing yourself and your progress realistically today, without being too hard on yourself.")    
-
+            
+            elif "fatigue" in thought_contexts:
+                analysis.append("Your thoughts on exhaustion are being processed with 'somatosensory awareness,' recognizing physical needs without emotional judgment.")
+        
         suggestions.extend([
             "Use this clarity to plan your week",
             "Practice mindfulness to maintain this balance",
@@ -1488,6 +1607,48 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "health issues" in reason_contexts:
                 analysis.append("Dealing with health problems can be frustrating and lead to feelings of anger.")
 
+            elif "technology" in reason_contexts:
+                analysis.append("Frustration with technology often stems from 'agency disruption'—where a tool designed to empower you instead creates a barrier to your goals.")
+            
+            elif "social media positive" in reason_contexts:
+                analysis.append("Anger in a positive digital context can indicate 'performative exhaustion,' where the pressure to maintain a certain image feels restrictive.")
+
+            elif "hobbies" in reason_contexts:
+                analysis.append("When passions trigger anger, it often reflects 'perfectionist friction,' where your current skill level or output isn't meeting your internal standards.")
+
+            elif "fatigue" in reason_contexts:
+                analysis.append("Physical depletion significantly lowers your 'irritability threshold,' causing the brain to interpret minor inconveniences as major threats.")
+
+            elif "weather" in reason_contexts:
+                analysis.append("Environmental factors like extreme heat can lead to 'thermal irritability,' a physiological state that primes the nervous system for aggressive responses.")
+
+            elif "uncertainty" in reason_contexts:
+                analysis.append("Anger toward the unknown is often a mask for 'existential powerlessness,' where the mind uses frustration to try and regain a sense of control.")
+
+            elif "self-esteem positive" in reason_contexts:
+                analysis.append("Anger following self-validation can be a defense against 'cognitive dissonance,' as you fight off old habits of self-doubt.")
+
+            elif "health positive" in reason_contexts:
+                analysis.append("Encountering anger during recovery may indicate 'restoration impatience,' where you are frustrated with the slow pace of physical healing.")
+
+            elif "work general" in reason_contexts:
+                analysis.append("Professional anger often signals a 'values misalignment,' where workplace demands or culture are clashing with your personal integrity.")
+
+            elif "work stress" in reason_contexts:
+                analysis.append("This suggests 'occupational burnout'—a state where chronic stress has depleted your patience and left you in a persistent state of high arousal.")
+
+            elif "financial gain" in reason_contexts:
+                analysis.append("Anger regarding financial wins can stem from 'unmet expectations' or the realization that a material gain hasn't solved a deeper emotional need.")
+
+            elif "transport general" in reason_contexts:
+                analysis.append("The monotony of travel can lead to 'transient frustration,' where the lack of stimulating progress makes you hyper-aware of minor irritants.")
+
+            elif "transport stress" in reason_contexts:
+                analysis.append("Traffic-induced anger is a classic example of 'thwarted goal-seeking,' where external factors out of your control are physically blocking your progress.")
+
+            elif "achievement success" in reason_contexts:
+                analysis.append("Anger after success may indicate 'achievement resentment,' perhaps because the win didn't feel as rewarding as you anticipated.")
+            
             if not reason_contexts:
                  analysis.append("Even if the trigger seems specific, anger often points to a need for change or firmer boundaries.")
 
@@ -1574,6 +1735,54 @@ def generate_full_feedback(emotion, reason="", thought=""):
         suggestions.append("Organize your workspace to create a calming environment")
         suggestions.append("Prioritize tasks using the Eisenhower Matrix (Urgent vs Important)")
 
+    if "daily hustle" in detected_contexts:
+        suggestions.append("Apply the '2-minute rule': if it takes less than 2 minutes, do it now")
+        suggestions.append("Use a 'Done List' instead of a 'To-Do List' to visualize your productivity")
+
+    if "technology" in detected_contexts:
+        suggestions.append("Adjust your screen's blue light filter to reduce digital eye strain")
+        suggestions.append("Organize your digital workspace and clear your desktop icons for clarity")
+
+    if "social media platform" in detected_contexts or "social media general" in detected_contexts:
+        suggestions.append("Turn off non-human notifications for 2 hours to reclaim your attention")
+        suggestions.append("Practice 'mindful scrolling'—check in with how you feel every 10 minutes")
+
+    if "social media positive" in detected_contexts:
+        suggestions.append("Save your favorite positive comments or posts in a 'Joy' folder")
+        suggestions.append("Log off while you're ahead to savor the good feelings without the dip")
+
+    if "weather" in detected_contexts:
+        suggestions.append("Adjust your environment (lighting or temperature) to balance out the external weather")
+        suggestions.append("If it's sunny, try to get 10 minutes of natural light to boost serotonin")
+
+    if "hobbies" in detected_contexts:
+        suggestions.append("Dedicate even 15 minutes to your passion without worrying about the final result")
+        suggestions.append("Try a 'parallel play' session—engage in your hobby while a friend does theirs")
+
+    if "financial gain" in detected_contexts:
+        suggestions.append("Put a small percentage of this gain into a 'future-you' savings pot")
+        suggestions.append("Consider a small 'conscious splurge' that genuinely adds value to your life")
+
+    if "transport general" in detected_contexts or "transport stress" in detected_contexts:
+        suggestions.append("Use your commute time for an 'audio reset' with a favorite podcast or album")
+        suggestions.append("Practice deep breathing or 'grip release' exercises while waiting in traffic")
+
+    if "health positive" in detected_contexts:
+        suggestions.append("Take note of how this vitality feels to remember it during future recoveries")
+        suggestions.append("Maintain this momentum with one small, sustainable wellness habit today")
+
+    if "emotional release" in detected_contexts:
+        suggestions.append("Hydrate after crying; your body needs to replenish fluids after an intense release")
+        suggestions.append("Take 5 minutes of absolute silence to let your nervous system fully reset")
+
+    if "loneliness" in detected_contexts:
+        suggestions.append("Visit a public space like a cafe or the MMU library to feel 'alone together'")
+        suggestions.append("Write a letter or message to your future self about what you're learning right now")
+
+    if "self-esteem positive" in detected_contexts:
+        suggestions.append("Accept a compliment today without downplaying your own efforts")
+        suggestions.append("Wear something that makes you feel confident to reinforce this internal state")
+
     #ensure suggestions list is never empty
     if not suggestions:
         if emotion in ["stressed", "anxious", "angry"]:
@@ -1590,9 +1799,11 @@ def generate_full_feedback(emotion, reason="", thought=""):
     #remove duplicates while preserving order
     seen = set()
     suggestions = [x for x in suggestions if not (x in seen or seen.add(x))]
+    analysis = [x for x in analysis if not (x in seen or seen.add(x))]
 
-    #limit to 5 suggestions max
+    #limit to 5 max for suggestions and analysis
     suggestions = suggestions[:5]
+    analysis = analysis[:5]
 
     return {
         "emotion": emotion,
@@ -1712,7 +1923,7 @@ def generate_aggregated_feedback(logs, period_name="day"):
     if "financial stress" in detected_contexts or "financial general" in detected_contexts:
         suggestions.append("Focus on small, controllable financial steps.")
 
-    if "health concerns" in detected_contexts:
+    if "health issues" in detected_contexts:
         suggestions.append("Listen to your body and rest if needed.")
 
     if "social media negativity" in detected_contexts:
@@ -1734,9 +1945,11 @@ def generate_aggregated_feedback(logs, period_name="day"):
     #remove duplicates while preserving order
     seen = set()
     suggestions = [x for x in suggestions if not (x in seen or seen.add(x))]
+    analysis = [x for x in analysis if not (x in seen or seen.add(x))]
 
-    #limit to 5 suggestions max
+    #limit to 5 max for suggestions and analysis
     suggestions = suggestions[:5]
+    analysis = analysis[:5]
 
     return {
         "emotion": main_emotion,
@@ -1870,7 +2083,7 @@ def ai_feedback(log_id=None):
             except (ValueError, SyntaxError):
                 full = None
 
-        # 2. Check for STALE DATA
+        #check for STALE DATA
         if full:
             stored_emo = full.get("emotion", "").lower()
             current_emo = log_data["emotion_name"].lower()
@@ -1894,7 +2107,6 @@ def ai_feedback(log_id=None):
         style = get_emotion_styling(log_data["emotion_name"])
         emotion_display = log_data["emotion_name"]
         
-        # Package single data
         single_data = full
         single_data['emotion'] = emotion_display
         single_data['emoji'] = style["emoji"]

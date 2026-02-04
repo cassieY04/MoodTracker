@@ -35,7 +35,7 @@
         {% if data.causes %}
         <p class="feedback-intro-text">Here is what might be influencing your mood:</p>
         <ul>
-            {% for c in data.causes%}
+            {% for c in data.causes[:5] %}
             <li>{{c}}</li>
             {% endfor %}
         </ul>
@@ -49,7 +49,7 @@
         <h3>🌱 Suggested Actions</h3>
         <p class="feedback-intro-text">Try these small steps to help you feel better:</p>
         <ul>
-            {% for s in data.suggestions%}
+            {% for s in data.suggestions[:5] %}
             <li>{{s}}</li>
             {% endfor %}
         </ul>
