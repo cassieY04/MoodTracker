@@ -17,7 +17,7 @@ POSITIVE_WORDS = ["happy", "good", "great", "excited", "love", "wonderful", "ama
                   "progress", "productive", "cute", "sweet", "fun", "laugh", "smile", "smiling", "joke", "humor", "humorous",
                   "pass", "passed", "safe", "secure", "hope", "hopeful", "optimistic", "eager", "energetic", "strong",
                   "healthy", "fit", "beautiful", "smart", "easy", "smooth", "fresh", "clean", "free", "freedom", "like",
-                  "likes"]
+                  "likes", "loves", "loving", "loved"]
 NEGATIVE_WORDS = ["unhappy", "sad", "angry", "stressed", "anxious", "bad", "terrible", "awful", "hate", "frustrated",
                   "lonely", "pain", "sick", "cry", "not good", "aint good", "ain't good", "fail", "failed", "failing",
                   "loss", "lost", "losing", "missed", "missing", "worst", "horrible", "disaster", "mess", "hard",
@@ -81,6 +81,43 @@ def detect_context(text):
             "low energy", "lethargic", "dead", "dying", "comatose", "hibernating", "sluggish", 
             "yawning", "snooze", "awake", "sleepless"
         ],
+        "food and drink": [
+            "nasi lemak", "nasilemak", "rendang", "chicken rice", "fried chicken", "bread",
+            "eat", "eating", "eats", "ate", "roti canai", "roticanai", "roti sardin", "bun",
+            "rice", "fried rice", "ramen", "food", "roti", "wheat", "peanut", "peanuts",
+            "steam bun", "steamed bun", "dimsum", "maggie", "mee goreng", "mi goreng", "char kuey teow",
+            "sushi", "mala hotpot", "hotpot", "bbq", "barbeque", "snacks", "chips", "fries",
+            "french fries", "fish n chips", "fish & chips", "fish and chips", "mashed potato",
+            "fried chicken", "kimchi", "omakase", "steak", "burger", "pizza", "taco", "burrito",
+            "cendol", "abc soup", "soup", "noodle", "noodles", "curry chicken", "satay", "dumplings",
+            "dumpling", "ice cream", "icecream", "ice-cream", "mcd", "mcdonald", "kfc", "mixue",
+            "kuih", "sandwiches", "sandwich", "chicken tender", "chicken tenders", "strawberry",
+            "strawberries", "apple", "apples", "banana", "bananas", "grape", "grapes", "blueberry",
+            "blueberries", "papaya", "papayas", "cookies", "cookie", "biskuit", "biskuits", "dominos",
+            "mee", "mi", "nasi", "corn", "popcorn", "seafood", "seafoods", "prawn", "prawns", "burgers",
+            "pizzas", "tacos", "burritos", "buns", "orange", "fruit", "fruits", "vegetable",
+            "vegetables", "potato", "potatoes", "mayo", "mayonnaise", "curry", "bento", "tomato",
+            "tomatoes", "cherry", "cherries", "cake", "cakes", "muffin", "muffins", "tofu",
+            "sugar cane", "mango", "mangoes", "mangosteen", "waffle", "waffles", "cheese", "mozarella",
+            "pasta", "spaghetti", "panmee", "pan mee", "popcorns", "crab", "crabs", "lobster",
+            "lobsters", "tempura", "nuggets", "sundae", "mcflurry", "oreo", "eggplant", "broccoli",
+            "cauliflower", "beans", "bean", "soya", "soy milk", "baked", "rambutan", "longan",
+            "lychee", "lychees", "spinach", "garlic", "onions", "onion", "pudding", "jelly",
+            "jellies", "jellybeans", "jellybean", "matcha", "candy", "candies", "lollipop",
+            "lollipops", "kway teow", "pork", "meat", "beef", "chicken chop", "mutton", "lamb",
+            "sheepmeat", "sheap meat", "goat meat", "chevon", "cabrito", "ramyeon", "kimbap",
+            "chewing gum", "bubble gum", "bubblegum", "lady fingers", "cabbage", "carrot",
+            "carrots", "pumpkin", "pumpkins", "coconut", "coconuts", "chocolate", "chocolates",
+            "choco", "coco", "durian", "durians", "nut", "grains", "asam", "laksa", "lasagna",
+            "dragonfruit", "dragonfruits", "yogurt", "pistachio", "pineapple", "pineapples",
+            "stew", "biryani", "briyani", "onigiri", "cereal", "cococrunch", "cheeseburger",
+            "cheeseburgers", "pie", "tart", "toast", "roasted turkey", "roast turkey",
+            "bacon", "meatball", "meatballs", "fishball", "fishballs", "ham",
+            "drinks", "milk tea", "milk", "boba tea", "lemonade", "juice", "milkshake", "tea",
+            "100 plus", "cocacola", "coca cola", "pepsi", "coffee", "espresso", "americano",
+            "latte", "mocha", "milo", "beer", "wine", "soju", "chagee", "lemon tea", "smoothies",
+            "beverage", "beverages", "cocktails", "sodas"
+        ],
         "fitness": [
             "gym", "workout", "running", "exercise", "cardio", "weights", "lifting", "training", 
             "jogging", "treadmill", "dumbbells", "squat", "pushup", "fitness", "athlete", "sport",
@@ -133,13 +170,13 @@ def detect_context(text):
         ],
         "relationship issues": [
             "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
-            "red flag", "reject", "dumped", "cheated", "ex", "tea", "ick", "betray", "jealous", 
+            "red flag", "reject", "dumped", "cheated", "ex", "spill the tea", "ick", "betray", "jealous", 
             "envy", "divorce", "gaslight", "love bomb", "clingy", "distant", "misunderstanding", 
             "codependent", "third wheel", "friendzone", "catfish", "lie", 
             "envies", "gossiping", "gossipping", "envying"
         ],
         "relationship positive": [
-            "bestie", "bff", "best friend", "squad", "love", "date", "dating", "marriage", 
+            "bestie", "bff", "best friend", "squad", "date", "dating", "marriage", 
             "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", 
             "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
         ],
@@ -147,7 +184,8 @@ def detect_context(text):
             "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "cringe",
             "awkward", "insecure", "imposter", "disappointment", "compare", "loser", "dumb",
             "mistake", "guilt", "shame", "embarrassed", "body image", "skinny", "acne", "looks",
-            "appearance", "unlovable", "not enough", "mid", "basic", "try hard", "people pleaser"
+            "appearance", "unlovable", "not enough", "mid", "basic", "try hard", "people pleaser",
+            "self conscious", "self-conscious"
         ],
         "self-esteem positive":[
             "confidence", "validation", "glow up", "proud of myself", "self-love", "worthy", "enough",
@@ -890,7 +928,23 @@ def generate_short_feedback(emotion, reason="", thought=""):
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "It's great that even when you're being hard on yourself, you can still find a reason to be proud of your effort."
             return "You are much more than your mistakes or your appearance. Please be gentle with yourself today."
-   
+
+    elif "food and drink" in detected_contexts:
+        if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in NEGATIVE_WORDS):
+                return "It's great that you're enjoying your meal despite some minor frustrations today!"
+            return "Enjoying good food is a wonderful way to boost your mood and energy. Bon appétit!"
+        
+        elif emotion == "neutral":
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "Taking time to appreciate a meal or drink is a great way to stay grounded and balanced."
+            return "Maintaining a steady routine with your meals helps keep your energy levels consistent."
+        
+        else: 
+            if any(word in full_text for word in POSITIVE_WORDS):
+                return "It's great that you're finding comfort in good food even when things feel difficult."
+            return "When life is heavy, remember that nourishing your body is an important act of self-care."
+    
     #if none of the keywords matched, it goes for general emotion based on constant +ve or -ve feedback
     if emotion in ["happy", "excited"]: 
         if any(word in full_text for word in NEGATIVE_WORDS):
@@ -1015,6 +1069,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if "pet" in reason_contexts:
                 analysis.append("Caring for a pet can add responsibilities, which might be contributing to your stress.")
             
+            elif "food and drink" in reason_contexts:
+                analysis.append("Nutritional intake plays a key role in 'blood sugar stability,' which directly influences your ability to manage stress and anxiety.")
+            
             elif "emotional release" in reason_contexts:
                 analysis.append("The urge to cry is a natural physiological response to release stress hormones.")
             
@@ -1136,6 +1193,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if "relationship issues" in reason_contexts:
                 analysis.append("Interpersonal conflicts can be draining; try to protect your peace.")
             
+            elif "food and drink" in reason_contexts:
+                analysis.append("A lack of specific nutrients or irregular eating patterns can impact serotonin production, potentially deepening feelings of low mood.")
+            
             elif "pet" in reason_contexts:
                 analysis.append("Pets can be a great comfort during tough times. Maybe spend some time with them today.")
             
@@ -1254,6 +1314,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "achievement success" in reason_contexts:
                 analysis.append("You've clearly hit a milestone; acknowledging these wins builds long-term confidence.")
             
+            elif "food and drink" in reason_contexts:
+                analysis.append("Shared meals or favorite foods trigger 'sensory rewards,' reinforcing positive social bonds and individual satisfaction.")
+            
             elif "academic pressure" in reason_contexts:
                 analysis.append("Finding joy in your studies is a great sign of engagement and progress.")
             
@@ -1329,7 +1392,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "health positive" in reason_contexts:
                 analysis.append("Physical vitality provides a 'somatic foundation' for happiness, as the body communicates a state of safety and optimal functioning to the brain.")
 
-            elif "work stress" in reason_contexts:
+            elif "weather" in reason_contexts:
+                analysis.append("Atmospheric conditions often act as a 'mood anchor'; favorable weather can physically stimulate serotonin and dopamine production.")
+
+            elif "work stress" in reason_contexts or "work general" in reason_contexts:
                 analysis.append("Happiness amidst work stress shows 'resilience-based detachment,' where you are successfully separating your personal joy from professional pressure.")
 
             elif "financial gain" in reason_contexts:
@@ -1363,6 +1429,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "pet" in reason_contexts:
                 analysis.append("Pets often bring joy and excitement; it's wonderful you're experiencing that bond.")
+            
+            elif "food and drink" in reason_contexts:
+                analysis.append("The anticipation of a specific meal can trigger a 'dopamine spike,' heightening your overall sense of enthusiasm.")
             
             elif "social media positive" in reason_contexts:
                 analysis.append("Positive digital interactions can be a great way to feel connected to your community.")
@@ -1475,6 +1544,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "pet" in reason_contexts:
                 analysis.append("Spending time with your pet can be a calming influence, promoting emotional balance.")
             
+            elif "food and drink" in reason_contexts:
+                analysis.append("Consistent nutrition contributes to 'metabolic homeostasis,' allowing you to maintain a steady emotional baseline.")
+            
             elif "academic pressure" in reason_contexts:
                 analysis.append("Being objective about your workload helps you prioritize without getting paralyzed by stress.")
             
@@ -1583,6 +1655,9 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "relationship positive" in reason_contexts:
                 analysis.append("Sometimes even positive interactions can trigger anger if they highlight unmet needs or boundaries.")
 
+            elif "food and drink" in reason_contexts:
+                analysis.append("Low glucose levels (often called 'hanger') can significantly lower your irritability threshold, making defensive reactions more likely.")
+            
             elif "relationship general" in reason_contexts:
                 analysis.append("Even minor social friction can be aggravating when you're already carrying other stressors.")
             
@@ -1782,6 +1857,10 @@ def generate_full_feedback(emotion, reason="", thought=""):
     if "self-esteem positive" in detected_contexts:
         suggestions.append("Accept a compliment today without downplaying your own efforts")
         suggestions.append("Wear something that makes you feel confident to reinforce this internal state")
+
+    if "food and drink" in detected_contexts:
+        suggestions.append("Try to eat mindfully—focus on the flavors and textures to stay in the present moment.")
+        suggestions.append("Hydrate between meals to maintain cognitive focus and energy.")
 
     #ensure suggestions list is never empty
     if not suggestions:
