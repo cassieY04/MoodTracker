@@ -2862,6 +2862,31 @@ textarea {
     font-size: 28px;
 }
 
+.custom-tooltip {
+    position: relative;
+}
+
+.custom-tooltip::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -35px;             /* put it below picture */
+    right: 0;
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;                /* hidden by default */
+    transition: opacity 0.3s;
+    pointer-events: none;      
+    z-index: 100;
+}
+
+.custom-tooltip:hover::after { /* show tooltip on hover */
+    opacity: 1;
+}
+
 /* ======================================= Layout for phone/ minimize screen sizes ================================ */
 
 @media (max-width: 1024px) {
