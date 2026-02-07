@@ -150,7 +150,9 @@ def detect_context(text):
             "makeup", "skincare", "meditation", "journaling", "podcast", "kpop", "kdrama",
             "podcast", "vlog", "photography", "blog", "diy", "shopping", "fashion", "cpop",
             "songs", "songwriting", "fishing", "camping", "road trip", "hobby", "hobbies"
-            "pop", "puzzles", "lego", "board games", "tabletop", "cosplay"
+            "pop", "puzzles", "lego", "board games", "tabletop", "cosplay", "album", "albums",
+            "pocas", "photocards", "photobook", "photobooks", "pb", "legos", "games", "musics",
+            "gamed", "sang", "sung", "song", "sings", "concerts", "reads", "draw", "drawing", "drew"
         ],
         "loneliness": [
             "lonely", "alone", "isolated", "nobody", "ignored", "miss", "loneliness", "friendless",
