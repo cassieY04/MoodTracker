@@ -165,8 +165,9 @@ def detect_context(text):
             "friend", "family", "partner", "parents", "roommate", "housemate", "peer", "social", 
             "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out", "bf", 
             "boyfriend", "girlfriend", "husband", "wife", "mom", "dad", "mother", "father", "sister", 
-            "brother", "sibling", "cousin", "gf", "significant other", "mate", "pal", "buddy",
-            "date", "dating"
+            "brother", "sibling", "cousin", "gf", "significant other", "mate", "pal", "buddy", "housemates"
+            "date", "dating", "neighbour", "cousins", "friends", "colleagues", "coworkers", "buddies", 
+            "brothers", "sisters", "bro", "sis", "partners", "parent", "families"
         ],
         "relationship issues": [
             "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
@@ -178,7 +179,7 @@ def detect_context(text):
         "relationship positive": [
             "bestie", "bff", "best friend", "squad", "date", "dating", "marriage", 
             "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", 
-            "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
+            "deep talk", "vibe", "wholesome", "grateful for them", "soft launch", "besties"
         ],
         "self-esteem issues":[
             "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "cringe",
@@ -205,10 +206,9 @@ def detect_context(text):
             "messaged", "messaging", "subscribes", "subscribed", "scrolls"
         ],
         "social media negativity": [
-            "bully", "toxic", "fake", "drama", "unfollow", "cancel", "troll", "hater", 
+            "bully", "toxic", "fake", "drama", "unfollow", "troll", "hater", "sasaeng",
             "block", "unfollow", "cyberbully", "death threat", "expose", "clout", "flop", "shade", "snub",
             "death threats", "unfollows", "haters", "cyberbulling", "cyberbullies", "cancel culture",
-            "sasaeng", "cancelled", "cancels"
         ],
         "social media positive": [
             "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views",
@@ -611,13 +611,17 @@ def generate_short_feedback(emotion, reason="", thought=""):
         
     elif "relationship positive" in detected_contexts:
         if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Although it's disappointing that your important plans get cancelled/postponed, you're still showing positivity!"
             if "emotional release" in detected_contexts:
                 return "Sharing your joy with loved ones amplifies the happiness. Those are beautiful tears of joy!"
-            if any(word in full_text for word in NEGATIVE_WORDS):
+            elif any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's impressive that you're focusing on the warmth of your relationships even when things feel heavy."
             return "It's wonderful to feel supported and connected. Cherish these wholesome bonds!"
         
         elif emotion == "neutral":
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Handling a change in plans with a level head shows great emotional stability."
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "Maintaining a calm and steady heart while being around those you trust is a sign of true security."
             elif any(word in full_text for word in NEGATIVE_WORDS):
@@ -625,20 +629,26 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "Emotions can be complex; feeling calm and neutral in the presence of loved ones is perfectly okay."
 
         else:
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's valid to feel down when wholesome plans fall through. Your feelings are completely understandable."
             if "emotional release" in detected_contexts:
                 return "Crying or venting with people you trust is a healthy way to bond. It's okay to let your guard down."
-            if any(word in full_text for word in POSITIVE_WORDS):
+            elif any(word in full_text for word in POSITIVE_WORDS):
                 return "It's great that you can still acknowledge the support around you, even when you're feeling down."
             return "It's okay to feel heavy even when you're around supportive people. Your feelings are always valid."
         
 
     elif "relationship issues" in detected_contexts:
         if emotion in ["happy", "excited"]:
-            if any(word in full_text for word in POSITIVE_WORDS):
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Staying upbeat even when plans are disrupted is a sign of great emotional resilience!"
+            if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's great that you're finding positivity and growth even amidst relationship challenges!"
             return "Maintaining your happiness despite interpersonal drama shows great emotional resilience."
         
         elif emotion == "neutral":
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Managing social disappointments with a neutral mindset helps you stay objective."
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "Taking a neutral, balanced approach toward a tough interaction shows great maturity and self-control."
             elif any(word in full_text for word in POSITIVE_WORDS):
@@ -646,6 +656,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "It's understandable to feel neutral after a tough interaction. Take the time you need to process it."
             
         else:
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's frustrating when things don't go as planned; it's okay to feel upset about the disruption."
             if "emotional release" in detected_contexts:
                 return "Letting those emotions out is the first step to feeling lighter. It's okay to cry over relationship hurt."
             if any(word in full_text for word in POSITIVE_WORDS):
@@ -656,11 +668,15 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["happy", "excited"]:
             if "emotional release" in detected_contexts:
                 return "It's wonderful to have tears of joy when spending time with the people in your life!"
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's impressive that even with plans cancelled/postponed, you're still staying positive!"
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's great that you're staying positive even when your social interactions feel a bit complicated."
             return "Spending time with your social circle is a great way to boost your mood and stay connected."
         
         elif emotion == "neutral":
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Social schedules can be unpredictable; taking it in stride shows good maturity."
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "It's okay to have mixed feelings about social plans; staying grounded is a solid way to handle the day."
             elif any(word in full_text for word in NEGATIVE_WORDS):
@@ -668,6 +684,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "Sometimes an ordinary day of social interaction is exactly what you need to feel balanced."
         
         else: 
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's normal to feel frustrated that your plans got cancelled."
             if "emotional release" in detected_contexts:
                 return "Venting about social challenges is a healthy way to release built-up pressure from your day."
             if any(word in full_text for word in POSITIVE_WORDS):
