@@ -1166,9 +1166,30 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if "uncertainty" in thought_contexts:
                 analysis.append("Your thoughts are focused on the unknown, which fuels anxiety.")
             
-            if "self-esteem issues" in thought_contexts:
+            elif "self-esteem issues" in thought_contexts:
                 analysis.append("Your thoughts show a high level of self-expectation, which can intensify your feeling of being overwhelmed.")
+
+            elif "academic pressure" in thought_contexts:
+                analysis.append("You might be mentally over-simulating exam scenarios or calculating grades, which creates a cognitive loop of worry.")
+
+            elif "financial stress" in thought_contexts:
+                analysis.append("Constantly doing mental math about expenses is occupying too much of your headspace.")
+
+            elif "social media general" in thought_contexts or "social media negativity" in thought_contexts:
+                analysis.append("You are comparing your internal reality to everyone else's external highlights, creating unnecessary pressure.")
+
+            elif "work stress" in thought_contexts:
+                analysis.append("Your mind is stuck on work problems even when you aren't working, preventing mental rest.")
+
+            elif "health issues" in thought_contexts:
+                analysis.append("Your mind is hyper-focusing on physical sensations and jumping to 'worst-case' conclusions.")
+
+            elif "relationship issues" in thought_contexts:
+                analysis.append("You are over-analyzing past interactions, wondering if you said or did the wrong thing.")
             
+            elif "daily hustle" in thought_contexts:
+                analysis.append("Your internal to-do list feels loud and cluttered right now.")
+
             else:
                 analysis.append("Your thoughts indicate self-expectation or worry, which can intensify stress.")
 
@@ -1293,6 +1314,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "loneliness" in thought_contexts:
                 analysis.append("You are telling yourself that you are alone, but this feeling is temporary.")
+
+            elif "relationship issues" in thought_contexts:
+                analysis.append("You might be replaying memories or conversations in your head that trigger a sense of loss.")
+
+            elif "fatigue" in thought_contexts:
+                analysis.append("Your thoughts are clouded by exhaustion, making it harder to see the positives.")
+
+            elif "academic pressure" in thought_contexts:
+                analysis.append("You are telling yourself that your grades define your personal worth, which isn't true.")
+
+            elif "financial stress" in thought_contexts:
+                analysis.append("Thinking about what you 'can't afford' is creating a mindset of scarcity and limitation.")
+
+            elif "pet" in thought_contexts:
+                analysis.append("Thoughts of your pet are bringing up a tender, perhaps bittersweet, longing.")
+
+            elif "weather" in thought_contexts:
+                analysis.append("Your internal mood is mirroring the gloomy atmosphere outside.")
    
             if not any(ctx in thought_contexts for ctx in ["uncertainty", "self-esteem issues"]):
                 analysis.append("Your thoughts suggest self-doubt or emotional disappointment.")
@@ -1414,6 +1453,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "achievement success" in thought_contexts:
                 analysis.append("Reflecting on wins creates 'psychological momentum,' increasing the likelihood of approaching future tasks with confidence.")
             
+            elif "relationship positive" in thought_contexts:
+                analysis.append("Replaying fond memories or thinking about loved ones is warming your thoughts.")
+
+            elif "hobbies" in thought_contexts:
+                analysis.append("Your mind is happily occupied with your passions, creating a state of 'flow'.")
+
+            elif "food and drink" in thought_contexts:
+                analysis.append("You are savoring the anticipation or memory of a good meal.")
+
+            elif "financial gain" in thought_contexts:
+                analysis.append("Thoughts of financial security are allowing your mind to relax and dream a little.")
+
+            elif "uncertainty" in thought_contexts:
+                analysis.append("You are daydreaming about the future with hope rather than fear.")
+
+            elif "fitness" in thought_contexts:
+                analysis.append("You are mentally acknowledging your body's capabilities and feeling proud.")
+
         suggestions.extend([
             "Take note of what contributed to this feeling",
             "Try to repeat or maintain these positive habits"
@@ -1523,6 +1580,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "self-esteem positive" in thought_contexts:
                 analysis.append("Your internal monologue is currently facilitating a 'virtuous cycle,' where positive self-thoughts further amplify your energy levels.")
+            
+            elif "uncertainty" in thought_contexts:
+                analysis.append("Your mind is racing with possibilities, viewing the unknown as an adventure.")
+
+            elif "transport general" in thought_contexts or "travel" in thought_contexts: # inferred "travel" from context
+                analysis.append("Your mind is already at the destination, playing out the trip in advance.")
+
+            elif "technology" in thought_contexts:
+                analysis.append("You are mentally visualizing the potential of what you can build or do.")
+
+            elif "social media positive" in thought_contexts:
+                analysis.append("You are looking forward to sharing your joy and connecting with others.")
+
+            elif "hobbies" in thought_contexts:
+                analysis.append("You are hyper-focused on your interests, and your thoughts are buzzing with ideas.")
+
+            elif "achievement success" in thought_contexts:
+                analysis.append("The thrill of the win is dominating your thoughts right now.")
             
         suggestions.extend([
             "Channel this energy into a creative project",
@@ -1634,7 +1709,25 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "fatigue" in thought_contexts:
                 analysis.append("Your thoughts on exhaustion are being processed with 'somatosensory awareness,' recognizing physical needs without emotional judgment.")
-        
+
+            elif "daily hustle" in thought_contexts:
+                analysis.append("You are mentally ticking off boxes, simply focusing on the next step.")
+
+            elif "work general" in thought_contexts:
+                analysis.append("You are thinking about your tasks objectively, separating your identity from your output.")
+
+            elif "academic pressure" in thought_contexts:
+                analysis.append("You are strategizing your study plan rather than panicking about it.")
+
+            elif "financial general" in thought_contexts:
+                analysis.append("You are calculating facts and figures with a clear, logical mind.")
+
+            elif "transport general" in thought_contexts:
+                analysis.append("Your mind is in a 'transitional state,' simply watching the world go by.")
+
+            elif "technology" in thought_contexts:
+                analysis.append("You are thinking about the system functionally—how X leads to Y.")
+
         suggestions.extend([
             "Use this clarity to plan your week",
             "Practice mindfulness to maintain this balance",
@@ -1733,6 +1826,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "self-esteem" in thought_contexts:
                 analysis.append("Sometimes we direct anger at others when we are actually feeling disappointed in ourselves; be kind to yourself.")
+
+            elif "relationship issues" in thought_contexts:
+                analysis.append("You might be having arguments in your head or rehearsing what you want to say to them.")
+
+            elif "work stress" in thought_contexts:
+                analysis.append("You are ruminating on unfair treatment, which keeps the anger fresh in your mind.")
+
+            elif "social media negativity" in thought_contexts:
+                analysis.append("Dwelling on negative comments is allowing strangers to occupy your thoughts.")
+
+            elif "technical difficulties" in thought_contexts:
+                analysis.append("The thought 'this should just work' is clashing with reality, causing mental frustration.")
+
+            elif "transport stress" in thought_contexts:
+                analysis.append("You are feeling a loss of autonomy, and your mind is reacting against being stuck.")
+
+            elif "financial stress" in thought_contexts:
+                analysis.append("You are thinking about the unfairness of the situation, which fuels the frustration.")
             
             else:
                 analysis.append("Your thoughts show you are processing a sense of injustice or unfairness.")
