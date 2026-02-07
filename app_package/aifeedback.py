@@ -150,7 +150,9 @@ def detect_context(text):
             "makeup", "skincare", "meditation", "journaling", "podcast", "kpop", "kdrama",
             "podcast", "vlog", "photography", "blog", "diy", "shopping", "fashion", "cpop",
             "songs", "songwriting", "fishing", "camping", "road trip", "hobby", "hobbies"
-            "pop", "puzzles", "lego", "board games", "tabletop", "cosplay"
+            "pop", "puzzles", "lego", "board games", "tabletop", "cosplay", "album", "albums",
+            "pocas", "photocards", "photobook", "photobooks", "pb", "legos", "games", "musics",
+            "gamed", "sang", "sung", "song", "sings", "concerts", "reads", "draw", "drawing", "drew"
         ],
         "loneliness": [
             "lonely", "alone", "isolated", "nobody", "ignored", "miss", "loneliness", "friendless",
@@ -165,8 +167,9 @@ def detect_context(text):
             "friend", "family", "partner", "parents", "roommate", "housemate", "peer", "social", 
             "socialize", "classmate", "colleague", "coworker", "neighbor", "meet up", "hang out", "bf", 
             "boyfriend", "girlfriend", "husband", "wife", "mom", "dad", "mother", "father", "sister", 
-            "brother", "sibling", "cousin", "gf", "significant other", "mate", "pal", "buddy",
-            "date", "dating"
+            "brother", "sibling", "cousin", "gf", "significant other", "mate", "pal", "buddy", "housemates"
+            "date", "dating", "neighbour", "cousins", "friends", "colleagues", "coworkers", "buddies", 
+            "brothers", "sisters", "bro", "sis", "partners", "parent", "families"
         ],
         "relationship issues": [
             "argument", "fight", "conflict", "breakup", "toxic", "ghosted", "drama", "gossip", 
@@ -178,7 +181,7 @@ def detect_context(text):
         "relationship positive": [
             "bestie", "bff", "best friend", "squad", "date", "dating", "marriage", 
             "compromise", "apologize", "forgive", "trust", "support", "caring", "quality time", "crush", 
-            "deep talk", "vibe", "wholesome", "grateful for them", "soft launch"
+            "deep talk", "vibe", "wholesome", "grateful for them", "soft launch", "besties"
         ],
         "self-esteem issues":[
             "ugly", "fat", "stupid", "hate myself", "useless", "failure", "worthless", "cringe",
@@ -205,10 +208,9 @@ def detect_context(text):
             "messaged", "messaging", "subscribes", "subscribed", "scrolls"
         ],
         "social media negativity": [
-            "bully", "toxic", "fake", "drama", "unfollow", "cancel", "troll", "hater", 
+            "bully", "toxic", "fake", "drama", "unfollow", "troll", "hater", "sasaeng",
             "block", "unfollow", "cyberbully", "death threat", "expose", "clout", "flop", "shade", "snub",
             "death threats", "unfollows", "haters", "cyberbulling", "cyberbullies", "cancel culture",
-            "sasaeng", "cancelled", "cancels"
         ],
         "social media positive": [
             "viral", "trend", "follower", "influencer", "aesthetic", "verified", "likes", "views",
@@ -611,13 +613,17 @@ def generate_short_feedback(emotion, reason="", thought=""):
         
     elif "relationship positive" in detected_contexts:
         if emotion in ["happy", "excited"]:
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Although it's disappointing that your important plans get cancelled/postponed, you're still showing positivity!"
             if "emotional release" in detected_contexts:
                 return "Sharing your joy with loved ones amplifies the happiness. Those are beautiful tears of joy!"
-            if any(word in full_text for word in NEGATIVE_WORDS):
+            elif any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's impressive that you're focusing on the warmth of your relationships even when things feel heavy."
             return "It's wonderful to feel supported and connected. Cherish these wholesome bonds!"
         
         elif emotion == "neutral":
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Handling a change in plans with a level head shows great emotional stability."
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "Maintaining a calm and steady heart while being around those you trust is a sign of true security."
             elif any(word in full_text for word in NEGATIVE_WORDS):
@@ -625,20 +631,26 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "Emotions can be complex; feeling calm and neutral in the presence of loved ones is perfectly okay."
 
         else:
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's valid to feel down when wholesome plans fall through. Your feelings are completely understandable."
             if "emotional release" in detected_contexts:
                 return "Crying or venting with people you trust is a healthy way to bond. It's okay to let your guard down."
-            if any(word in full_text for word in POSITIVE_WORDS):
+            elif any(word in full_text for word in POSITIVE_WORDS):
                 return "It's great that you can still acknowledge the support around you, even when you're feeling down."
             return "It's okay to feel heavy even when you're around supportive people. Your feelings are always valid."
         
 
     elif "relationship issues" in detected_contexts:
         if emotion in ["happy", "excited"]:
-            if any(word in full_text for word in POSITIVE_WORDS):
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Staying upbeat even when plans are disrupted is a sign of great emotional resilience!"
+            if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's great that you're finding positivity and growth even amidst relationship challenges!"
             return "Maintaining your happiness despite interpersonal drama shows great emotional resilience."
         
         elif emotion == "neutral":
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Managing social disappointments with a neutral mindset helps you stay objective."
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "Taking a neutral, balanced approach toward a tough interaction shows great maturity and self-control."
             elif any(word in full_text for word in POSITIVE_WORDS):
@@ -646,6 +658,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "It's understandable to feel neutral after a tough interaction. Take the time you need to process it."
             
         else:
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's frustrating when things don't go as planned; it's okay to feel upset about the disruption."
             if "emotional release" in detected_contexts:
                 return "Letting those emotions out is the first step to feeling lighter. It's okay to cry over relationship hurt."
             if any(word in full_text for word in POSITIVE_WORDS):
@@ -656,11 +670,15 @@ def generate_short_feedback(emotion, reason="", thought=""):
         if emotion in ["happy", "excited"]:
             if "emotional release" in detected_contexts:
                 return "It's wonderful to have tears of joy when spending time with the people in your life!"
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's impressive that even with plans cancelled/postponed, you're still staying positive!"
             if any(word in full_text for word in NEGATIVE_WORDS):
                 return "It's great that you're staying positive even when your social interactions feel a bit complicated."
             return "Spending time with your social circle is a great way to boost your mood and stay connected."
         
         elif emotion == "neutral":
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "Social schedules can be unpredictable; taking it in stride shows good maturity."
             if any(word in full_text for word in POSITIVE_WORDS):
                 return "It's okay to have mixed feelings about social plans; staying grounded is a solid way to handle the day."
             elif any(word in full_text for word in NEGATIVE_WORDS):
@@ -668,6 +686,8 @@ def generate_short_feedback(emotion, reason="", thought=""):
             return "Sometimes an ordinary day of social interaction is exactly what you need to feel balanced."
         
         else: 
+            if any(word in full_text for word in ["cancel", "cancelled", "cancels", "postpone", "postponed", "postpones", "delay", "delays", "delayed"]):
+                return "It's normal to feel frustrated that your plans got cancelled."
             if "emotional release" in detected_contexts:
                 return "Venting about social challenges is a healthy way to release built-up pressure from your day."
             if any(word in full_text for word in POSITIVE_WORDS):
@@ -1166,9 +1186,30 @@ def generate_full_feedback(emotion, reason="", thought=""):
             if "uncertainty" in thought_contexts:
                 analysis.append("Your thoughts are focused on the unknown, which fuels anxiety.")
             
-            if "self-esteem issues" in thought_contexts:
+            elif "self-esteem issues" in thought_contexts:
                 analysis.append("Your thoughts show a high level of self-expectation, which can intensify your feeling of being overwhelmed.")
+
+            elif "academic pressure" in thought_contexts:
+                analysis.append("You might be mentally over-simulating exam scenarios or calculating grades, which creates a cognitive loop of worry.")
+
+            elif "financial stress" in thought_contexts:
+                analysis.append("Constantly doing mental math about expenses is occupying too much of your headspace.")
+
+            elif "social media general" in thought_contexts or "social media negativity" in thought_contexts:
+                analysis.append("You are comparing your internal reality to everyone else's external highlights, creating unnecessary pressure.")
+
+            elif "work stress" in thought_contexts:
+                analysis.append("Your mind is stuck on work problems even when you aren't working, preventing mental rest.")
+
+            elif "health issues" in thought_contexts:
+                analysis.append("Your mind is hyper-focusing on physical sensations and jumping to 'worst-case' conclusions.")
+
+            elif "relationship issues" in thought_contexts:
+                analysis.append("You are over-analyzing past interactions, wondering if you said or did the wrong thing.")
             
+            elif "daily hustle" in thought_contexts:
+                analysis.append("Your internal to-do list feels loud and cluttered right now.")
+
             else:
                 analysis.append("Your thoughts indicate self-expectation or worry, which can intensify stress.")
 
@@ -1293,6 +1334,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "loneliness" in thought_contexts:
                 analysis.append("You are telling yourself that you are alone, but this feeling is temporary.")
+
+            elif "relationship issues" in thought_contexts:
+                analysis.append("You might be replaying memories or conversations in your head that trigger a sense of loss.")
+
+            elif "fatigue" in thought_contexts:
+                analysis.append("Your thoughts are clouded by exhaustion, making it harder to see the positives.")
+
+            elif "academic pressure" in thought_contexts:
+                analysis.append("You are telling yourself that your grades define your personal worth, which isn't true.")
+
+            elif "financial stress" in thought_contexts:
+                analysis.append("Thinking about what you 'can't afford' is creating a mindset of scarcity and limitation.")
+
+            elif "pet" in thought_contexts:
+                analysis.append("Thoughts of your pet are bringing up a tender, perhaps bittersweet, longing.")
+
+            elif "weather" in thought_contexts:
+                analysis.append("Your internal mood is mirroring the gloomy atmosphere outside.")
    
             if not any(ctx in thought_contexts for ctx in ["uncertainty", "self-esteem issues"]):
                 analysis.append("Your thoughts suggest self-doubt or emotional disappointment.")
@@ -1414,6 +1473,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             elif "achievement success" in thought_contexts:
                 analysis.append("Reflecting on wins creates 'psychological momentum,' increasing the likelihood of approaching future tasks with confidence.")
             
+            elif "relationship positive" in thought_contexts:
+                analysis.append("Replaying fond memories or thinking about loved ones is warming your thoughts.")
+
+            elif "hobbies" in thought_contexts:
+                analysis.append("Your mind is happily occupied with your passions, creating a state of 'flow'.")
+
+            elif "food and drink" in thought_contexts:
+                analysis.append("You are savoring the anticipation or memory of a good meal.")
+
+            elif "financial gain" in thought_contexts:
+                analysis.append("Thoughts of financial security are allowing your mind to relax and dream a little.")
+
+            elif "uncertainty" in thought_contexts:
+                analysis.append("You are daydreaming about the future with hope rather than fear.")
+
+            elif "fitness" in thought_contexts:
+                analysis.append("You are mentally acknowledging your body's capabilities and feeling proud.")
+
         suggestions.extend([
             "Take note of what contributed to this feeling",
             "Try to repeat or maintain these positive habits"
@@ -1523,6 +1600,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "self-esteem positive" in thought_contexts:
                 analysis.append("Your internal monologue is currently facilitating a 'virtuous cycle,' where positive self-thoughts further amplify your energy levels.")
+            
+            elif "uncertainty" in thought_contexts:
+                analysis.append("Your mind is racing with possibilities, viewing the unknown as an adventure.")
+
+            elif "transport general" in thought_contexts or "travel" in thought_contexts: # inferred "travel" from context
+                analysis.append("Your mind is already at the destination, playing out the trip in advance.")
+
+            elif "technology" in thought_contexts:
+                analysis.append("You are mentally visualizing the potential of what you can build or do.")
+
+            elif "social media positive" in thought_contexts:
+                analysis.append("You are looking forward to sharing your joy and connecting with others.")
+
+            elif "hobbies" in thought_contexts:
+                analysis.append("You are hyper-focused on your interests, and your thoughts are buzzing with ideas.")
+
+            elif "achievement success" in thought_contexts:
+                analysis.append("The thrill of the win is dominating your thoughts right now.")
             
         suggestions.extend([
             "Channel this energy into a creative project",
@@ -1634,7 +1729,25 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "fatigue" in thought_contexts:
                 analysis.append("Your thoughts on exhaustion are being processed with 'somatosensory awareness,' recognizing physical needs without emotional judgment.")
-        
+
+            elif "daily hustle" in thought_contexts:
+                analysis.append("You are mentally ticking off boxes, simply focusing on the next step.")
+
+            elif "work general" in thought_contexts:
+                analysis.append("You are thinking about your tasks objectively, separating your identity from your output.")
+
+            elif "academic pressure" in thought_contexts:
+                analysis.append("You are strategizing your study plan rather than panicking about it.")
+
+            elif "financial general" in thought_contexts:
+                analysis.append("You are calculating facts and figures with a clear, logical mind.")
+
+            elif "transport general" in thought_contexts:
+                analysis.append("Your mind is in a 'transitional state,' simply watching the world go by.")
+
+            elif "technology" in thought_contexts:
+                analysis.append("You are thinking about the system functionally—how X leads to Y.")
+
         suggestions.extend([
             "Use this clarity to plan your week",
             "Practice mindfulness to maintain this balance",
@@ -1733,6 +1846,24 @@ def generate_full_feedback(emotion, reason="", thought=""):
             
             elif "self-esteem" in thought_contexts:
                 analysis.append("Sometimes we direct anger at others when we are actually feeling disappointed in ourselves; be kind to yourself.")
+
+            elif "relationship issues" in thought_contexts:
+                analysis.append("You might be having arguments in your head or rehearsing what you want to say to them.")
+
+            elif "work stress" in thought_contexts:
+                analysis.append("You are ruminating on unfair treatment, which keeps the anger fresh in your mind.")
+
+            elif "social media negativity" in thought_contexts:
+                analysis.append("Dwelling on negative comments is allowing strangers to occupy your thoughts.")
+
+            elif "technical difficulties" in thought_contexts:
+                analysis.append("The thought 'this should just work' is clashing with reality, causing mental frustration.")
+
+            elif "transport stress" in thought_contexts:
+                analysis.append("You are feeling a loss of autonomy, and your mind is reacting against being stuck.")
+
+            elif "financial stress" in thought_contexts:
+                analysis.append("You are thinking about the unfairness of the situation, which fuels the frustration.")
             
             else:
                 analysis.append("Your thoughts show you are processing a sense of injustice or unfairness.")
