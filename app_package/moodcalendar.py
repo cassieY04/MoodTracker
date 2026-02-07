@@ -3,11 +3,11 @@ import sqlite3
 from datetime import datetime
 import calendar
 from Databases.emologdb import get_db
-from .logemotion import EMOTION_MAP # Assumed to contain emotion dictionary
+from .logemotion import EMOTION_MAP 
 
 mood_calendar_bp = Blueprint('mood_calendar', __name__)
 
-# 1. Define how your emotions map to the three main categories
+# three main categories
 EMOTION_CATEGORIES = {
     'Happy': 'Positive', 
     'Excited': 'Positive', 
@@ -18,7 +18,7 @@ EMOTION_CATEGORIES = {
     'Neutral': 'Neutral', 
 }
 
-# 2. Define the final output titles and emojis (4 Outcomes + N/A)
+# final output titles and emojis (4 Outcomes + N/A)
 EMOTIONAL_PATTERN_RESULT = {
     'Mostly Positive': {'title': 'Mostly Positive', 'emoji': '😊', 'icon': 'positive.png'},
     'Stress-Dominant': {'title': 'Stress-Dominant', 'emoji': '😔', 'icon': 'negative.png'},
@@ -59,7 +59,6 @@ def calculate_emotional_pattern(emotion_counts, total_entries):
     # Get the highest count for comparison later
     max_count = max(category_counts['Positive'], category_counts['Negative'], category_counts['Neutral'])
     
-    # --- Apply Decision Rules (New Order) ---
     # Rule 1: Mostly Positive (Positive > 50%)
     if positive_pct > 0.5:
         return EMOTIONAL_PATTERN_RESULT['Mostly Positive']
@@ -70,7 +69,7 @@ def calculate_emotional_pattern(emotion_counts, total_entries):
     
     # Rule 3: Emotionally Balanced (Neutral is the largest category)
     # This rule triggers if Neutral is the single most frequent category.
-    # This handles the case where Neutral is high (e.g., 40%) but not dominant (>50%) 
+    # This handles the case where Neutral is high (e.g., 40%) but not dominant (>50%)  
     # and should be categorized as 'Emotionally Balanced'.
     if neutral_pct == max_count / total_entries:
         return EMOTIONAL_PATTERN_RESULT['Emotionally Balanced']
@@ -223,7 +222,6 @@ def mood_calendar(year=None, month=None):
         'total_entries': total_entries,
         'emotional_pattern': emotional_pattern 
     }
-    # ---------------------------
     
     # Generate calendar matrix
     cal = calendar.monthcalendar(year, month)
